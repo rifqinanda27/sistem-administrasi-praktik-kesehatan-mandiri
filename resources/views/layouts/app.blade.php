@@ -54,6 +54,33 @@
     .user-header small {
         color: white !important;
     }
+    /* Biar navbar selalu di atas */
+    .main-header {
+        z-index: 1040 !important;
+        position: fixed !important;
+        top: 0;
+        left: 0;
+        right: 0;
+    }
+
+    /* Biar isi konten geser turun */
+    .content-wrapper {
+        margin-top: 56px; /* tinggi navbar kamu */
+    }
+
+    /* Sidebar jangan nutupi header */
+    .main-sidebar {
+        z-index: 1030 !important;
+    }
+
+    /* Biar navbar gak ikut kegeser pas sidebar dibuka */
+    body.sidebar-mini.layout-fixed .main-header {
+        transition: none !important;
+        margin-left: 0 !important;
+        width: 100% !important;
+    }
+
+
     </style>
 
 </head>
@@ -65,15 +92,23 @@
             height="80" width="80">
     </div> --}}
     <div class="wrapper">
-        <nav class="main-header navbar navbar-expand navbar-dark"  style="background-color: #164B60">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i
-                            class="fas fa-bars"></i></a>
+        <nav class="main-header navbar navbar-expand navbar-dark" style="background-color: #164B60">
+            <ul class="navbar-nav d-flex align-items-center">
+                <!-- <li class="nav-item">
+                    <a class="nav-link" data-widget="pushmenu" href="#" role="button">
+                        <i class="fas fa-bars"></i>
+                    </a>
+                </li> -->
+                <li class="nav-item d-flex align-items-center ml-2">
+                    <a href="{{ url('') }}" class="nav-link d-flex align-items-center">
+                        <img src="{{ asset('') }}dist/img/logo-polines.png" alt="Logo Polines"
+                            style="height:30px; margin-right:10px;" class="elevation-2">
+                        <span class="text-white font-weight-bold">{{ env('APP_NAME', 'PBL IK-TI Polines') }}</span>
+                    </a>
                 </li>
             </ul>
 
-            <ul class="navbar-nav ml-auto ">
+            <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown user-menu">
                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
                         <img src="../../dist/img/user2-160x160.jpg" class="user-image img-circle elevation-2"
@@ -81,7 +116,6 @@
                         <span class="d-none d-md-inline">{{ Auth::user()->name }}</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-
                         <li class="user-header bg-info">
                             <img src="../../dist/img/user2-160x160.jpg" class="img-circle elevation-3" alt="User Image">
                             <p>
@@ -94,7 +128,6 @@
                             <a href="#" class="btn btn-default btn-flat float-right" data-toggle="modal"
                                 data-target="#modal-logout"><i class="fas fa-sign-out-alt"></i> <span>Keluar</span></a>
                         </li>
-
                     </ul>
                 </li>
                 <li class="nav-item">
@@ -104,6 +137,7 @@
                 </li>
             </ul>
         </nav>
+
         <div class="modal fade" id="modal-logout" data-backdrop="static" tabindex="-1" role="dialog"
             aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
