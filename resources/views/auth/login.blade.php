@@ -17,101 +17,129 @@
     <link href="{{ asset('') }}assets/css/app.css" rel="stylesheet">
     <link href="{{ asset('') }}assets/css/icons.css" rel="stylesheet">
     <title>{{ env('APP_NAME', 'PBL IK-TI') }}</title>
+    <style>
+        .btn-primary,
+        .bg-primary,
+        .border-primary,
+        .text-primary {
+            background-color: #164B60 !important;
+            border-color: #164B60 !important;
+            color: #fff !important;
+        }
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background: url('/assets/images/bg-rs.png') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        .login-wrapper {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-box {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            display: flex;
+            flex-wrap: wrap;
+            max-width: 900px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .login-left {
+            background-color: #fff;
+            padding: 40px;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-right {
+            background-color: #f8f9fa;
+            flex: 1;
+            padding: 40px;
+            min-width: 300px;
+        }
+
+        .login-logo img {
+            width: 200px;
+        }
+
+        .form-control {
+            border-radius: 8px;
+        }
+
+        .btn-primary {
+            border-radius: 8px;
+        }
+
+        a {
+            font-size: 0.9rem;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 767.98px) {
+            .login-left {
+                display: none;
+            }
+
+            .login-right {
+                flex: 1 1 100%;
+                padding: 30px;
+            }
+
+            .login-box {
+                flex-direction: column;
+                border-radius: 0;
+                margin: 0 15px;
+            }
+
+            body, html {
+                background: url('/assets/images/bg-rs.png') no-repeat center center;
+                background-size: cover;
+            }
+        }
+    </style>
 </head>
 
-<body class="">
-    <!--wrapper-->
-    <div class="wrapper">
-        <div class="section-authentication-cover">
-            <div class="">
-                <div class="row g-0">
-
-                    <div
-                        class="col-12 col-xl-7 col-xxl-8 auth-cover-left align-items-center justify-content-center d-none d-xl-flex">
-
-                        <div class="card shadow-none bg-transparent shadow-none rounded-0 mb-0">
-                            <div class="card-body">
-                                <img src="{{ asset('') }}assets/images/login-images/login-cover.svg"
-                                    class="img-fluid auth-img-cover-login" width="500" alt="" />
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="col-12 col-xl-5 col-xxl-4 auth-cover-right align-items-center justify-content-center">
-                        <div class="card rounded-0 m-3 shadow-none bg-transparent mb-0">
-                            <div class="card-body p-sm-5">
-                                <div class="">
-                                    <div class="mb-3 text-center">
-                                        {{-- <img src="assets/images/logo-icon.png" width="60" alt=""> --}}
-                                    </div>
-                                    <div class="text-center mb-4">
-                                        <h3 class="">{{ env('APP_NAME', 'PBL IK-TI') }}</h3>
-                                        <p class="mb-0"></p>
-                                    </div>
-                                    <div class="form-body">
-                                        <form class="row g-3" action="{{ route('login') }}" method="POST">
-                                            @csrf
-                                            <div class="col-12">
-                                                <label for="inputEmailAddress" class="form-label">Alamat Email</label>
-                                                <input type="email" name="email"
-                                                    class="form-control @error('email') is-invalid @enderror"
-                                                    id="inputEmailAddress" placeholder="Alamat Email" value="{{ old('email') }}">
-                                                @error('email')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
-                                            </div>
-                                            <div class="col-12">
-                                                <label for="inputChoosePassword" class="form-label">Password</label>
-                                                <div class="input-group" id="show_hide_password">
-                                                    <input type="password" name="password"
-                                                        class="form-control border-end-0 @error('password') is-invalid @enderror"
-                                                        id="inputChoosePassword" value=""
-                                                        placeholder="Enter Password"> <a href="javascript:;"
-                                                        class="input-group-text bg-transparent"><i
-                                                            class="bx bx-hide"></i></a>
-                                                    @error('password')
-                                                        <span class="invalid-feedback" role="alert">
-                                                            <strong>{{ $message }}</strong>
-                                                        </span>
-                                                    @enderror
-                                                </div>
-
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox"
-                                                        id="flexSwitchCheckChecked">
-                                                    <label class="form-check-label"
-                                                        for="flexSwitchCheckChecked">Remember Me</label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 text-end"> <a
-                                                    href="{{ route('password.request') }}">Lupa password ?</a>
-                                            </div>
-                                            <div class="col-12">
-                                                <div class="d-grid">
-                                                    <button type="submit" class="btn btn-primary btn-sm">Masuk</button>
-                                                </div>
-                                            </div>
-                                            <div class="col-12">
-                                                <div class="text-center ">
-                                                    <p class="mb-0">Belum memuliki akun ? <a
-                                                            href="{{ route('register') }}">Klik daftar</a>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+<body>
+    <div class="login-wrapper">
+        <div class="login-box">
+            <div class="login-left">
+                <div class="login-logo text-center">
+                    <img src="/assets/images/logo-rskariadi.png" alt="Logo RS Kariadi">
                 </div>
-                <!--end row-->
+            </div>
+            <div class="login-right">
+                <form method="POST" action="{{ route('login') }}">
+                    @csrf
+                    <h4 class="mb-4">Login</h4>
+
+                    <div class="mb-3">
+                        <label class="form-label">Username</label>
+                        <input type="text" name="email" class="form-control" placeholder="Masukkan username" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="password" name="password" class="form-control" placeholder="Masukkan password" required>
+                    </div>
+
+                    <div class="mb-3 text-end">
+                        <a href="{{ route('password.request') }}">Lupa password?</a>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

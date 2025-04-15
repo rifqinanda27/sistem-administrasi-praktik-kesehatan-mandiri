@@ -75,7 +75,7 @@
                                 </div>
                             </div>
                             <div class="card-footer">
-                                <button type="submit" class="btn btn-info btn-block btn-flat"><i class="fa fa-save"></i>
+                                <button type="submit" class="btn btn-info btn-block btn-primary"><i class="fa fa-save"></i>
                                     Simpan</button>
                             </div>
                         </form>

@@ -102,8 +102,8 @@
                 <li class="nav-item d-flex align-items-center ml-2">
                     <a href="{{ url('') }}" class="nav-link d-flex align-items-center">
                         <img src="{{ asset('') }}dist/img/logo-polines.png" alt="Logo Polines"
-                            style="height:30px; margin-right:10px;" class="elevation-2">
-                        <span class="text-white font-weight-bold">{{ env('APP_NAME', 'PBL IK-TI Polines') }}</span>
+                            style="height:30px; margin-right:10px;" class="elevation-0">
+                        <span class="text-white font-weight-bold">Health Care</span>
                     </a>
                 </li>
             </ul>
