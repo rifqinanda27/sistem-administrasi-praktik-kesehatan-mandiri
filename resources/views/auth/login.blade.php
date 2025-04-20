@@ -102,7 +102,7 @@
             }
 
             body, html {
-                background: url('/assets/images/bg-rs.png') no-repeat center center;
+                background: url('{{ asset("/assets/images/bg-rs.png") }}') no-repeat center center;
                 background-size: cover;
             }
         }
@@ -114,7 +114,7 @@
         <div class="login-box">
             <div class="login-left">
                 <div class="login-logo text-center">
-                    <img src="/assets/images/logo-rskariadi.png" alt="Logo RS Kariadi">
+                    <img src="{{ asset('dist/img/logo-polines.png') }}" alt="Logo RS Kariadi">
                 </div>
             </div>
             <div class="login-right">

@@ -88,7 +88,7 @@
 <body class="hold-transition sidebar-mini layout-fixed">
     <!-- Preloader -->
     {{-- <div class="preloader flex-column justify-content-center align-items-center">
-        <img class="animation__shake" src="{{ asset('') }}dist/img/logo-polines.png" alt="Polines Logo"
+        <img class="animation__shake" src="{{ asset('dist/img/logo-polines.png') }}" alt="Polines Logo"
             height="80" width="80">
     </div> --}}
     <div class="wrapper">
@@ -101,7 +101,7 @@
                 </li> -->
                 <li class="nav-item d-flex align-items-center ml-2">
                     <a href="{{ url('') }}" class="nav-link d-flex align-items-center">
-                        <img src="{{ asset('') }}dist/img/logo-polines.png" alt="Logo Polines"
+                        <img src="{{ asset('dist/img/logo-polines.png') }}" alt="Logo Polines"
                             style="height:30px; margin-right:10px;" class="elevation-0">
                         <span class="text-white font-weight-bold">Health Care</span>
                     </a>
@@ -111,13 +111,13 @@
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown user-menu">
                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-                        <img src="../../dist/img/user2-160x160.jpg" class="user-image img-circle elevation-2"
+                        <img src="{{ asset('dist/img/user2-160x160.jpg') }}" class="user-image img-circle elevation-2"
                             alt="User Image">
                         <span class="d-none d-md-inline">{{ Auth::user()->name }}</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                         <li class="user-header bg-info">
-                            <img src="../../dist/img/user2-160x160.jpg" class="img-circle elevation-3" alt="User Image">
+                            <img src="{{ asset('dist/img/user2-160x160.jpg') }}" class="img-circle elevation-3" alt="User Image">
                             <p>
                                 {{ Auth::user()->name }}
                                 <small>Politeknik Negeri Semarang</small>
