@@ -1,0 +1,98 @@
+<?php
+
+namespace App\Http\Controllers\Api;
+
+use Illuminate\Routing\Controller;
+use Illuminate\Http\Request;
+use App\Models\User;
+use App\Models\Role;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+
+class UserController extends Controller
+{
+    // Konstruktor untuk memastikan hanya admin yang bisa mengakses
+    public function __construct()
+    {
+        $this->middleware('role:admin'); // Pastikan hanya admin yang bisa mengakses
+    }
+
+    // Menampilkan semua user
+    public function index()
+    {
+        $users = User::with('role')->get(); // Menampilkan user dengan role
+        return response()->json($users);
+    }
+
+    // Menambah user baru
+    public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8',
+            'role_id' => 'required|integer|exists:roles,id', // Validasi role_id harus integer dan ada di tabel roles
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+
+        // Cek role berdasarkan ID
+        $role = Role::find($request->role_id);
+
+        // Pastikan role ditemukan
+        if (!$role) {
+            return response()->json(['message' => 'Role not found'], 404);
+        }
+
+        // Membuat user baru dengan role_id yang sesuai
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'role_id' => $role->id, // menggunakan ID role yang ditemukan di database
+        ]);
+
+        return response()->json(['message' => 'User created successfully', 'user' => $user], 201);
+    }
+
+
+
+    // Edit user
+    public function update(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        // Validasi input
+        $validator = Validator::make($request->all(), [
+            'name' => 'string|max:255',
+            'email' => 'string|email|max:255|unique:users,email,' . $user->id, // Cek email kecuali untuk user ini
+            'role_id' => 'nullable|integer|exists:roles,id', // Validasi role_id yang dikirim
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+
+        // Update data user
+        $user->update([
+            'name' => $request->name ?? $user->name,
+            'email' => $request->email ?? $user->email,
+            // Cek apakah role_id ada di request dan update, jika tidak biarkan yang lama
+            'role_id' => $request->role_id ? Role::find($request->role_id)->id : $user->role_id,
+        ]);
+
+        return response()->json(['message' => 'User updated successfully', 'user' => $user]);
+    }
+
+
+    // Menghapus user
+    public function destroy($id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return response()->json(['message' => 'User deleted successfully']);
+    }
+}
