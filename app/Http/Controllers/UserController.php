@@ -2,160 +2,109 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Http;
 use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
-    function __construct()
+    protected $apiBaseUrl;
+
+    public function __construct()
     {
-        $this->middleware('permission:read_user')->only('index', 'show');
-        $this->middleware('permission:create_user')->only('create', 'store');
-        $this->middleware('permission:update_user')->only('edit', 'update');
-        $this->middleware('permission:delete_user')->only('destroy');
+        $this->apiBaseUrl = config('app.api_base_url');
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
-        $users = User::all();
+        $token = session('api_token');
+
+        $response = Http::withToken($token)->get("$this->apiBaseUrl/users");
+
+        if (!$response->successful()) {
+            return back()->withErrors(['message' => 'Gagal mengambil data users']);
+        }
+
+        $users = $response->json('data');
+
         return view('users.index', compact('users'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        $roles = Role::all();
+        $roles = Role::all(); // Asumsi roles tetap lokal, karena di API gak disediakan?
         return view('users.create', compact('roles'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string',
-            'email' => 'required|string|email:rfc|unique:users',
-            'role' => 'nullable',
-            'verified' => 'nullable|string',
+        $token = session('api_token');
+
+        $response = Http::withToken($token)->post("$this->apiBaseUrl/users", [
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $request->password,
+            'role' => $request->role,
+            'verified' => $request->verified,
         ]);
 
-        if ($validator->fails()) {
-            toastr()->error('Perngguna gagal ditambah </br> Periksa kembali data anda');
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
-        };
-        try {
-            $data = User::create(
-                [
-                    'name' => $request->name,
-                    'email' => $request->email,
-                    'password' => Hash::make($request->password),
-                    'email_verified_at' => !blank($request->verified) ? now() : null
-                ]
-            );
-            $data->assignRole(!blank($request->role) ? $request->role : array());
-            toastr()->success('Pengguna baru berhasil disimpan');
-            return redirect()->route('manage-user.index');
-        } catch (\Throwable $th) {
-            toastr()->warning('Terdapat masalah diserver');
-            return redirect()->route('manage-user.index');
+        // dd($request->all());
+
+        if (!$response->successful()) {
+            return back()->withErrors(['message' => 'Gagal membuat user']);
         }
+
+        toastr()->success('User berhasil dibuat');
+        return redirect()->route('manage-user.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
+        $token = session('api_token');
+
+        $response = Http::withToken($token)->get("$this->apiBaseUrl/users/{$id}");
+
+        if (!$response->successful()) {
+            return back()->withErrors(['message' => 'Gagal mengambil data user']);
+        }
+
+        $user = $response->json('data');
         $roles = Role::all();
-        $user = User::findorfail($id);
+
         return view('users.edit', compact('user', 'roles'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string',
-            'email' => 'required|string|email:rfc',
-            'role' => 'nullable',
-            'verified' => 'nullable|string',
+        $token = session('api_token');
+
+        $response = Http::withToken($token)->put("$this->apiBaseUrl/users/{$id}", [
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $request->password,
+            'role' => $request->role,
+            'verified' => $request->verified,
         ]);
 
-        if ($validator->fails()) {
-            toastr()->error('Perngguna gagal ditambah </br> Periksa kembali data anda');
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
-        };
-
-        try {
-            $user = User::findorfail($id);
-
-            $update_data = [
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-                'email_verified_at' => !blank($request->verified) ? now() : null
-            ];
-            if(empty($request->password)){
-                unset($update_data['password']);
-            }
-            $user->update($update_data);
-
-            $user->syncRoles(!blank($request->role) ? $request->role : array());
-            toastr()->success('Pengguna berhasil diperbarui');
-            return redirect()->route('manage-user.index');
-        } catch (\Throwable $th) {
-            toastr()->warning('Terdapat masalah diserver');
-            return redirect()->route('manage-user.index');
+        if (!$response->successful()) {
+            return back()->withErrors(['message' => 'Gagal memperbarui user']);
         }
+
+        toastr()->success('User berhasil diperbarui');
+        return redirect()->route('manage-user.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        //
+        $token = session('api_token');
+
+        $response = Http::withToken($token)->delete("$this->apiBaseUrl/users/{$id}");
+
+        if (!$response->successful()) {
+            return back()->withErrors(['message' => 'Gagal menghapus user']);
+        }
+
+        toastr()->success('User berhasil dihapus');
+        return redirect()->route('manage-user.index');
     }
 }

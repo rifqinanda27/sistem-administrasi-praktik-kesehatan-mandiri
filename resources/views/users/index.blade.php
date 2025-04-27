@@ -41,28 +41,27 @@
                                     <th>Aksi</th>
                                 </thead>
                                 <tbody>
-                                    @foreach ($users as $item)
-                                        <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $item->name }}</td>
-                                            <td>{{ $item->email }}</td>
-                                            <td>
-                                                @foreach ($item->roles->pluck('name') as $role)
-                                                    {{ $role }}
-                                                @endforeach
-                                            </td>
-                                            <td>
-                                                <button type="button" class="btn btn-block btn-sm btn-outline-info"
-                                                    data-toggle="dropdown"><i class="fas fa-cog"></i>
-                                                </button>
-                                                <div class="dropdown-menu" role="menu">
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('manage-user.edit', $item->id) }}">Edit</a>
-                                                    <a class="dropdown-item" href="#">Hapus</a>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach
+                                @foreach ($users as $item)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $item['name'] }}</td>
+                                    <td>{{ $item['email'] }}</td>
+                                    <td>
+                                        @foreach ($item['roles'] as $role)
+                                            {{ $role['name'] }}
+                                        @endforeach
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-block btn-sm btn-outline-info" data-toggle="dropdown"><i class="fas fa-cog"></i>
+                                        </button>
+                                        <div class="dropdown-menu" role="menu">
+                                            <a class="dropdown-item" href="{{ route('manage-user.edit', $item['id']) }}">Edit</a>
+                                            <a class="dropdown-item" href="#">Hapus</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @endforeach
+
                                 </tbody>
                             </table>
                         </div>

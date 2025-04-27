@@ -10,6 +10,14 @@ class Menu extends Model
     use HasFactory;
     public $timestamps = false;
 
+    protected $fillable = [
+        'nama_menu',
+        'url',
+        'parent_id',
+        'icon',
+        'urutan'
+    ];
+
     public function submenus()
     {
         return $this->hasMany(Menu::class, 'parent_id', 'id');

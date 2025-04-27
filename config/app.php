@@ -14,6 +14,7 @@ return [
     | any other location as required by the application or its packages.
     |
     */
+    'api_base_url' => env('API_BASE_URL'),
 
     'name' => env('APP_NAME', 'Laravel'),
 

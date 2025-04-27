@@ -133,7 +133,7 @@
                     </div>
 
                     <div class="mb-3 text-end">
-                        <a href="{{ route('password.request') }}">Lupa password?</a>
+                        
                     </div>
 
                     <div class="d-grid">

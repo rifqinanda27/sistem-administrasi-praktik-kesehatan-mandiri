@@ -27,7 +27,7 @@
                                         class="fas fa-arrow-alt-circle-left"></i></a>
                             </div>
                         </div>
-                        <form action="{{ route('manage-user.update', $user->id) }}" method="post">
+                        <form action="{{ route('manage-user.update', $user['id']) }}" method="post">
                             @csrf
                             @method('PUT')
                             <div class="card-body">
@@ -35,7 +35,7 @@
                                     <label>Nama Lengkap</label>
                                     <input type="text" name="name"
                                         class="form-control @error('name')is-invalid @enderror" placeholder="Nama Lengkap"
-                                        value="{{ $user->name }}">
+                                        value="{{ $user['name'] }}">
                                     @error('name')
                                         <div class="invalid-feedback" role="alert">
                                             <span>{{ $message }}</span>
@@ -46,7 +46,7 @@
                                     <label>Alamat Email</label>
                                     <input type="email" name="email"
                                         class="form-control @error('email')is-invalid @enderror " placeholder="Alamat Email"
-                                        value="{{ $user->email }}">
+                                        value="{{ $user['email'] }}">
                                     @error('email')
                                         <div class="invalid-feedback" role="alert">
                                             <span>{{ $message }}</span>
@@ -59,13 +59,12 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Role Pengguna</label>
-                                    {{-- {{ $role_user }} --}}
-                                    @if (count($user->roles->pluck('name')->toarray()) > 0)
+                                    @if (!empty($user['roles']) && count($user['roles']) > 0)
                                         @foreach ($roles as $item)
                                             <div class="custom-control custom-checkbox">
                                                 <input type="checkbox" name="role[]" class="custom-control-input"
                                                     id="{{ $item->name . $item->id }}" value="{{ strtolower($item->name) }}"
-                                                    @checked(in_array($item->name, $user->roles->pluck('name')->toarray()))>
+                                                    @checked(in_array(strtolower($item->name), $user['roles']))>
                                                 <label class="custom-control-label"
                                                     for="{{ $item->name . $item->id }}">{{ strtoupper($item->name) }}</label>
                                             </div>
@@ -74,8 +73,7 @@
                                         @foreach ($roles as $item)
                                             <div class="custom-control custom-checkbox">
                                                 <input type="checkbox" name="role[]" class="custom-control-input"
-                                                    id="{{ $item->name . $item->id }}"
-                                                    value="{{ strtolower($item->name) }}">
+                                                    id="{{ $item->name . $item->id }}" value="{{ strtolower($item->name) }}">
                                                 <label class="custom-control-label"
                                                     for="{{ $item->name . $item->id }}">{{ strtoupper($item->name) }}</label>
                                             </div>
@@ -85,7 +83,7 @@
                                 <div class="form-group">
                                     <label>Verified</label>
                                     <div class="input-group">
-                                        <input type="checkbox" {{ !blank($user->email_verified_at) ? 'checked' : '' }}
+                                        <input type="checkbox" {{ !blank($user['email_verified_at']) ? 'checked' : '' }}
                                             name="verified" data-bootstrap-switch data-off-color="danger"
                                             data-on-color="success">
                                     </div>
@@ -96,6 +94,7 @@
                                     Simpan</button>
                             </div>
                         </form>
+
                     </div>
                 </div>
             </div>

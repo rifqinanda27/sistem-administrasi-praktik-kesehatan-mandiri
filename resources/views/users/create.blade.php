@@ -58,14 +58,14 @@
                                 <div class="form-group">
                                     <label>Role Pengguna</label>
                                     @foreach ($roles as $item)
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" name="role[]" class="custom-control-input"
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" name="role" class="custom-control-input"
                                                 id="{{ $item->name . $item->id }}" value="{{ strtolower($item->name) }}">
-                                            <label class="custom-control-label"
-                                                for="{{ $item->name . $item->id }}">{{ strtoupper($item->name) }}</label>
+                                            <label class="custom-control-label" for="{{ $item->name . $item->id }}">{{ strtoupper($item->name) }}</label>
                                         </div>
                                     @endforeach
                                 </div>
+
                                 <div class="form-group">
                                     <label>Verified</label>
                                     <div class="input-group">

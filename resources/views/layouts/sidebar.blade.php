@@ -1,8 +1,9 @@
 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-    @foreach (json_decode(MenuHelper::Menu()) as $menu)
+    @foreach ($menus as $menu)
         <li class="nav-header">{{ strtoupper($menu->nama_menu) }}</li>
         @foreach ($menu->submenus as $submenu)
-            @if (count($submenu->submenus) == '0')
+            @if (count($submenu->submenus) === 0)
+                <!-- Tampilkan menu tanpa submenu -->
                 <li class="nav-item">
                     <a href="{{ url($submenu->url) }}"
                         class="nav-link {{ Request::segment(1) == $submenu->url ? 'active' : '' }}">
@@ -13,11 +14,13 @@
                     </a>
                 </li>
             @else
-                @foreach ($submenu->submenus as $url)
-                    @php
+                <!-- Tampilkan menu dengan submenu -->
+                @php
+                    $urls = [];
+                    foreach ($submenu->submenus as $url) {
                         $urls[] = $url->url;
-                    @endphp
-                @endforeach
+                    }
+                @endphp
                 <li class="nav-item {{ in_array(Request::segment(1), $urls) ? 'menu-open' : '' }}">
                     <a href="#" class="nav-link {{ in_array(Request::segment(1), $urls) ? 'active' : '' }}">
                         <i class="nav-icon {{ $submenu->icon }}"></i>
