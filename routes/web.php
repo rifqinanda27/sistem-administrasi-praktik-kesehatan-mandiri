@@ -6,8 +6,13 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\DokterUmumController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DokterUmumControllerPasien;
+use App\Http\Controllers\DokterUmumControllerCalonPasien;
+use App\Http\Controllers\DokterUmumControllerTindakan;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -36,5 +41,11 @@ Route::resource('manage-role', RoleController::class);
 Route::resource('manage-menu', MenuController::class);
 Route::resource('manage-permission', PermissionController::class)->only('store', 'destroy');
 
+route::resource('dokter-umum-branda', DokterUmumController::class);
+route::resource('dokter-umum-daftarpasien', DokterUmumControllerPasien::class);
+route::resource('dokter-umum-calonpasien', DokterUmumControllerCalonPasien::class);
+route::resource('dokter-umum-tindakan', DokterUmumControllerTindakan::class);
 
 Route::get('dbbackup', [DBBackupController::class, 'DBDataBackup']);
+
+

@@ -80,6 +80,24 @@
         width: 100% !important;
     }
 
+    /* icon judul */
+    .content-header {
+        font-family: Arial, sans-serif;
+        padding: 15px;
+        background-color: #f8f9fa;
+    }
+
+    .content-header .d-flex {
+        display: flex;
+        align-items: center;
+    }
+
+    .content-header h4 {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 0;
+    }
+
 
     </style>
 
