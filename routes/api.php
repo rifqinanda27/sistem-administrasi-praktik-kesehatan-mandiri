@@ -7,6 +7,14 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\PatientController;
 use App\Http\Controllers\Api\VisitController;
+use App\Http\Controllers\Api\CatatanMedisController;
+use App\Http\Controllers\Api\TindakanController;
+use App\Http\Controllers\Api\ResepController;
+use App\Http\Controllers\Api\ObatController;
+use App\Http\Controllers\Api\LaboratoriumController;
+use App\Http\Controllers\Api\JenisPemeriksaanLabController;
+use App\Http\Controllers\Api\PermintaanLabController;
+use App\Http\Controllers\Api\HasilLabController;
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
@@ -27,32 +35,34 @@ Route::middleware('auth:sanctum')->group(function () {
     //     Route::get('/profile', [UserController::class, 'profile']);
     // });
     Route::middleware('role:admin')->group(function () {
-        // Manajemen User
-        Route::get('/users', [UserController::class, 'index']);
-        Route::post('/users', [UserController::class, 'store']);
-        Route::put('/users/{id}', [UserController::class, 'update']);
-        Route::delete('/users/{id}', [UserController::class, 'destroy']);
-    
-        // Manajemen Role
-        Route::get('/roles', [RoleController::class, 'index']);
-        Route::post('/roles', [RoleController::class, 'store']);
-        Route::delete('/roles/{id}', [RoleController::class, 'destroy']);
+        Route::apiResource('/users', UserController::class);
+        Route::apiResource('/roles', RoleController::class);
     });
 
     Route::middleware('role:resepsionis')->group(function () {
-        Route::get('/pasien', [PatientController::class, 'index']);
-        Route::post('/pasien', [PatientController::class, 'store']);
-        Route::get('/pasien/{id}', [PatientController::class, 'show']);
-        Route::put('/pasien/{id}', [PatientController::class, 'update']);
-        Route::delete('/pasien/{id}', [PatientController::class, 'destroy']);
+        Route::apiResource('/pasien', PatientController::class);
     });
 
-    Route::middleware('role.resepsionis')->group(function () {
-        Route::get('/kunjungan', [VisitController::class, 'index']);
-        Route::post('/kunjungan', [VisitController::class, 'store']);
-        Route::get('/kunjungan/{id}', [VisitController::class, 'show']);
-        Route::put('/kunjungan/{id}', [VisitController::class, 'update']);
-        Route::delete('/kunjungan/{id}', [VisitController::class, 'destroy']);
+    Route::middleware('role:resepsionis')->group(function () {
+        Route::apiResource('/kunjungan', VisitController::class);
+    });
+
+    
+    Route::middleware('role:dokterumum')->group(function () {
+        Route::apiResource('/catatan-medis', CatatanMedisController::class);
+        Route::apiResource('/tindakan', TindakanController::class);
+    });
+
+    Route::middleware('role:apoteker')->group(function () {
+        Route::apiResource('obat', ObatController::class);
+        Route::apiResource('resep', ResepController::class);
+    });
+
+    Route::middleware('role:laboran')->group(function() {
+        Route::apiResource('laboratorium', LaboratoriumController::class);
+        Route::apiResource('jenis-pemeriksaan-lab', JenisPemeriksaanLabController::class);
+        Route::apiResource('permintaan-lab', PermintaanLabController::class);
+        Route::apiResource('hasil-lab', HasilLabController::class);
     });
     
 });

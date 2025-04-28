@@ -24,8 +24,8 @@ class VisitController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'id_pasien' => 'required|exists:pasien,id_pasien',
-            'id_dokter' => 'required|exists:pengguna,id_pengguna',
+            'id_pasien' => 'required|exists:patients,id_pasien',
+            'id_dokter' => 'required|exists:users,id',
             'tanggal_kunjungan' => 'required|date',
             'tipe_kunjungan' => 'required|in:awal,lanjutan,prenatal,postnatal,darurat',
             'status_kunjungan' => 'required|in:terjadwal,dalam_proses,selesai,dibatalkan',

@@ -21,7 +21,15 @@ class DatabaseSeeder extends Seeder
         // ]);
         $this->call([
             // PasienSeeder::class,
-            KunjunganSeeder::class,
+            // KunjunganSeeder::class,
+            // CatatanMedisSeeder::class,
+            // TindakanSeeder::class,
+            // ResepSeeder::class,
+            // ObatSeeder::class,
+            // LaboratoriumSeeder::class,
+            // JenisPemeriksaanLabSeeder::class,
+            // PermintaanLabSeeder::class,
+            // HasilLabSeeder::class,
         ]);
     }
 }

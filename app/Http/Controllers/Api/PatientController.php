@@ -24,11 +24,11 @@ class PatientController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'no_rekam_medis' => 'required|unique:pasien',
+            'no_rekam_medis' => 'required|unique:patients',
             'nama_lengkap' => 'required',
             'tanggal_lahir' => 'required|date',
             'jenis_kelamin' => 'required|in:laki-laki,perempuan,lainnya',
-            'no_ktp' => 'required|unique:pasien',
+            'no_ktp' => 'required|unique:patients',
             'alamat' => 'nullable|string',
             'telepon' => 'nullable|string',
         ]);
