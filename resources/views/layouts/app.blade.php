@@ -179,28 +179,30 @@
    
     
     .stepper-wrapper {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 150px;
-        position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 120px; /* Ubah dari 150px */
+    flex-wrap: wrap; /* Supaya bisa turun ke bawah di HP */
+    position: relative;
     }
     .stepper-item {
         position: relative;
         display: flex;
         flex-direction: column;
         align-items: center;
-        min-width: 150px;
+        min-width: 80px; /* Lebih kecil untuk HP */
     }
     .stepper-item::before {
-        position: absolute;
-        content: '';
-        top: 24px;
-        left: -160%;
-        height: 4px;
-        width: 290px;
-        background-color: #d3d3d3; /* default abu-abu */
-        z-index: 1;
+    position: absolute;
+    content: '';
+    top: 24px;
+    left: 0;
+    transform: translateX(-80%);
+    height: 4px;
+    width: 190px;
+    background-color: #d3d3d3;
+    z-index: 1;
     }
     .stepper-item:first-child::before {
         content: none;
@@ -243,6 +245,26 @@
     .stepper-item.active::before {
         background-color: #014A5B; /* garis biru sampai step aktif */
     }
+
+    @media (max-width: 576px) {
+    .stepper-wrapper {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    .stepper-item::before {
+        top: -50px;
+        left: 24px;
+        transform: rotate(90deg);
+        width: 60px;
+    }
+
+    .step-name {
+        text-align: left;
+        font-size: 14px;
+    }
+}
 
     
     

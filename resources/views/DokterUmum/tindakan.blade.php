@@ -65,87 +65,89 @@
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body">
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>Nomor Rekam Medis</th>
-                                                <th>Nama</th>
-                                                <th>Tanggal Lahir</th>
-                                                <th>Jenis Kelamin</th>
-                                                <th>Nomor KTP</th>
-                                                <th>Alamat</th>
-                                                <th>No. Telp</th>
-                                                <th>Tanggal Tindakan</th>
-                                                <th>Status</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr class="align-middle">
-                                                <td>1</td>
-                                                <td>RM00001</td>
-                                                <td>Januar Rifqi</td>
-                                                <td>17-08-1945</td>
-                                                <td>Laki-Laki</td>
-                                                <td>3374023344563331</td>
-                                                <td>Ngesrep</td>
-                                                <td>098765432123</td>
-                                                <td>4-12-2025</td>
-                                                <td><a href="dokter-umum-perlutindakan"><span class="badge bg-danger">Perlu Tindakan</span></a></td>
-                                            </tr>
-                                            <tr class="align-middle">
-                                                <td>2</td>
-                                                <td>RM00002</td>
-                                                <td>Ilham Indra</td>
-                                                <td>17-08-1945</td>
-                                                <td>Laki-Laki</td>
-                                                <td>3374023344563331</td>
-                                                <td>Ngesrep</td>
-                                                <td>098765432123</td>
-                                                <td>4-12-2025</td>
-                                                <td><a href="dokter-umum-perlutindakan"><span class="badge bg-danger">Perlu Tindakan</span></a></td>
-                                                
-                                            </tr>
-                                            <tr class="align-middle">
-                                                <td>3</td>
-                                                <td>RM00003</td>
-                                                <td>Ammar Luqman</td>
-                                                <td>17-08-1945</td>
-                                                <td>Laki-Laki</td>
-                                                <td>3374023344563331</td>
-                                                <td>Ngesrep</td>
-                                                <td>098765432123</td>
-                                                <td>4-12-2025</td>
-                                                <td><span class="badge bg-success">Diberi Resep</span></td>
-                                                
-                                            </tr>
-                                            <tr class="align-middle">
-                                                <td>4</td>
-                                                <td>RM00004</td>
-                                                <td>Challista</td>
-                                                <td>17-08-1945</td>
-                                                <td>Perempuan</td>
-                                                <td>3374023344563331</td>
-                                                <td>Ngesrep</td>
-                                                <td>098765432123</td>
-                                                <td>4-12-2025</td>
-                                                <td><span class="badge bg-success">Diberi Resep</span></td>
-                                            </tr>
-                                            <tr class="align-middle">
-                                                <td>5</td>
-                                                <td>RM00005</td>
-                                                <td>Riskiana</td>
-                                                <td>17-08-1945</td>
-                                                <td>Perempuan</td>
-                                                <td>3374023344563331</td>
-                                                <td>Ngesrep</td>
-                                                <td>098765432123</td>
-                                                <td>4-12-2025</td>
-                                                <td><span class="badge bg-success">Diberi Resep</span></td>
-                                            </tr>
-                                            <!-- Add more rows as needed -->
-                                        </tbody>
-                                    </table>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Nomor Rekam Medis</th>
+                                                    <th>Nama</th>
+                                                    <th>Tanggal Lahir</th>
+                                                    <th>Jenis Kelamin</th>
+                                                    <th>Nomor KTP</th>
+                                                    <th>Alamat</th>
+                                                    <th>No. Telp</th>
+                                                    <th>Tanggal Tindakan</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="align-middle">
+                                                    <td>1</td>
+                                                    <td>RM00001</td>
+                                                    <td>Januar Rifqi</td>
+                                                    <td>17-08-1945</td>
+                                                    <td>Laki-Laki</td>
+                                                    <td>3374023344563331</td>
+                                                    <td>Ngesrep</td>
+                                                    <td>098765432123</td>
+                                                    <td>4-12-2025</td>
+                                                    <td><a href="dokter-umum-perlutindakan"><span class="badge bg-danger">Perlu Tindakan</span></a></td>
+                                                </tr>
+                                                <tr class="align-middle">
+                                                    <td>2</td>
+                                                    <td>RM00002</td>
+                                                    <td>Ilham Indra</td>
+                                                    <td>17-08-1945</td>
+                                                    <td>Laki-Laki</td>
+                                                    <td>3374023344563331</td>
+                                                    <td>Ngesrep</td>
+                                                    <td>098765432123</td>
+                                                    <td>4-12-2025</td>
+                                                    <td><a href="dokter-umum-perlutindakan"><span class="badge bg-danger">Perlu Tindakan</span></a></td>
+                                                    
+                                                </tr>
+                                                <tr class="align-middle">
+                                                    <td>3</td>
+                                                    <td>RM00003</td>
+                                                    <td>Ammar Luqman</td>
+                                                    <td>17-08-1945</td>
+                                                    <td>Laki-Laki</td>
+                                                    <td>3374023344563331</td>
+                                                    <td>Ngesrep</td>
+                                                    <td>098765432123</td>
+                                                    <td>4-12-2025</td>
+                                                    <td><span class="badge bg-success">Diberi Resep</span></td>
+                                                    
+                                                </tr>
+                                                <tr class="align-middle">
+                                                    <td>4</td>
+                                                    <td>RM00004</td>
+                                                    <td>Challista</td>
+                                                    <td>17-08-1945</td>
+                                                    <td>Perempuan</td>
+                                                    <td>3374023344563331</td>
+                                                    <td>Ngesrep</td>
+                                                    <td>098765432123</td>
+                                                    <td>4-12-2025</td>
+                                                    <td><span class="badge bg-success">Diberi Resep</span></td>
+                                                </tr>
+                                                <tr class="align-middle">
+                                                    <td>5</td>
+                                                    <td>RM00005</td>
+                                                    <td>Riskiana</td>
+                                                    <td>17-08-1945</td>
+                                                    <td>Perempuan</td>
+                                                    <td>3374023344563331</td>
+                                                    <td>Ngesrep</td>
+                                                    <td>098765432123</td>
+                                                    <td>4-12-2025</td>
+                                                    <td><span class="badge bg-success">Diberi Resep</span></td>
+                                                </tr>
+                                                <!-- Add more rows as needed -->
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                                 <!-- /.card-body -->
                                 <div class="card-footer clearfix">
