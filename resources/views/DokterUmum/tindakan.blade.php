@@ -24,9 +24,9 @@
                 <div class="col-sm-6">
                     <div class="d-flex align-items-center">
                         <!-- Ikon User -->
-                        <span class="fas fa-stethoscope" style="font-size: 24px;"></span>
+                        <span class="fas fa-stethoscope" style="font-size: 29px;"></span>
                         <!-- Judul -->
-                        <h4 class="m-0">Tindakan & Pemeriksaan</h4>
+                        <h4 class="m-3">Tindakan & Pemeriksaan</h4>
                     </div>
                 </div>
                 <div class="col-sm-6">
@@ -91,7 +91,7 @@
                                                 <td>Ngesrep</td>
                                                 <td>098765432123</td>
                                                 <td>4-12-2025</td>
-                                                <td><a><span class="badge bg-danger">Perlu Tindakan</span></a></td>
+                                                <td><a href="dokter-umum-perlutindakan"><span class="badge bg-danger">Perlu Tindakan</span></a></td>
                                             </tr>
                                             <tr class="align-middle">
                                                 <td>2</td>
@@ -103,7 +103,8 @@
                                                 <td>Ngesrep</td>
                                                 <td>098765432123</td>
                                                 <td>4-12-2025</td>
-                                                <td><span class="badge bg-danger">Perlu Tindakan</span></td>
+                                                <td><a href="dokter-umum-perlutindakan"><span class="badge bg-danger">Perlu Tindakan</span></a></td>
+                                                
                                             </tr>
                                             <tr class="align-middle">
                                                 <td>3</td>
@@ -115,7 +116,8 @@
                                                 <td>Ngesrep</td>
                                                 <td>098765432123</td>
                                                 <td>4-12-2025</td>
-                                                <td><a href=""><span class="badge bg-success">Diberi Resep</span></a></td>
+                                                <td><span class="badge bg-success">Diberi Resep</span></td>
+                                                
                                             </tr>
                                             <tr class="align-middle">
                                                 <td>4</td>

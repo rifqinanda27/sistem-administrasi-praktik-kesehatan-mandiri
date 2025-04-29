@@ -83,7 +83,7 @@
     /* icon judul */
     .content-header {
         font-family: Arial, sans-serif;
-        padding: 15px;
+        padding: 10px;
         background-color: #f8f9fa;
     }
 
@@ -93,12 +93,159 @@
     }
 
     .content-header h4 {
-        font-size: 24px;
+        font-size: 30px;
         font-weight: bold;
         margin-bottom: 0;
     }
 
+    /* icon total pasien */
+    .info-box {
+        display: flex;
+        align-items: center;
+        background-color: #f8f9fa; /* light grey background */
+        border-radius: 10px;
+        padding: 10px;
+        margin-bottom: 10px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .custom-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 70px;
+        height: 70px;
+        color: white;
+        border-radius: 10px 0 0 10px;
+        font-size: 32px; /* ukuran ikon */
+    }
+    .bg-primary-dark {
+        background-color: #0d47a1; /* biru tua */
+    }
+    .bg-blue-light {
+        background-color: #03a9f4; /* biru muda */
+    }
+    .bg-pink {
+        background-color: #c2185b; /* pink/magenta */
+    }
+    .info-box-content {
+        margin-left: 10px;
+    }
+    .info-box-text {
+        font-weight: 700; /* bold */
+        font-size: 18px; /* lebih besar */
+        margin-bottom: 5px;
+        display: block;
+    }
+    .info-box-number {
+        font-weight: 800; /* lebih tebal */
+        font-size: 24px; /* lebih besar dari text */
+        display: block;
+    }
 
+
+
+
+    /* tampilan full perlu tindakan*/
+    /* Pastikan container diambil full width */
+    .content {
+        width: 100%;
+    }
+
+    /* Atur konten untuk menghindari terpotong oleh sidebar */
+    .container-fluid {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    /* Jika sidebar ada, buat konten bisa mengalir dengan benar */
+    .main-content {
+        margin-left: 0;
+        margin-right: 0;
+        width: 100%;
+    }
+
+    /* Atur konten agar sesuai dengan ukuran tampilan layar */
+    .row {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+
+
+
+    
+    /* Navigation Steps tindakan */
+ 
+   
+    
+    .stepper-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 150px;
+        position: relative;
+    }
+    .stepper-item {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 150px;
+    }
+    .stepper-item::before {
+        position: absolute;
+        content: '';
+        top: 24px;
+        left: -160%;
+        height: 4px;
+        width: 290px;
+        background-color: #d3d3d3; /* default abu-abu */
+        z-index: 1;
+    }
+    .stepper-item:first-child::before {
+        content: none;
+    }
+    .step-counter {
+        position: relative;
+        z-index: 2;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background-color: #d3d3d3;
+        color: black;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 18px;
+    }
+    .step-name {
+        margin-top: 8px;
+        font-weight: 600;
+        text-align: center;
+    }
+
+    /* Step completed */
+    .stepper-item.completed .step-counter {
+        background-color: #014A5B;
+        color: white;
+    }
+    .stepper-item.completed::before {
+        background-color: #014A5B; /* garis biru */
+    }
+
+    /* Step active */
+    .stepper-item.active .step-counter {
+        border: 4px solid #014A5B;
+        background-color: white;
+        color: black;
+    }
+    .stepper-item.active::before {
+        background-color: #014A5B; /* garis biru sampai step aktif */
+    }
+
+    
+    
     </style>
 
 </head>
@@ -180,7 +327,10 @@
             </div>
 
         </div>
-
+        @if(Route::currentRouteName() != 'dokter-umum-perlutindakan.index' 
+        && Route::currentRouteName() != 'dokter-umum-perlurujukan.index' 
+        && Route::currentRouteName() != 'dokter-umum-complete.index' 
+        && Route::currentRouteName() != 'dokter-umum-tidakrujukan.index')
         <aside class="main-sidebar main-sidebar-custom sidebar-dark-info elevation-4">
             <a href="{{ url('') }}" class="brand-link">
                 <img src="{{ asset('') }}dist/img/logo-polines.png" alt="Logo Polines"
@@ -188,11 +338,13 @@
                 <span
                     class="brand-text font-weight-light "><strong>{{ env('APP_NAME', 'PBL IK-TI Polines') }}</strong></span>
             </a>
+            
             <div class="sidebar">
                 <nav class="mt-2">
                     @include('layouts.sidebar')
                 </nav>
             </div>
+            
 
             {{-- <div class="sidebar-custom">
                 <form method="POST" action="{{ route('logout') }}">
@@ -204,17 +356,27 @@
                 </form>
             </div> --}}
         </aside>
-
+        @endif 
+        
+        @if(Route::currentRouteName() != 'dokter-umum-perlutindakan.index' 
+        && Route::currentRouteName() != 'dokter-umum-perlurujukan.index' 
+        && Route::currentRouteName() != 'dokter-umum-complete.index' 
+        && Route::currentRouteName() != 'dokter-umum-tidakrujukan.index')
         <div class="content-wrapper">
             @yield('content')
         </div>
-
-        <footer class="main-footer">
+        @else
+        <div class="">
+            @yield('content')
+        </div>
+        @endif
+        
+        <!-- <footer class="main-footer">
             <div class="float-right d-none d-sm-block">
                 <b>Version</b> 1.0.0
             </div>
             <strong>&copy; {{ date('Y') }} <i>Task Force</i> PBL IK-TRK Polines</strong>
-        </footer>
+        </footer> -->
     </div>
 
     <script src="{{ asset('') }}plugins/jquery/jquery.min.js"></script>

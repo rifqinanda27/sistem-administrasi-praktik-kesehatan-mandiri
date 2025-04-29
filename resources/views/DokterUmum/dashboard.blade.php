@@ -1,36 +1,81 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard')
-
 @section('content')
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h3><i class="bi bi-house-door"></i> Dashboard</h3>
-    </div>
-
-    <div class="mb-4">
-        <div class="card shadow-sm">
-            <div class="card-body d-flex align-items-center">
-                <i class="bi bi-person-check fs-1 text-primary me-3"></i>
-                <div>
-                    <h6 class="mb-0">Pasien Ditangani</h6>
-                    <h3 class="mb-0">10</h3>
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <div class="d-flex align-items-center">
+                        <!-- Ikon User -->
+                        <span class="fas fa-home mr-1" style="font-size: 29px;"></span>
+                        <!-- Judul -->
+                        <h4 class="m-3">Dashboard</h4>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <!-- Breadcrumb bisa ditambahkan di sini jika diperlukan -->
+                    </ol>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="card shadow-sm">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <strong>Statistik Pasien Per Bulan</strong>
-            <small>2024</small>
+    
+
+    <div class="row mb-4" style="margin-left: 10px;"> <!-- Menambahkan margin kiri pada row -->
+        <!-- Total Pasien -->
+        <div class="col-12 col-sm-6 col-md-2">
+            <div class="info-box">
+                <span class="info-box-icon custom-icon bg-primary-dark">
+                    <i class="fas fa-user"></i>
+                </span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Pasien Ditangani</span>
+                    <span class="info-box-number">20</span>
+                </div>
+            </div>
         </div>
-        <div class="card-body">
-            <canvas id="chartPasien"></canvas>
+
+
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-primary card-outline">
+
+                        <div class="card-body">
+
+                        <!-- tabel -->
+
+                            <div class="card shadow-sm">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <strong>Statistik Pasien Per Bulan</strong>
+                                    <small>2024</small>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="chartPasien"></canvas>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
+    
 @endsection
 
 @push('js')
+    <script>
+        $('.toast').toast('show')
+    </script>
+
+
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     const ctx = document.getElementById('chartPasien').getContext('2d');

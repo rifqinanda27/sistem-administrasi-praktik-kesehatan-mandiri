@@ -7,9 +7,9 @@
                 <div class="col-sm-6">
                     <div class="d-flex align-items-center">
                         <!-- Ikon User -->
-                        <span class="fas fa-user-injured mr-2" style="font-size: 24px;"></span>
+                        <span class="fas fa-user-injured mr-1" style="font-size: 29px;"></span>
                         <!-- Judul -->
-                        <h4 class="m-0">Daftar Pasien</h4>
+                        <h4 class="m-3">Daftar Pasien</h4>
                     </div>
                 </div>
                 <div class="col-sm-6">
@@ -22,60 +22,46 @@
     </div>
 
     
-    <div class="row mb-4">
-        <!-- total pasien -->
-            <div class="col-12 col-sm-6 col-md-2">
-                <div class="info-box">
-                  <span class="info-box-icon text-bg-primary shadow-sm">
-                    <i class="bi bi-gear-fill"></i>
-                  </span>
-                  <div class="info-box-content">
+
+    <div class="row mb-4" style="margin-left: 10px;"> <!-- Menambahkan margin kiri pada row -->
+        <!-- Total Pasien -->
+        <div class="col-12 col-sm-6 col-md-2">
+            <div class="info-box">
+                <span class="info-box-icon custom-icon bg-primary-dark">
+                    <i class="fas fa-user"></i>
+                </span>
+                <div class="info-box-content">
                     <span class="info-box-text">Total Pasien</span>
-                    <span class="info-box-number">
-                      10
-                      <small>%</small>
-                    </span>
-                  </div>
-                  <!-- /.info-box-content -->
+                    <span class="info-box-number">20</span>
                 </div>
-                <!-- /.info-box -->
-              </div>
+            </div>
+        </div>
 
-        <!-- Card Pasien Laki-Laki -->
-         <div class="col-12 col-sm-6 col-md-2">
-                <div class="info-box">
-                  <span class="info-box-icon text-bg-primary shadow-sm">
-                    <i class="bi bi-gear-fill"></i>
-                  </span>
-                  <div class="info-box-content">
-                    <span class="info-box-text">Pasien Laki-Laki</span>
-                    <span class="info-box-number">
-                      10
-                      <small>%</small>
-                    </span>
-                  </div>
-                  <!-- /.info-box-content -->
+        <!-- Pasien Laki-Laki -->
+        <div class="col-12 col-sm-6 col-md-2">
+            <div class="info-box">
+                <span class="info-box-icon custom-icon bg-blue-light">
+                    <i class="far fa-user"></i>
+                </span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Laki-Laki</span>
+                    <span class="info-box-number">11</span>
                 </div>
-                <!-- /.info-box -->
-              </div>
+            </div>
+        </div>
 
-        <!-- Card Pasien Perempuan -->
-            <div class="col-12 col-sm-6 col-md-2">
-                <div class="info-box">
-                  <span class="info-box-icon text-bg-primary shadow-sm">
-                    <i class="bi bi-gear-fill"></i>
-                  </span>
-                  <div class="info-box-content">
-                    <span class="info-box-text">Pasien Perempuan</span>
-                    <span class="info-box-number">
-                      10
-                      <small>%</small>
-                    </span>
-                  </div>
-                  <!-- /.info-box-content -->
+        <!-- Pasien Perempuan -->
+        <div class="col-12 col-sm-6 col-md-2">
+            <div class="info-box">
+                <span class="info-box-icon custom-icon bg-pink">
+                    <i class="far fa-user"></i>
+                </span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Perempuan</span>
+                    <span class="info-box-number">9</span>
                 </div>
-                <!-- /.info-box -->
-              </div>
+            </div>
+        </div>
     </div>
 
 
@@ -97,6 +83,8 @@
                         <div class="card-body">
 
                         <!-- tabel -->
+
+
                             <div class="card mb-4">
                                 <div class="card-header">
                                     <h3 class="card-title">Data Pasien</h3>
@@ -114,6 +102,8 @@
                                                 <th>Nomor KTP</th>
                                                 <th>Alamat</th>
                                                 <th>No. Telp</th>
+                                                <th>Status</th> <!-- Tambahkan kolom Status -->
+                                                <th>Aksi</th> <!-- Kolom Aksi dengan tombol -->
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -126,6 +116,11 @@
                                                 <td>3374023344563331</td>
                                                 <td>Ngesrep</td>
                                                 <td>098765432123</td>
+                                                <td>Pasien Aktif</td> <!-- Kolom Status -->
+                                                <td>
+                                                    <!-- Tombol Aksi -->
+                                                    <button class="btn btn-secondary" onclick="window.location.href='pasien-rekam-medis'">Lihat</button>
+                                                </td>
                                             </tr>
                                             <tr class="align-middle">
                                                 <td>2</td>
@@ -136,6 +131,10 @@
                                                 <td>3374023344563331</td>
                                                 <td>Ngesrep</td>
                                                 <td>098765432123</td>
+                                                <td>Pasien Aktif</td>
+                                                <td>
+                                                    <button class="btn btn-secondary" onclick="window.location.href='pasien-rekam-medis'">Lihat</button>
+                                                </td>
                                             </tr>
                                             <tr class="align-middle">
                                                 <td>3</td>
@@ -146,6 +145,10 @@
                                                 <td>3374023344563331</td>
                                                 <td>Ngesrep</td>
                                                 <td>098765432123</td>
+                                                <td>Pasien Aktif</td>
+                                                <td>
+                                                    <button class="btn btn-secondary" onclick="window.location.href='pasien-rekam-medis'">Lihat</button>
+                                                </td>
                                             </tr>
                                             <tr class="align-middle">
                                                 <td>4</td>
@@ -156,6 +159,10 @@
                                                 <td>3374023344563331</td>
                                                 <td>Ngesrep</td>
                                                 <td>098765432123</td>
+                                                <td>Pasien Aktif</td>
+                                                <td>
+                                                    <button class="btn btn-secondary" onclick="window.location.href='pasien-rekam-medis'">Lihat</button>
+                                                </td>
                                             </tr>
                                             <tr class="align-middle">
                                                 <td>5</td>
@@ -166,6 +173,10 @@
                                                 <td>3374023344563331</td>
                                                 <td>Ngesrep</td>
                                                 <td>098765432123</td>
+                                                <td>Pasien Aktif</td>
+                                                <td>
+                                                    <button class="btn btn-secondary" onclick="window.location.href='pasien-rekam-medis'">Lihat</button>
+                                                </td>
                                             </tr>
                                             <!-- Add more rows as needed -->
                                         </tbody>
@@ -182,6 +193,7 @@
                                     </ul>
                                 </div>
                             </div>
+
 
 
 
