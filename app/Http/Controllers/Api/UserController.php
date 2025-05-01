@@ -60,7 +60,22 @@ class UserController extends Controller
         return response()->json(['message' => 'User created successfully', 'user' => $user], 201);
     }
 
+    public function show($id)
+    {
+        $user = User::with('role')->find($id);
 
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not found'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $user
+        ]);
+    }
 
     // Edit user
     public function update(Request $request, $id)

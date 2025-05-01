@@ -6,7 +6,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6 text-uppercase">
-                    <h4 class="m-0">Tambah Pengguna</h4>
+                    <h4 class="m-0">Edit Pengguna</h4>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -23,13 +23,13 @@
                         <div class="card-header">
                             <h5 class="card-title m-0"></h5>
                             <div class="card-tools">
-                                <a href="{{ route('manage-user.index') }}" class="btn btn-tool">
+                                <a href="{{ route('users.index') }}" class="btn btn-tool">
                                     <i class="fas fa-arrow-alt-circle-left"></i>
                                 </a>
                             </div>
                         </div>
 
-                        <form action="{{ route('manage-user.update', $user_edit['id']) }}" method="post">
+                        <form action="{{ route('users.update', $user_edit['id']) }}" method="post">
                             @csrf
                             @method('PUT')
 
@@ -65,28 +65,20 @@
 
                                 <div class="form-group">
                                     <label>Role Pengguna</label>
-                                    @php
-                                        $user_roles = collect($user_edit['roles'])->pluck('name')->map(fn($r) => strtolower($r))->toArray();
-                                    @endphp
-
-                                    @foreach ($roles as $item)
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" name="role[]" class="custom-control-input"
-                                                id="{{ $item->name . $item->id }}" value="{{ strtolower($item->name) }}"
-                                                @checked(in_array(strtolower($item->name), $user_roles))>
-                                            <label class="custom-control-label"
-                                                for="{{ $item->name . $item->id }}">{{ strtoupper($item->name) }}</label>
+                                    <select name="role" class="form-control @error('role') is-invalid @enderror">
+                                        <option value="">-- Pilih Role --</option>
+                                        @foreach ($roles as $role)
+                                            <option value="{{ $role['id'] }}" 
+                                                {{ $user_edit['role']['id'] == $role['id'] ? 'selected' : '' }}>
+                                                {{ ucfirst($role['name']) }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @error('role')
+                                        <div class="invalid-feedback" role="alert">
+                                            <span>{{ $message }}</span>
                                         </div>
-                                    @endforeach
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Verified</label>
-                                    <div class="input-group">
-                                        <input type="checkbox" {{ !blank($user_edit['email_verified_at']) ? 'checked' : '' }}
-                                            name="verified" data-bootstrap-switch data-off-color="danger"
-                                            data-on-color="success">
-                                    </div>
+                                    @enderror
                                 </div>
 
                             </div>

@@ -10,14 +10,17 @@ class PatientController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:resepsionis');
+        $this->middleware('role:resepsionis,dokterumum');
     }
 
     // Menampilkan semua pasien
     public function index()
     {
         $pasien = Patients::all();
-        return response()->json($pasien);
+        return response()->json([
+            'success' => true,
+            'data' => $pasien,
+        ]);
     }
 
     // Menambahkan pasien baru
@@ -42,7 +45,10 @@ class PatientController extends Controller
     public function show($id)
     {
         $pasien = Patients::findOrFail($id);
-        return response()->json($pasien);
+        return response()->json([
+            'success' => true,
+            'data' => $pasien
+        ]);
     }
 
     // Mengupdate data pasien

@@ -23,11 +23,11 @@
                         <div class="card-header">
                             <h5 class="card-title m-0"></h5>
                             <div class="card-tools">
-                                <a href="{{ route('manage-user.index') }}" class="btn btn-tool"><i
+                                <a href="{{ route('users.index') }}" class="btn btn-tool"><i
                                         class="fas fa-arrow-alt-circle-left"></i></a>
                             </div>
                         </div>
-                        <form action="{{ route('manage-user.store') }}" method="post">
+                        <form action="{{ route('users.store') }}" method="post">
                             @csrf
                             <div class="card-body">
                                 <div class="form-group">
@@ -57,22 +57,19 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Role Pengguna</label>
-                                    @foreach ($roles as $item)
-                                        <div class="custom-control custom-radio">
-                                            <input type="radio" name="role" class="custom-control-input"
-                                                id="{{ $item->name . $item->id }}" value="{{ strtolower($item->name) }}">
-                                            <label class="custom-control-label" for="{{ $item->name . $item->id }}">{{ strtoupper($item->name) }}</label>
+                                    <select name="role" class="form-control @error('role') is-invalid @enderror">
+                                        <option value="">-- Pilih Role --</option>
+                                        @foreach ($roles as $role)
+                                            <option value="{{ $role['id'] }}">{{ ucwords($role['name']) }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('role')
+                                        <div class="invalid-feedback" role="alert">
+                                            <span>{{ $message }}</span>
                                         </div>
-                                    @endforeach
+                                    @enderror
                                 </div>
 
-                                <div class="form-group">
-                                    <label>Verified</label>
-                                    <div class="input-group">
-                                        <input type="checkbox" name="verified" data-bootstrap-switch data-off-color="danger"
-                                            data-on-color="success">
-                                    </div>
-                                </div>
                             </div>
                             <div class="card-footer">
                                 <button type="submit" class="btn btn-info btn-block btn-primary"><i class="fa fa-save"></i>

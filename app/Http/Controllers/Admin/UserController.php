@@ -19,14 +19,6 @@ class UserController extends Controller
     {
         $token = session('api_token');
 
-        $response = Http::withToken($token)->get('http://pbl-healthcare.test/api/user');
-    
-        if (!$response->successful()) {
-            return redirect()->route('login')->withErrors(['msg' => 'Session expired']);
-        }
-    
-        $user = $response->json();
-
         $response = Http::withToken($token)->get("$this->apiBaseUrl/users");
 
         if (!$response->successful()) {
@@ -35,12 +27,21 @@ class UserController extends Controller
 
         $users = $response->json('data');
 
-        return view('admin.users.index', compact('users', 'user'));
+        return view('admin.users.index', compact('users'));
     }
 
     public function create()
     {
-        $roles = Role::all(); // Asumsi roles tetap lokal, karena di API gak disediakan?
+        $token = session('api_token');
+
+         // Ambil data roles dari API
+        $response = Http::withToken($token)->get("$this->apiBaseUrl/roles");
+        if (!$response->successful()) {
+            return back()->withErrors(['message' => 'Gagal mengambil data roles']);
+        }
+
+        $roles = $response->json('data');
+
         return view('admin.users.create', compact('roles'));
     }
 
@@ -52,8 +53,7 @@ class UserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => $request->password,
-            'role' => $request->role,
-            'verified' => $request->has('verified') ? '1' : '0',
+            'role_id' => $request->role,
         ]);
         
         // Tambahkan pengecekan statusnya
@@ -61,30 +61,31 @@ class UserController extends Controller
             toastr()->error('Gagal membuat user: ' . $response->json('message'));
             return back()->withErrors(['message' => $response->json('message') ?? 'Gagal membuat user']);
         }
-        
-        // Kalau sukses
-        toastr()->success('User berhasil dibuat');
-        return redirect()->route('manage-user.index');
-        
+        return redirect()->route('users.index');
     }
 
 
     public function edit($id)
     {
         $token = session('api_token');
-
+        
         $response = Http::withToken($token)->get("$this->apiBaseUrl/users/{$id}");
-
+        
         if (!$response->successful()) {
             return back()->withErrors(['message' => 'Gagal mengambil data user']);
         }
-
+        
+        // dd($response);
         $user_edit = $response->json('data');
-        $user_edit['roles_names'] = collect($user_edit['roles'])->pluck('name')->map(fn($name) => strtolower($name))->toArray();
 
-        $roles = Role::all();
+        // Ambil data role
+        $responseRoles = Http::withToken($token)->get("$this->apiBaseUrl/roles");
+        if (!$responseRoles->successful()) {
+            return back()->withErrors(['message' => 'Gagal mengambil data roles']);
+        }
+        $roles = $responseRoles->json('data');
 
-        return view('users.edit', compact('user_edit', 'roles'));
+        return view('admin.users.edit', compact('user_edit', 'roles'));
     }
 
     public function update(Request $request, $id)
@@ -95,16 +96,15 @@ class UserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => $request->password,
-            'role' => $request->role,
-            'verified' => $request->verified,
+            'role_id' => $request->role,
         ]);
 
         if (!$response->successful()) {
             return back()->withErrors(['message' => 'Gagal memperbarui user']);
         }
 
-        toastr()->success('User berhasil diperbarui');
-        return redirect()->route('manage-user.index');
+        // toastr()->success('User berhasil diperbarui');
+        return redirect()->route('users.index');
     }
 
     public function destroy($id)
@@ -117,7 +117,6 @@ class UserController extends Controller
             return back()->withErrors(['message' => 'Gagal menghapus user']);
         }
 
-        toastr()->success('User berhasil dihapus');
-        return redirect()->route('manage-user.index');
+        return redirect()->route('users.index');
     }
 }

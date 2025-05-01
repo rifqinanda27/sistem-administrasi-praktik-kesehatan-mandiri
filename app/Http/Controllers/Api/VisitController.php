@@ -10,14 +10,17 @@ class VisitController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:resepsionis');
+        $this->middleware('role:resepsionis,dokterumum');
     }
 
     // Menampilkan semua kunjungan
     public function index()
     {
         $kunjungan = Visit::with(['pasien', 'dokter'])->get();
-        return response()->json($kunjungan);
+        return response()->json([
+            'success' => true,
+            'data' => $kunjungan
+        ]);
     }
 
     // Menambahkan kunjungan baru
@@ -41,7 +44,10 @@ class VisitController extends Controller
     public function show($id)
     {
         $kunjungan = Visit::with(['pasien', 'dokter'])->findOrFail($id);
-        return response()->json($kunjungan);
+        return response()->json([
+            'sucsess' => true,
+            'data' => $kunjungan
+        ]);
     }
 
     // Mengupdate kunjungan

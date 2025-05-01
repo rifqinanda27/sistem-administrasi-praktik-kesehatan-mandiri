@@ -16,7 +16,27 @@ class TindakanController extends Controller
     public function index()
     {
         $tindakan = Tindakan::all();
-        return response()->json($tindakan);
+        return response()->json([
+            'success' => true,
+            'data' => $tindakan
+        ]);
+    }
+
+    public function show($id)
+    {
+        $tindakan = Tindakan::find($id);
+
+        if (!$tindakan) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Tindakan tidak ditemukan.'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $tindakan
+        ]);
     }
 
     public function store(Request $request)

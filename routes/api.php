@@ -40,14 +40,15 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('/roles', RoleController::class);
     });
 
-    Route::middleware('role:resepsionis')->group(function () {
+    Route::middleware('role:resepsionis,dokterumum')->group(function () {
         Route::apiResource('/pasien', PatientController::class);
-    });
-
-    Route::middleware('role:resepsionis')->group(function () {
         Route::apiResource('/kunjungan', VisitController::class);
     });
 
+    Route::middleware('role:dokterumum,apoteker')->group(function () {
+        Route::apiResource('obat', ObatController::class);
+        Route::apiResource('resep', ResepController::class);
+    });
     
     Route::middleware('role:dokterumum')->group(function () {
         Route::apiResource('/catatan-medis', CatatanMedisController::class);

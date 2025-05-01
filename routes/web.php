@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\DokterUmum\PasienController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -17,24 +19,14 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 // === Protected by token session ===
 Route::middleware('check.api.token')->group(function () {
 
-    Route::get('/home', function () {
-        $token = session('api_token');
-    
-        $response = Http::withToken($token)->get('http://pbl-healthcare.test/api/user');
-    
-        if (!$response->successful()) {
-            return redirect()->route('login')->withErrors(['msg' => 'Session expired']);
-        }
-    
-        $user = $response->json();
-    
-        // Hilangkan pemanggilan helper yang tidak ada
-        // $menus = \App\Helpers\MenuHelper::Menu($user);
-    
-        return view('home', compact('user'));
+    Route::get('/home', function () { 
+        return view('home');
     })->name('home');
 
     
     Route::resource('users', UserController::class);
+    Route::resource('roles', RoleController::class);
+    Route::resource('pasien', PasienController::class);
+    Route::get('rekam-medis/{id}', [PasienController::class, 'rekam_medis']);
       
 });

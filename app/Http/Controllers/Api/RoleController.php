@@ -20,8 +20,31 @@ class RoleController extends Controller
     public function index()
     {
         $roles = Role::all();
-        return response()->json($roles);
+        return response()->json([
+            'data' => $roles, // role name
+        ]);
     }
+
+    // Mengupdate role
+    public function update(Request $request, $id)
+    {
+        $role = Role::findOrFail($id);
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255|unique:roles,name,' . $role->id,
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+
+        $role->update([
+            'name' => $request->name,
+        ]);
+
+        return response()->json(['message' => 'Role updated successfully', 'role' => $role]);
+    }
+
 
     // Menambah role baru
     public function store(Request $request)
@@ -40,6 +63,22 @@ class RoleController extends Controller
 
         return response()->json(['message' => 'Role created successfully', 'role' => $role], 201);
     }
+
+    // Menampilkan satu role berdasarkan ID
+    public function show($id)
+    {
+        $role = Role::find($id);
+
+        if (!$role) {
+            return response()->json(['message' => 'Role not found'], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $role
+        ]);
+    }
+
 
     // Menghapus role
     public function destroy($id)

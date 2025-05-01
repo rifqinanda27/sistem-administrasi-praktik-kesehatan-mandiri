@@ -1,0 +1,101 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Request;
+
+class RoleController extends Controller
+{
+    protected $apiBaseUrl;
+
+    public function __construct()
+    {
+        $this->apiBaseUrl = config('services.api.base_url');
+    }
+
+    public function index()
+    {
+        $token = session('api_token');
+
+        $response = Http::withToken($token)->get("$this->apiBaseUrl/roles");
+
+        if (!$response->successful()) {
+            return back()->withErrors(['message' => 'Gagal mengambil data users']);
+        }
+
+        $roles = $response->json('data');
+
+        return view('admin.roles.index', compact('roles'));
+    }
+
+    public function create()
+    {
+        $token = session('api_token');
+
+        return view('admin.roles.create');
+    }
+
+    public function store(Request $request)
+    {
+        $token = session('api_token');
+
+        $response = Http::withToken($token)->post("$this->apiBaseUrl/roles", [
+            'name' => $request->name,
+        ]);
+        
+        // Tambahkan pengecekan statusnya
+        if ($response->failed()) {
+            toastr()->error('Gagal membuat role: ' . $response->json('message'));
+            return back()->withErrors(['message' => $response->json('message') ?? 'Gagal membuat role']);
+        }
+        return redirect()->route('roles.index');
+    }
+
+    public function edit($id)
+    {
+        $token = session('api_token');
+        
+        $response = Http::withToken($token)->get("$this->apiBaseUrl/roles/{$id}");
+        
+        if (!$response->successful()) {
+            return back()->withErrors(['message' => 'Gagal mengambil data user']);
+        }
+
+        $role_edit = $response->json('data');
+        // dd($role_edit);
+
+
+        return view('admin.roles.edit', compact('role_edit'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $token = session('api_token');
+
+        $response = Http::withToken($token)->put("$this->apiBaseUrl/roles/{$id}", [
+            'name' => $request->name,
+        ]);
+
+        if (!$response->successful()) {
+            return back()->withErrors(['message' => 'Gagal memperbarui role']);
+        }
+
+        // toastr()->success('User berhasil diperbarui');
+        return redirect()->route('roles.index');
+    }
+
+    public function destroy($id)
+    {
+        $token = session('api_token');
+
+        $response = Http::withToken($token)->delete("$this->apiBaseUrl/roles/{$id}");
+
+        if (!$response->successful()) {
+            return back()->withErrors(['message' => 'Gagal menghapus role']);
+        }
+
+        return redirect()->route('roles.index');
+    }
+}

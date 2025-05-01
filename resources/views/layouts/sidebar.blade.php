@@ -5,11 +5,11 @@
     <!-- Menu tanpa submenu -->
     <li class="nav-item">
         <a href="{{ url('home') }}" class="nav-link {{ Request::segment(1) == 'home' ? 'active' : '' }}">
-            <i class="nav-icon fas fa-tachometer-alt"></i>
+            <i class="nav-icon fas fa-home"></i>
             <p>Dashboard</p>
         </a>
     </li>
-
+    @if(isset($user['role']['name']) && $user['role']['name'] === 'admin')
     <!-- Menu dengan submenu -->
     <li class="nav-item {{ in_array(Request::segment(1), ['users', 'roles']) ? 'menu-open' : '' }}">
         <a href="#" class="nav-link {{ in_array(Request::segment(1), ['users', 'roles']) ? 'active' : '' }}">
@@ -34,12 +34,19 @@
             </li>
         </ul>
     </li>
-
-    <!-- Menu tanpa submenu lainnya -->
+    @elseif(isset($user['role']['name']) && $user['role']['name'] === 'dokterumum')
+    <!-- Menu dengan submenu -->
     <li class="nav-item">
-        <a href="{{ url('settings') }}" class="nav-link {{ Request::segment(1) == 'settings' ? 'active' : '' }}">
-            <i class="nav-icon fas fa-cogs"></i>
-            <p>Settings</p>
+        <a href="{{ url('pasien') }}" class="nav-link {{ Request::segment(1) == 'pasien' ? 'active' : '' }}">
+            <i class="nav-icon fas fa-users"></i>
+            <p>Pasien</p>
         </a>
     </li>
+    <li class="nav-item">
+        <a href="{{ url('tindakan') }}" class="nav-link {{ Request::segment(1) == 'tindakan' ? 'active' : '' }}">
+            <i class="nav-icon fas fa-stethoscope"></i>
+            <p>Tindakan & Pemeriksaan</p>
+        </a>
+    </li>
+    @endif
 </ul>

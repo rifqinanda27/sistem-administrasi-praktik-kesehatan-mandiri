@@ -10,13 +10,33 @@ class ObatController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:apoteker');
+        $this->middleware('role:apoteker,dokterumum');
     }
 
     public function index()
     {
         $obat = Obat::all();
-        return response()->json($obat);
+        return response()->json([
+            'success' => true,
+            'data' => $obat
+        ]);
+    }
+
+    public function show($id)
+    {
+        $obat = Obat::find($id);
+
+        if (!$obat) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Obat tidak ditemukan.'
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $obat
+        ]);
     }
 
     public function store(Request $request)
