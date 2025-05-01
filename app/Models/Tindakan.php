@@ -17,4 +17,9 @@ class Tindakan extends Model
         'tindakan_lanjut',
         'status',
     ];
+
+    public function visit()
+    {
+        return $this->belongsTo(Visit::class, 'id_kunjungan');
+    }
 }

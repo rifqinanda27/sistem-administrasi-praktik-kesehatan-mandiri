@@ -1,62 +1,38 @@
 @extends('layouts.app')
 
 @section('content')
+    <!-- <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <div class="row">
+                        <span class = "fas fa-home"></span>
+                        <h4 class="m-0">Tindakan & Pemeriksaan</h4>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
                     <div class="d-flex align-items-center">
                         <!-- Ikon User -->
-                        <span class="fas fa-user-injured mr-1" style="font-size: 29px;"></span>
+                        <span class="fas fa-stethoscope" style="font-size: 29px;"></span>
                         <!-- Judul -->
-                        <h4 class="m-3">Daftar Pasien</h4>
+                        <h4 class="m-3">Tindakan & Pemeriksaan</h4>
                     </div>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <!-- Breadcrumb bisa ditambahkan di sini jika diperlukan -->
                     </ol>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row mb-4" style="margin-left: 10px;"> <!-- Menambahkan margin kiri pada row -->
-        <!-- Total Pasien -->
-        <div class="col-12 col-sm-6 col-md-2">
-            <div class="info-box">
-                <span class="info-box-icon custom-icon bg-primary-dark">
-                    <i class="fas fa-user"></i>
-                </span>
-                <div class="info-box-content">
-                    <span class="info-box-text">Total Pasien</span>
-                    <span class="info-box-number">{{ count($pasien) }}</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Pasien Laki-Laki -->
-        <div class="col-12 col-sm-6 col-md-2">
-            <div class="info-box">
-                <span class="info-box-icon custom-icon bg-blue-light">
-                    <i class="far fa-user"></i>
-                </span>
-                <div class="info-box-content">
-                    <span class="info-box-text">Laki-Laki</span>
-                    <span class="info-box-number">11</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Pasien Perempuan -->
-        <div class="col-12 col-sm-6 col-md-2">
-            <div class="info-box">
-                <span class="info-box-icon custom-icon bg-pink">
-                    <i class="far fa-user"></i>
-                </span>
-                <div class="info-box-content">
-                    <span class="info-box-text">Perempuan</span>
-                    <span class="info-box-number">9</span>
                 </div>
             </div>
         </div>
@@ -77,11 +53,11 @@
                                     <i class="fas fa-search"></i>
                                 </button>
                             </div>
+
                         </div>
                         <div class="card-body">
 
                         <!-- tabel -->
-
 
                             <div class="card mb-4">
                                 <div class="card-header">
@@ -91,7 +67,7 @@
                                 <div class="card-body">
                                     <table class="table table-bordered">
                                         <thead>
-                                            <th style="width: 10px">#</th>
+                                            <th>#</th>
                                             <th>Nomor Rekam Medis</th>
                                             <th>Nama</th>
                                             <th>Tanggal Lahir</th>
@@ -99,27 +75,26 @@
                                             <th>Nomor KTP</th>
                                             <th>Alamat</th>
                                             <th>No. Telp</th>
-                                            <th>Status</th> <!-- Tambahkan kolom Status -->
-                                            <th>Aksi</th> <!-- Kolom Aksi dengan tombol -->
+                                            <th>Tanggal Tindakan</th>
+                                            <th>Status</th>
                                         </thead>
+                                        @foreach($pasien as $ps)
                                         <tbody>
-                                            @foreach ($pasien as $index => $pasien)
-                                                <tr class="align-middle">
-                                                    <td>{{ $index + 1 }}</td>
-                                                    <td>{{ $pasien['no_rekam_medis'] }}</td>
-                                                    <td>{{ $pasien['nama_lengkap'] }}</td>
-                                                    <td>{{ \Carbon\Carbon::parse($pasien['tanggal_lahir'])->format('d-m-Y') }}</td>
-                                                    <td>{{ ucfirst($pasien['jenis_kelamin']) }}</td>
-                                                    <td>{{ $pasien['no_ktp'] }}</td>
-                                                    <td>{{ $pasien['alamat'] }}</td>
-                                                    <td>{{ $pasien['telepon'] }}</td>
-                                                    <td>{{ $pasien['status_aktif'] ? 'Pasien Aktif' : 'Tidak Aktif' }}</td>
-                                                    <td>
-                                                        <button class="btn btn-secondary" onclick="window.location.href='rekam-medis/{{ $pasien['id_pasien'] }}'">Lihat</button>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
+                                            <tr class="align-middle">
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $ps['visit']['pasien']['no_rekam_medis'] ?? '-'}}</td>
+                                                <td>{{ $ps['visit']['pasien']['nama_lengkap'] ?? '-' }}</td>
+                                                <td>{{ $ps['visit']['pasien']['tanggal_lahir'] ?? '-' }}</td>
+                                                <td>{{ $ps['visit']['pasien']['jenis_kelamin'] ?? '-' }}</td>
+                                                <td>{{ $ps['visit']['pasien']['no_ktp'] ?? '-' }}</td>
+                                                <td>{{ $ps['visit']['pasien']['alamat'] ?? '-' }}</td>
+                                                <td>{{ $ps['visit']['pasien']['telepon'] }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($ps['created_at'])->format('Y-m-d') }}</td>
+                                                <td><a href="dokter-umum-perlutindakan"><span class="badge bg-danger">Perlu Tindakan</span></a></td>
+                                            </tr>
+                                            <!-- Add more rows as needed -->
                                         </tbody>
+                                        @endforeach
                                     </table>
                                 </div>
                                 <!-- /.card-body -->
@@ -133,7 +108,6 @@
                                     </ul>
                                 </div>
                             </div>
-
 
 
 

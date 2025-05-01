@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\DokterUmum\PasienController;
+use App\Http\Controllers\DokterUmum\TindakanController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -27,6 +28,7 @@ Route::middleware('check.api.token')->group(function () {
     Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('pasien', PasienController::class);
+    Route::resource('tindakan', TindakanController::class);
     Route::get('rekam-medis/{id}', [PasienController::class, 'rekam_medis']);
       
 });

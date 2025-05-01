@@ -15,7 +15,8 @@ class TindakanController extends Controller
 
     public function index()
     {
-        $tindakan = Tindakan::all();
+        $tindakan = Tindakan::with('visit.pasien')->get(); // load relasi visit
+
         return response()->json([
             'success' => true,
             'data' => $tindakan
@@ -24,7 +25,7 @@ class TindakanController extends Controller
 
     public function show($id)
     {
-        $tindakan = Tindakan::find($id);
+        $tindakan = Tindakan::with('visit.pasien')->find($id);
 
         if (!$tindakan) {
             return response()->json([

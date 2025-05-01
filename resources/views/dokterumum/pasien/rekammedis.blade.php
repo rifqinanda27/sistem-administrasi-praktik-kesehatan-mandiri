@@ -150,34 +150,18 @@
                                                 <th class="py-3">Nama Obat</th>
                                                 <th class="py-3">Dosis</th>
                                                 <th class="py-3">Frekuensi</th>
-                                                <th class="py-3">Lama Pemberian</th>
                                             </tr>
                                         </thead>
+                                        @foreach($pasien['resep'] as $resep)
                                         <tbody>
                                             <tr>
-                                                <td class="py-3">04 Desember 2025</td>
-                                                <td class="py-3">
-                                                    Paracetamol 500g<br>
-                                                    Vitamin C
-                                                </td>
-                                                <td class="py-3">
-                                                    1 Kapsul<br>
-                                                    1 Kapsul
-                                                </td>
-                                                <td class="py-3">
-                                                    3x Sehari<br>
-                                                    1x Sehari
-                                                </td>
-                                                <td class="py-3">5 Hari</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="py-3">31 Oktober 2024</td>
-                                                <td class="py-3">Amoxicilin 500g</td>
-                                                <td class="py-3">1 Kapsul</td>
-                                                <td class="py-3">3x Sehari</td>
-                                                <td class="py-3">5 Hari</td>
+                                                <td class="py-3">{{ \Carbon\Carbon::parse($resep['created_at'])->format('Y-m-d') }}</td>
+                                                <td class="py-3">{{ $resep['obat']['nama_obat'] ?? '-'}}</td>
+                                                <td class="py-3">{{ $resep['obat']['dosis'] ?? '-'}}</td>
+                                                <td class="py-3">{{ $resep['frekuensi'] ?? '-'}}</td>
                                             </tr>
                                         </tbody>
+                                        @endforeach
                                     </table>
                                 </div>
                             </div>

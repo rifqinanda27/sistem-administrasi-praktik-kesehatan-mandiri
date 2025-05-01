@@ -32,4 +32,9 @@ class Visit extends Model
     {
         return $this->belongsTo(User::class, 'id');
     }
+
+    public function tindakan()
+    {
+        return $this->hasMany(Tindakan::class, 'id_kunjungan');
+    }
 }
