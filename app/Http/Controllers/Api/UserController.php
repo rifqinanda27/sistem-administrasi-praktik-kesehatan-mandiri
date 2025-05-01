@@ -21,7 +21,10 @@ class UserController extends Controller
     public function index()
     {
         $users = User::with('role')->get(); // Menampilkan user dengan role
-        return response()->json($users);
+        return response()->json([
+            'success' => true,
+            'data' => $users
+        ]);
     }
 
     // Menambah user baru

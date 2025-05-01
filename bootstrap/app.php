@@ -14,6 +14,8 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
             'role' => App\Http\Middleware\RoleMiddleware::class,
+            'check.api.token' => App\Http\Middleware\CheckApiToken::class,
+            'setUser' => \App\Http\Middleware\SetUser::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
