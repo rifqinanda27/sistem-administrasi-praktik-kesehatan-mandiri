@@ -43,7 +43,7 @@
                 </span>
                 <div class="info-box-content">
                     <span class="info-box-text">Laki-Laki</span>
-                    <span class="info-box-number">11</span>
+                    <span class="info-box-number">{{ collect($pasien)->where('jenis_kelamin', 'laki-laki')->count() }}</span>
                 </div>
             </div>
         </div>
@@ -56,7 +56,7 @@
                 </span>
                 <div class="info-box-content">
                     <span class="info-box-text">Perempuan</span>
-                    <span class="info-box-number">9</span>
+                    <span class="info-box-number">{{ collect($pasien)->where('jenis_kelamin', 'perempuan')->count() }}</span>
                 </div>
             </div>
         </div>
