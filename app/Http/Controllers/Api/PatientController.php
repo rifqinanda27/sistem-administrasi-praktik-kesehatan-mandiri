@@ -16,7 +16,14 @@ class PatientController extends Controller
     // Menampilkan semua pasien
     public function index()
     {
-        $pasien = Patients::all();
+        // Ambil semua pasien beserta kunjungan dan resep terkait
+        $pasien = Patients::with([
+            'kunjungan',  // Relasi ke kunjungan
+            'resep' => function ($query) {  // Relasi ke resep melalui kunjungan
+                $query->with('obat');  // Dapatkan obat yang terkait dengan resep
+            }
+        ])->get();  // Mengambil semua pasien
+
         return response()->json([
             'success' => true,
             'data' => $pasien,
@@ -44,12 +51,24 @@ class PatientController extends Controller
     // Menampilkan pasien berdasarkan ID
     public function show($id)
     {
-        $pasien = Patients::findOrFail($id);
+        $pasien = Patients::with([
+            'kunjungan' => function ($query) use ($id) {
+                $query->where('id_pasien', $id);
+            },
+            'resep' => function ($query) use ($id) {
+                $query->whereHas('kunjungan', function ($query) use ($id) {
+                    $query->where('id_pasien', $id);
+                });
+            },
+            'resep.obat' // Obat terkait dengan resep
+        ])->findOrFail($id);
+
         return response()->json([
             'success' => true,
             'data' => $pasien
         ]);
     }
+
 
     // Mengupdate data pasien
     public function update(Request $request, $id)

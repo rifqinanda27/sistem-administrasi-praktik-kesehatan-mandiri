@@ -48,6 +48,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('role:dokterumum,apoteker')->group(function () {
         Route::apiResource('obat', ObatController::class);
         Route::apiResource('resep', ResepController::class);
+        Route::get('dokter', [UserController::class, 'index']);
     });
     
     Route::middleware('role:dokterumum')->group(function () {

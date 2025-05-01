@@ -66,7 +66,11 @@
                                         </div>
                                         <div class="d-flex mb-2">
                                             <div style="width: 180px;">Tanggal Pemeriksaan</div>
-                                            <div>= {{ $kunjungan['tanggal_kunjungan'] }}</div>
+                                            @if (!empty($pasien['kunjungan']) && isset($pasien['kunjungan'][0]['tanggal_kunjungan']))
+                                                <div>= {{ \Carbon\Carbon::parse($pasien['kunjungan'][0]['tanggal_kunjungan'])->format('Y-m-d') }}</div>
+                                            @else
+                                                <div>= Belum Pemeriksaan</div>
+                                            @endif
                                         </div>
                                         <div class="d-flex mb-2">
                                             <div style="width: 180px;">Alamat</div>
@@ -113,45 +117,25 @@
                                         <thead class="bg-light">
                                             <tr>
                                                 <th class="py-3">Tanggal Kunjungan</th>
-                                                <th class="py-3">Jenis Kunjungan</th>
+                                                <th class="py-3">Tipe Kunjungan</th>
                                                 <th class="py-3">Cara Bayar</th>
-                                                <th class="py-3">Bidan</th>
                                                 <th class="py-3">Dokter</th>
                                                 <th class="py-3">Aksi</th>
                                             </tr>
                                         </thead>
+                                        @foreach($pasien['kunjungan'] as $kunjungan)
                                         <tbody>
                                             <tr>
-                                                <td class="py-3">04 Desember 2025</td>
-                                                <td class="py-3">Kunjungan Sakit</td>
+                                                <td class="py-3">{{ \Carbon\Carbon::parse($kunjungan['tanggal_kunjungan'])->format('Y-m-d') ?? '-' }}</td>
+                                                <td class="py-3">{{ $kunjungan['tipe_kunjungan'] ?? '-' }}</td>
                                                 <td class="py-3">BPJS</td>
-                                                <td class="py-3">Ilham Indra</td>
-                                                <td class="py-3">Januar Rifqi</td>
-                                                <td class="py-3 text-center">
-                                                    <button class="btn btn-sm btn-outline-secondary px-4">Lihat</button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="py-3">31 Oktober 2024</td>
-                                                <td class="py-3">Kontrol</td>
-                                                <td class="py-3">Umum</td>
-                                                <td class="py-3">Ilham Indra</td>
-                                                <td class="py-3">Januar Rifqi</td>
-                                                <td class="py-3 text-center">
-                                                    <button class="btn btn-sm btn-outline-secondary px-4">Lihat</button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="py-3">24 Oktober 2024</td>
-                                                <td class="py-3">Kunjungan Sakit</td>
-                                                <td class="py-3">Umum</td>
-                                                <td class="py-3">Ilham Indra</td>
-                                                <td class="py-3">Januar Rifqi</td>
+                                                <td class="py-3">{{ $kunjungan['id_dokter'] ?? '-' }}</td>
                                                 <td class="py-3 text-center">
                                                     <button class="btn btn-sm btn-outline-secondary px-4">Lihat</button>
                                                 </td>
                                             </tr>
                                         </tbody>
+                                        @endforeach
                                     </table>
                                 </div>
                             </div>

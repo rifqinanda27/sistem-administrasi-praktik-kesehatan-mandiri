@@ -16,9 +16,16 @@ class Visit extends Model
         'status_kunjungan', 'catatan'
     ];
 
+    // Relasi ke pasien
     public function pasien()
     {
         return $this->belongsTo(Patients::class, 'id_pasien');
+    }
+
+    // Relasi ke resep
+    public function resep()
+    {
+        return $this->hasMany(Resep::class, 'id_kunjungan');
     }
 
     public function dokter()

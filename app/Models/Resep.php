@@ -22,14 +22,16 @@ class Resep extends Model
         'status',
     ];
 
-    public function obat()
-    {
-        return $this->belongsTo(Obat::class, 'id_obat', 'id_obat');
-    }
-
+    // Relasi ke kunjungan
     public function kunjungan()
     {
-        return $this->belongsTo(Visit::class, 'id_kunjungan', 'id_kunjungan');
+        return $this->belongsTo(Visit::class, 'id_kunjungan');
+    }
+
+    // Relasi ke obat
+    public function obat()
+    {
+        return $this->belongsTo(Obat::class, 'id_obat');
     }
 
     public function dokter()
