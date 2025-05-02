@@ -29,6 +29,8 @@ Route::middleware('check.api.token')->group(function () {
     Route::resource('roles', RoleController::class);
     Route::resource('pasien', PasienController::class);
     Route::resource('tindakan', TindakanController::class);
+    Route::get('perlu-tindakan/{id}', [TindakanController::class, 'perlu_tindakan']);
+    Route::post('perlu-tindakan', [TindakanController::class, 'tambah_catatan_medis'])->name('perlu-tindakan-store');
     Route::get('rekam-medis/{id}', [PasienController::class, 'rekam_medis']);
       
 });

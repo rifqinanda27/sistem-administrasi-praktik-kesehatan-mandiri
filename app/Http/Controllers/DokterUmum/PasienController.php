@@ -35,17 +35,13 @@ class PasienController extends Controller
         $token = session('api_token');
 
         $response = Http::withToken($token)->get("$this->apiBaseUrl/pasien/{$id}");
-        $kunjungan = Http::withToken($token)->get("$this->apiBaseUrl/kunjungan/{$id}");
-        $obat = Http::withToken($token)->get("$this->apiBaseUrl/obat/{$id}");
 
         if (!$response->successful()) {
             return back()->withErrors(['message' => 'Gagal mengambil data users']);
         }
 
         $pasien = $response->json('data');
-        $kunjungan = $response->json('data');
-        $obat = $response->json('data');
 
-        return view('dokterumum.pasien.rekammedis', compact('pasien', 'kunjungan', 'obat'));
+        return view('dokterumum.pasien.rekammedis', compact('pasien'));
     }
 }

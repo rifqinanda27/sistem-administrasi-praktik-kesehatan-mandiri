@@ -90,7 +90,7 @@
                                                 <td>{{ $ps['visit']['pasien']['alamat'] ?? '-' }}</td>
                                                 <td>{{ $ps['visit']['pasien']['telepon'] }}</td>
                                                 <td>{{ \Carbon\Carbon::parse($ps['created_at'])->format('Y-m-d') }}</td>
-                                                <td><a href="dokter-umum-perlutindakan"><span class="badge bg-danger">Perlu Tindakan</span></a></td>
+                                                <td><a href="perlu-tindakan/{{ $ps['id_tindakan'] }}"><span class="badge bg-danger">Perlu Tindakan</span></a></td>
                                             </tr>
                                             <!-- Add more rows as needed -->
                                         </tbody>
