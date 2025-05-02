@@ -96,4 +96,24 @@ class TindakanController extends Controller
         }
         return redirect()->route('tindakan.index');
     }
+
+    public function tidak_perlu_rujukan($id)
+    {
+        $token = session('api_token');
+
+        $response = Http::withToken($token)->get("$this->apiBaseUrl/tindakan/{$id}");
+
+        if (!$response->successful()) {
+            return back()->withErrors(['message' => 'Gagal mengambil data users']);
+        }
+
+        $tindakan = $response->json('data');
+
+        return view('dokterumum.tindakan.tidak-perlu-rujukan', compact('tindakan'));
+    }
+
+    public function tindakan_complete($id)
+    {
+        return view('dokterumum.tindakan.complete');
+    }
 }
