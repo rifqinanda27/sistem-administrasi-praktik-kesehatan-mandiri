@@ -42,27 +42,26 @@
                                 </thead>
                                 <tbody>
                                 @foreach ($users as $item)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $item['name'] }}</td>
-                                <td>{{ $item['email'] }}</td>
-                                <td>{{ $item['role']['name'] }}</td>
-                                <td>
-                                    <button type="button" class="btn btn-block btn-sm btn-outline-info" data-toggle="dropdown"><i class="fas fa-cog"></i>
-                                    </button>
-                                    <div class="dropdown-menu" role="menu">
-                                        <a class="dropdown-item" href="{{ route('users.edit', $item['id']) }}">Edit</a>
-                                        <!-- <a class="dropdown-item" href="#">Hapus</a> -->
-                                        <form action="{{ route('users.destroy', $item['id']) }}" method="POST" onsubmit="return confirm('Yakin mau hapus data ini?')" style="display:inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="dropdown-item text-danger" type="submit">Hapus</button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                            @endforeach
-
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $item['name'] }}</td>
+                                        <td>{{ $item['email'] }}</td>
+                                        <td>{{ $item['role']['name'] }}</td>
+                                        <td>
+                                            <button type="button" class="btn btn-block btn-sm btn-outline-info" data-toggle="dropdown"><i class="fas fa-cog"></i>
+                                            </button>
+                                            <div class="dropdown-menu" role="menu">
+                                                <a class="dropdown-item" href="{{ route('users.edit', $item['id']) }}">Edit</a>
+                                                <!-- <a class="dropdown-item" href="#">Hapus</a> -->
+                                                <form action="{{ route('users.destroy', $item['id']) }}" method="POST" onsubmit="return confirm('Yakin mau hapus data ini?')" style="display:inline;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button class="dropdown-item text-danger" type="submit">Hapus</button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>

@@ -32,7 +32,8 @@ Route::middleware('check.api.token')->group(function () {
     Route::get('perlu-tindakan/{id}', [TindakanController::class, 'perlu_tindakan']);
     Route::get('perlu-tindakan/{id}/tidak-perlu-rujukan', [TindakanController::class, 'tidak_perlu_rujukan']);
     Route::get('perlu-tindakan/{id}/complete', [TindakanController::class, 'tindakan_complete'])->name('tindakan-complete');
-    Route::post('perlu-tindakan', [TindakanController::class, 'tambah_catatan_medis'])->name('perlu-tindakan-store');
     Route::get('rekam-medis/{id}', [PasienController::class, 'rekam_medis']);
+    Route::post('perlu-tindakan', [TindakanController::class, 'tambah_catatan_medis'])->name('perlu-tindakan-store');
+    Route::post('perlu-tindakan/resep-obat-dokter', [TindakanController::class, 'resep_obat_dokter'])->name('resep-obat-dokter');
       
 });

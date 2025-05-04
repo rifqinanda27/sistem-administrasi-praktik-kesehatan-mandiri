@@ -23,7 +23,8 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    <form action="">
+                    <form action="{{ route('resep-obat-dokter') }}" method="POST">
+                    @csrf
                         <div class="card card-primary card-outline">
                             <div class="card-body">
                             <h5 class="font-weight-bold mb-3">Form Resep Obat</h5>
@@ -77,11 +78,12 @@
                                         
                                         <!-- Resep Obat -->
                                         <h5 class="font-weight-bold mt-4">II. Resep Obat</h5>
-                                    
+                                        <input type="hidden" value="{{ $tindakan['id_kunjungan'] }}" name="id_kunjungan">
+                                        <input type="hidden" value="{{ $tindakan['visit']['id_dokter'] }}" name="id_dokter">
+                                        <input type="hidden" name="id_tindakan" value="{{ $tindakan['id_tindakan'] }}">
                                         <div class="mt-3">
-                                            <textarea class="form-control" rows="5" placeholder="Masukkan resep obat di sini..."></textarea>
+                                            <textarea class="form-control" rows="5" placeholder="Masukkan resep obat di sini..." name="resep_obat"></textarea>
                                         </div>
-                                        
                                         <div class="row">
                                             <div class="d-flex col-6 justify-content-start mt-4">
                                                 <button class="btn btn-secondary" onclick="window.history.back()">
@@ -89,7 +91,7 @@
                                                 </button>
                                             </div>
                                             <div class="d-flex col-6 justify-content-end mt-4">
-                                                <button type="button" class="btn btn-primary" onclick="window.location.href='{{ route('tindakan-complete', ['id' => $tindakan['id_tindakan']]) }}'">Lanjut</button>
+                                                <button type="submit" class="btn btn-primary">Lanjut</button>
                                             </div>
                                         </div>
                                     </div>

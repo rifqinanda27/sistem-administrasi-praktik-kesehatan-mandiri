@@ -94,7 +94,7 @@ class TindakanController extends Controller
             toastr()->error('Gagal membuat tindakan: ' . $response->json('message'));
             return back()->withErrors(['message' => $response->json('message') ?? 'Gagal membuat tindakan']);
         }
-        return redirect()->route('tindakan.index');
+        // return redirect()->route('tindakan.index');
     }
 
     public function tidak_perlu_rujukan($id)
@@ -110,6 +110,33 @@ class TindakanController extends Controller
         $tindakan = $response->json('data');
 
         return view('dokterumum.tindakan.tidak-perlu-rujukan', compact('tindakan'));
+    }
+
+    public function resep_obat_dokter(Request $request)
+    {
+        $token = session('api_token');
+
+        $response = Http::withToken($token)->post("$this->apiBaseUrl/resep", [
+            'resep_obat' => $request->resep_obat,
+            'id_kunjungan' => $request->id_kunjungan,
+            'diresepkan_oleh' => $request->id_dokter,
+        ]);
+        // dd($response);
+        // Tambahkan pengecekan statusnya
+        if ($response->failed()) {
+            toastr()->error('Gagal membuat resep: ' . $response->json('message'));
+            return back()->withErrors(['message' => $response->json('message') ?? 'Gagal membuat resep']);
+        }
+
+        $tindakan = Http::withToken($token)->put("$this->apiBaseUrl/tindakan/{$request->id_tindakan}", [
+            'status' => 'selesai',
+        ]);
+
+        if (!$tindakan->successful()) {
+            return back()->withErrors(['message' => 'Gagal memperbarui user']);
+        }
+
+        return redirect()->route('tindakan-complete', ['id' => $request->id_tindakan]);
     }
 
     public function tindakan_complete($id)

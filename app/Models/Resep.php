@@ -17,6 +17,7 @@ class Resep extends Model
         'id_obat',
         'dosis',
         'frekuensi',
+        'resep_obat',
         'petunjuk',
         'diresepkan_oleh',
         'status',

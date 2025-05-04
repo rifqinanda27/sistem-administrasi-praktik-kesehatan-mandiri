@@ -56,11 +56,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('/tindakan', TindakanController::class);
     });
 
-    Route::middleware('role:apoteker')->group(function () {
-        Route::apiResource('obat', ObatController::class);
-        Route::apiResource('resep', ResepController::class);
-    });
-
     Route::middleware('role:laboran')->group(function() {
         Route::apiResource('laboratorium', LaboratoriumController::class);
         Route::apiResource('jenis-pemeriksaan-lab', JenisPemeriksaanLabController::class);
