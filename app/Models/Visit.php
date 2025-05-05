@@ -37,4 +37,9 @@ class Visit extends Model
     {
         return $this->hasMany(Tindakan::class, 'id_kunjungan');
     }
+
+    public function catatan_medis()
+    {
+        return $this->belongsTo(CatatanMedis::class, 'id_kunjungan');
+    }
 }

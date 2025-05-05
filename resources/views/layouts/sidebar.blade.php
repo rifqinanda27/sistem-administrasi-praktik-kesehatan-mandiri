@@ -32,6 +32,12 @@
                     <p>Roles</p>
                 </a>
             </li>
+            <li class="nav-item">
+                <a href="{{ url('dokter') }}" class="nav-link {{ Request::segment(1) == 'dokter' ? 'active' : '' }}">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Dokter</p>
+                </a>
+            </li>
         </ul>
     </li>
     @elseif(isset($user['role']['name']) && $user['role']['name'] === 'dokterumum')

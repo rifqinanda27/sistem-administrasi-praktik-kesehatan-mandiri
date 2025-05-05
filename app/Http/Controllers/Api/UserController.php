@@ -6,6 +6,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
+use App\Models\Dokter;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -28,37 +29,81 @@ class UserController extends Controller
     }
 
     // Menambah user baru
+    // public function store(Request $request)
+    // {
+    //     $validator = Validator::make($request->all(), [
+    //         'name' => 'required|string|max:255',
+    //         'email' => 'required|string|email|max:255|unique:users',
+    //         'password' => 'required|string|min:8',
+    //         'role_id' => 'required|integer|exists:roles,id', // Validasi role_id harus integer dan ada di tabel roles
+    //     ]);
+
+    //     if ($validator->fails()) {
+    //         return response()->json($validator->errors(), 400);
+    //     }
+
+    //     // Cek role berdasarkan ID
+    //     $role = Role::find($request->role_id);
+
+    //     // Pastikan role ditemukan
+    //     if (!$role) {
+    //         return response()->json(['message' => 'Role not found'], 404);
+    //     }
+
+    //     // Membuat user baru dengan role_id yang sesuai
+    //     $user = User::create([
+    //         'name' => $request->name,
+    //         'email' => $request->email,
+    //         'password' => Hash::make($request->password),
+    //         'role_id' => $role->id, // menggunakan ID role yang ditemukan di database
+    //     ]);
+
+    //     return response()->json(['message' => 'User created successfully', 'user' => $user], 201);
+    // }
+
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
-            'role_id' => 'required|integer|exists:roles,id', // Validasi role_id harus integer dan ada di tabel roles
+            'role_id' => 'required|integer|exists:roles,id',
         ]);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
 
-        // Cek role berdasarkan ID
+        // Ambil role berdasarkan ID
         $role = Role::find($request->role_id);
 
-        // Pastikan role ditemukan
         if (!$role) {
             return response()->json(['message' => 'Role not found'], 404);
         }
 
-        // Membuat user baru dengan role_id yang sesuai
+        // Buat user baru
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role_id' => $role->id, // menggunakan ID role yang ditemukan di database
+            'role_id' => $role->id,
         ]);
+
+        // Jika role-nya adalah dokterumum, otomatis buat entry di tabel dokter
+        if (strtolower($role->name) === 'dokterumum') {
+            // Cek apakah dokter dengan id_pengguna ini sudah ada
+            $exists = Dokter::where('id_pengguna', $user->id)->exists();
+
+            if (!$exists) {
+                Dokter::create([
+                    'id_pengguna' => $user->id,
+                ]);
+            }
+        }
 
         return response()->json(['message' => 'User created successfully', 'user' => $user], 201);
     }
+
 
     public function show($id)
     {

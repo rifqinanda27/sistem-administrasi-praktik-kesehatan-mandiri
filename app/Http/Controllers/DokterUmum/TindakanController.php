@@ -87,6 +87,14 @@ class TindakanController extends Controller
             'tanggal' => $request->tanggal,
         ]);
 
+        if ($request->input('buat_rujukan') === 'ya') {
+            // Redirect ke halaman buat surat rujukan
+            return redirect()->route('perlu-rujukan', ['id' => $request->id_kunjungan]);
+        } else {
+            // Redirect ke halaman tindakan biasa
+            return redirect()->route('tidak-perlu-rujukan', ['id' => $request->id_kunjungan]);
+        }
+
         // dd($response);
         
         // Tambahkan pengecekan statusnya
@@ -110,6 +118,21 @@ class TindakanController extends Controller
         $tindakan = $response->json('data');
 
         return view('dokterumum.tindakan.tidak-perlu-rujukan', compact('tindakan'));
+    }
+
+    public function perlu_rujukan($id)
+    {
+        $token = session('api_token');
+
+        $response = Http::withToken($token)->get("$this->apiBaseUrl/tindakan/{$id}");
+
+        if (!$response->successful()) {
+            return back()->withErrors(['message' => 'Gagal mengambil data users']);
+        }
+
+        $tindakan = $response->json('data');
+
+        return view('dokterumum.tindakan.perlu-rujukan', compact('tindakan'));
     }
 
     public function resep_obat_dokter(Request $request)

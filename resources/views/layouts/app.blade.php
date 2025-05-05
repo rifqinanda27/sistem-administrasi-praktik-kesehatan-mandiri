@@ -333,7 +333,7 @@
                 <img src="{{ asset('') }}dist/img/logo-polines.png" alt="Logo Polines"
                     class="brand-image elevation-3" style="opacity: .8">
                 <span
-                    class="brand-text font-weight-light "><strong>{{ env('APP_NAME', 'PBL IK-TI Polines') }}</strong></span>
+                    class="brand-text font-weight-light "><strong>{{ env('APP_NAME', 'Healthcare') }}</strong></span>
             </a>
             <div class="sidebar">
                 <nav class="mt-2">

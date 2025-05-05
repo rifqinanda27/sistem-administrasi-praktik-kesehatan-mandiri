@@ -25,7 +25,7 @@ class TindakanController extends Controller
 
     public function show($id)
     {
-        $tindakan = Tindakan::with('visit.pasien')->find($id);
+        $tindakan = Tindakan::with('visit.pasien', 'visit.catatan_medis')->find($id);
 
         if (!$tindakan) {
             return response()->json([

@@ -12,18 +12,18 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('dokter', function (Blueprint $table) {
-            $table->unsignedBigInteger('id_dokter')->primary(); // Menggunakan ID dari tabel pengguna
-            $table->string('nomor_str')->unique();
-            $table->string('spesialisasi')->nullable(); // Kosong untuk dokter umum
-            $table->unsignedInteger('pengalaman_tahun')->default(0);
-            $table->enum('status_praktik', ['aktif', 'tidak_aktif'])->default('aktif');
+            $table->id('id_dokter'); // Auto increment
+            $table->unsignedBigInteger('id_pengguna')->unique(); // Tetap relasi ke pengguna
+            $table->string('nomor_sip')->unique()->nullable();
+            $table->string('spesialisasi')->default('umum')->nullable();
+            $table->unsignedInteger('pengalaman_tahun')->default(0)->nullable();
+            $table->enum('status_praktik', ['aktif', 'tidak_aktif'])->default('aktif')->nullable();
             $table->timestamps();
 
-            // Foreign key ke tabel pengguna
-            $table->foreign('id_dokter')
-                  ->references('id')
-                  ->on('users')
-                  ->onDelete('cascade');
+            $table->foreign('id_pengguna')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
         });
     }
 

@@ -78,6 +78,7 @@
                                         <h5 class="font-weight-bold">Form Anamnesa dan Pemeriksaan Utama</h5>
                                         <input type="hidden" value="{{ $tindakan['id_kunjungan'] }}" name="id_kunjungan">
                                         <input type="hidden" value="{{ now()->toDateString() }}" name="tanggal">
+                                        <input type="hidden" name="buat_rujukan" id="buatRujukan" value="">
                                         <div class="mt-3">
                                             <div class="font-weight-bold">I. Anamnesa</div>
                                             <div class="ml-3 mt-2">
@@ -228,10 +229,16 @@
                                                         <div style="width: 120px;" class="my-auto">KU</div>
                                                         <div class="d-flex align-items-center">
                                                             <span class="mx-1">=</span>
-                                                            <input type="text" class="form-control" name="keadaan_umum">
+                                                            <!-- <input type="text" class="form-control" name="keadaan_umum">
                                                             @error('keluhan_utama')
                                                                 <div class="invalid-feedback">{{ $message }}</div>
-                                                            @enderror
+                                                            @enderror -->
+                                                            <select class="form-control" id="penilaian" name="keadaan_umum">
+                                                                <option value="sangat_baik">Sangat Baik</option>
+                                                                <option value="baik">Baik</option>
+                                                                <option value="cukup">Cukup</option>
+                                                                <option value="kurang">Kurang</option>
+                                                            </select>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -270,10 +277,9 @@
                                                 </button>
                                             </div>
                                             <div class="d-flex col-6 justify-content-end mt-4">
-                                                <button type="submit" id="btnLanjut" class="btn btn-primary">Lanjut</button>
+                                                <button type="button" id="btnLanjut" class="btn btn-primary" data-toggle="modal" data-target="#modalRujukan">Lanjut</button>
                                             </div>
                                         </div>
-    
                                     </div>
                                 </div>
                             </form>
@@ -291,8 +297,8 @@
                 <div class="modal-body text-center py-4">
                     <h5 class="font-weight-bold mb-4">Buat Surat Rujukan?</h5>
                     <div class="d-flex justify-content-center">
-                        <button type="button" class="btn btn-light mx-2" style="width: 80px; background-color: #e9ecef;" onclick="window.location.href='dokter-umum-perlurujukan'">Ya</button>
-                        <button type="button" class="btn btn-light mx-2" style="width: 80px; background-color: #e9ecef;" onclick="window.location.href='dokter-umum-tidakrujukan'">Tidak</button>
+                        <button type="button" class="btn btn-light mx-2" style="width: 80px; background-color: #e9ecef;" id="btnYaRujukan">Ya</button>
+                        <button type="button" class="btn btn-light mx-2" style="width: 80px; background-color: #e9ecef;" id="btnTidakRujukan">Tidak</button>
                     </div>
 
 
@@ -306,13 +312,18 @@
 @push('js')
     <script>
         $(document).ready(function() {
-            // Tampilkan toast jika ada
-            $('.toast').toast('show');
-            
-            // Handler untuk tombol Lanjut
             $('#btnLanjut').click(function() {
-                // Tampilkan modal rujukan
                 $('#modalRujukan').modal('show');
+            });
+
+            $('#btnYaRujukan').click(function() {
+                $('#buatRujukan').val('ya'); // bisa juga true
+                $('form').submit();
+            });
+
+            $('#btnTidakRujukan').click(function() {
+                $('#buatRujukan').val('tidak'); // bisa juga false
+                $('form').submit();
             });
         });
     </script>

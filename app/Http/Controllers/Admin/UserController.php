@@ -58,7 +58,7 @@ class UserController extends Controller
         
         // Tambahkan pengecekan statusnya
         if ($response->failed()) {
-            toastr()->error('Gagal membuat user: ' . $response->json('message'));
+            // toastr()->error('Gagal membuat user: ' . $response->json('message'));
             return back()->withErrors(['message' => $response->json('message') ?? 'Gagal membuat user']);
         }
         return redirect()->route('users.index');

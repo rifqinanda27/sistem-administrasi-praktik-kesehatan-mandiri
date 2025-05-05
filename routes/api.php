@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\LaboratoriumController;
 use App\Http\Controllers\Api\JenisPemeriksaanLabController;
 use App\Http\Controllers\Api\PermintaanLabController;
 use App\Http\Controllers\Api\HasilLabController;
+use App\Http\Controllers\Api\DokterController;
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
@@ -38,6 +39,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('role:admin')->group(function () {
         Route::apiResource('/users', UserController::class);
         Route::apiResource('/roles', RoleController::class);
+        Route::apiResource('/dokter', DokterController::class);
     });
 
     Route::middleware('role:resepsionis,dokterumum')->group(function () {
@@ -48,7 +50,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('role:dokterumum,apoteker')->group(function () {
         Route::apiResource('obat', ObatController::class);
         Route::apiResource('resep', ResepController::class);
-        Route::get('dokter', [UserController::class, 'index']);
+        // Route::get('dokter', [UserController::class, 'index']);
     });
     
     Route::middleware('role:dokterumum')->group(function () {

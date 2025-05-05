@@ -101,7 +101,7 @@
                                             <td>{{ $pasien['telepon'] }}</td>
                                             <td>{{ $pasien['status_aktif'] ? 'Pasien Aktif' : 'Tidak Aktif' }}</td>
                                             <td>
-                                                <button class="btn btn-secondary" onclick="window.location.href='rekam-medis/{{ $pasien['id_pasien'] }}'">Lihat</button>
+                                                <button class="btn btn-primary" onclick="window.location.href='rekam-medis/{{ $pasien['id_pasien'] }}'">Lihat</button>
                                             </td>
                                         </tr>
                                     @endforeach
