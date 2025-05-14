@@ -52,12 +52,6 @@
                                             </button>
                                             <div class="dropdown-menu" role="menu">
                                                 <a class="dropdown-item" href="{{ route('dokter.edit', $item['id_dokter']) }}">Edit</a>
-                                                <!-- <a class="dropdown-item" href="#">Hapus</a> -->
-                                                <form action="{{ route('dokter.destroy', $item['id_dokter']) }}" method="POST" onsubmit="return confirm('Yakin mau hapus data ini?')" style="display:inline;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button class="dropdown-item text-danger" type="submit">Hapus</button>
-                                                </form>
                                             </div>
                                         </td>
                                     </tr>

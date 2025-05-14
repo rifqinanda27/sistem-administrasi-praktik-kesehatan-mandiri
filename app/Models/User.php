@@ -53,4 +53,8 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
+    public function dokter_detail()
+    {
+        return $this->belongsTo(Dokter::class, 'id', 'id_pengguna');
+    }
 }

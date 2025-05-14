@@ -49,11 +49,11 @@
                                                 </div>
                                                 <div class="d-flex mb-2">
                                                     <div style="width: 150px;">Nama Dokter</div>
-                                                    <div>= {{ $tindakan['visit']['id_dokter'] }}</div>
+                                                    <div>= {{ $tindakan['visit']['dokter']['name'] ?? 'Tidak ada dokter' }}</div>
                                                 </div>
                                                 <div class="d-flex mb-2">
                                                     <div style="width: 150px;">SIP</div>
-                                                    <div>= 123/abc/345/2024</div>
+                                                    <div>= {{ $tindakan['visit']['dokter']['dokter_detail']['nomor_sip'] ?? 'Tidak ada data' }} </div>
                                                 </div>
                                                 <div class="d-flex mb-2">
                                                     <div style="width: 150px;">Tanggal Rujukan</div>

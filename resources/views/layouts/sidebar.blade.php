@@ -11,8 +11,8 @@
     </li>
     @if(isset($user['role']['name']) && $user['role']['name'] === 'admin')
     <!-- Menu dengan submenu -->
-    <li class="nav-item {{ in_array(Request::segment(1), ['users', 'roles']) ? 'menu-open' : '' }}">
-        <a href="#" class="nav-link {{ in_array(Request::segment(1), ['users', 'roles']) ? 'active' : '' }}">
+    <li class="nav-item {{ in_array(Request::segment(1), ['users', 'roles', 'dokter']) ? 'menu-open' : '' }}">
+        <a href="#" class="nav-link {{ in_array(Request::segment(1), ['users', 'roles', 'dokter']) ? 'active' : '' }}">
             <i class="nav-icon fas fa-users-cog"></i>
             <p>
                 Management

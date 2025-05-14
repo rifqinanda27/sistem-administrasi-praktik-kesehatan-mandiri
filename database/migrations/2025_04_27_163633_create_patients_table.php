@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('patients', function (Blueprint $table) {
             $table->id('id_pasien');
-            $table->string('no_rekam_medis')->unique();
+            $table->string('no_rekam_medis')->unique()->nullable();
             $table->string('nama_lengkap');
             $table->date('tanggal_lahir');
             $table->enum('jenis_kelamin', ['laki-laki', 'perempuan', 'lainnya']);

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Middleware;
 
 use Closure;
@@ -18,8 +17,11 @@ class CheckApiToken
             return redirect()->route('login')->withErrors(['msg' => 'Please login first']);
         }
 
-        // Verifikasi apakah token masih valid dengan API (misal /api/user)
-        $response = Http::withToken($token)->get('http://pbl-healthcare.test/api/user');
+        // Ambil base URL dari config/services.php
+        $apiBaseUrl = config('services.api.base_url');
+
+        // Verifikasi apakah token masih valid dengan API menggunakan base URL yang sudah didefinisikan
+        $response = Http::withToken($token)->get($apiBaseUrl . '/user');
 
         if (!$response->successful()) {
             // Jika response gagal, anggap token sudah tidak valid

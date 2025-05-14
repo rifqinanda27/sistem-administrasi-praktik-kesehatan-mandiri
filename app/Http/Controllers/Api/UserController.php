@@ -154,8 +154,21 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = User::findOrFail($id);
+
+        // Cek apakah user memiliki role dokterumum
+        if (strtolower($user->role->name) === 'dokterumum') {
+            // Hapus entri dokter yang terkait dengan user ini
+            $dokter = Dokter::where('id_pengguna', $user->id)->first();
+
+            if ($dokter) {
+                $dokter->delete(); // Hapus data dokter
+            }
+        }
+
+        // Hapus user
         $user->delete();
 
-        return response()->json(['message' => 'User deleted successfully']);
+        return response()->json(['message' => 'User and associated dokter deleted successfully']);
     }
+
 }

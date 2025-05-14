@@ -19,16 +19,38 @@ class PasienController extends Controller
     {
         $token = session('api_token');
 
-        $response = Http::withToken($token)->get("$this->apiBaseUrl/pasien");
+        // Ambil data user dari token
+        $userResponse = Http::withToken($token)->get(config('services.api.base_url') . '/user');
 
-        if (!$response->successful()) {
-            return back()->withErrors(['message' => 'Gagal mengambil data users']);
+        if (!$userResponse->successful()) {
+            return back()->withErrors(['message' => 'Gagal mengambil data user']);
         }
 
-        $pasien = $response->json('data');
+        $user = $userResponse->json();
+        $idDokterLogin = $user['id'];
 
-        return view('dokterumum.pasien.index', compact('pasien'));
+        // Ambil semua pasien
+        $response = Http::withToken($token)->get(config('services.api.base_url') . '/pasien');
+
+        if (!$response->successful()) {
+            return back()->withErrors(['message' => 'Gagal mengambil data pasien']);
+        }
+
+        $semuaPasien = $response->json('data');
+
+        // Filter pasien yang memiliki kunjungan dengan id_dokter yang sesuai
+        $filteredPasien = collect($semuaPasien)->filter(function ($pasien) use ($idDokterLogin) {
+            // Cek apakah ada kunjungan dengan id_dokter sesuai
+            $hasKunjunganDokterIni = collect($pasien['kunjungan'])->contains(function ($kunjungan) use ($idDokterLogin) {
+                return $kunjungan['id_dokter'] == $idDokterLogin;
+            });
+
+            return $hasKunjunganDokterIni;
+        });
+
+        return view('dokterumum.pasien.index', ['pasien' => $filteredPasien->values()]);
     }
+
 
     public function rekam_medis($id)
     {

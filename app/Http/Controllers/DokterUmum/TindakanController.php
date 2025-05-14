@@ -19,16 +19,31 @@ class TindakanController extends Controller
     {
         $token = session('api_token');
 
-        $response = Http::withToken($token)->get("$this->apiBaseUrl/tindakan");
-
-        if (!$response->successful()) {
-            return back()->withErrors(['message' => 'Gagal mengambil data users']);
+        // Ambil data user login
+        $userResponse = Http::withToken($token)->get("$this->apiBaseUrl/user");
+        if (!$userResponse->successful()) {
+            return back()->withErrors(['message' => 'Gagal mengambil data user']);
         }
 
-        $pasien = $response->json('data');
+        $user = $userResponse->json();
+        $idDokterLogin = $user['id'];
+
+        // Ambil data tindakan
+        $response = Http::withToken($token)->get("$this->apiBaseUrl/tindakan");
+        if (!$response->successful()) {
+            return back()->withErrors(['message' => 'Gagal mengambil data tindakan']);
+        }
+
+        $allTindakan = $response->json('data');
+
+        // Filter tindakan berdasarkan id_dokter yang sesuai
+        $pasien = collect($allTindakan)->filter(function ($item) use ($idDokterLogin) {
+            return isset($item['visit']['dokter']['id']) && $item['visit']['dokter']['id'] == $idDokterLogin;
+        });
 
         return view('dokterumum.tindakan.index', compact('pasien'));
     }
+
 
     public function perlu_tindakan($id)
     {

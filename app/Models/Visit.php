@@ -30,7 +30,7 @@ class Visit extends Model
 
     public function dokter()
     {
-        return $this->belongsTo(User::class, 'id');
+        return $this->belongsTo(User::class, 'id_dokter', 'id');
     }
 
     public function tindakan()
