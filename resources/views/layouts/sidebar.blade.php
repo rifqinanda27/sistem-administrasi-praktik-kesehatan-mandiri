@@ -54,5 +54,19 @@
             <p>Tindakan & Pemeriksaan</p>
         </a>
     </li>
+    @elseif(isset($user['role']['name']) && $user['role']['name'] === 'resepsionis')
+    <!-- Menu dengan submenu -->
+    <li class="nav-item">
+        <a href="{{ url('pasien-resepsionis') }}" class="nav-link {{ Request::segment(1) == 'pasien-resepsionis' ? 'active' : '' }}">
+            <i class="nav-icon fas fa-users"></i>
+            <p>Pasien</p>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="{{ url('kunjungan-pasien') }}" class="nav-link {{ Request::segment(1) == 'kunjungan-pasien' ? 'active' : '' }}">
+            <i class="nav-icon fas fa-calendar"></i>
+            <p>Kunjungan</p>
+        </a>
+    </li>
     @endif
 </ul>

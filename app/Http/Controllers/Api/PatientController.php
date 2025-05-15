@@ -34,7 +34,7 @@ class PatientController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'no_rekam_medis' => 'required|unique:patients',
+            // 'no_rekam_medis' => 'required|unique:patients',
             'nama_lengkap' => 'required',
             'tanggal_lahir' => 'required|date',
             'jenis_kelamin' => 'required|in:laki-laki,perempuan,lainnya',

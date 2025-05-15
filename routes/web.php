@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\DokterController;
 use App\Http\Controllers\DokterUmum\PasienController;
 use App\Http\Controllers\DokterUmum\TindakanController;
+use App\Http\Controllers\ResepsionisController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -25,11 +26,12 @@ Route::middleware('check.api.token')->group(function () {
         return view('home');
     })->name('home');
 
-    
+    // Admin
     Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('dokter', DokterController::class);
     
+    // Dokterumum
     Route::resource('pasien', PasienController::class);
     Route::resource('tindakan', TindakanController::class);
     Route::get('perlu-tindakan/{id}', [TindakanController::class, 'perlu_tindakan']);
@@ -39,5 +41,12 @@ Route::middleware('check.api.token')->group(function () {
     Route::get('rekam-medis/{id}', [PasienController::class, 'rekam_medis']);
     Route::post('perlu-tindakan', [TindakanController::class, 'tambah_catatan_medis'])->name('perlu-tindakan-store');
     Route::post('perlu-tindakan/resep-obat-dokter', [TindakanController::class, 'resep_obat_dokter'])->name('resep-obat-dokter');
-      
+    
+    // Resepsionis
+    Route::resource('pasien-resepsionis', ResepsionisController::class);
+    Route::get('kunjungan-pasien', [ResepsionisController::class, 'kunjungan_index'])->name('kunjungan.index');
+    Route::get('kunjungan-pasien/create', [ResepsionisController::class, 'kunjungan_create'])->name('kunjungan.create');
+    Route::get('/cari-pasien', [ResepsionisController::class, 'cari_pasien']);
+    Route::get('/cari-dokter', [ResepsionisController::class, 'cari_dokter']);
+    Route::post('kunjungan-pasien', [ResepsionisController::class, 'kunjungan_store'])->name('kunjungan.store');
 });

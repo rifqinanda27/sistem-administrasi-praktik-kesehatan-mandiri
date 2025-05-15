@@ -13,7 +13,7 @@ class DokterController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:admin'); // Pastikan hanya admin yang bisa mengakses
+        $this->middleware('role:admin,resepsionis'); // Pastikan hanya admin yang bisa mengakses
     }
     /**
      * Display a listing of the resource.

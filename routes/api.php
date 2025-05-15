@@ -41,10 +41,13 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('/roles', RoleController::class);
         Route::apiResource('/dokter', DokterController::class);
     });
-
+    
     Route::middleware('role:resepsionis,dokterumum')->group(function () {
         Route::apiResource('/pasien', PatientController::class);
         Route::apiResource('/kunjungan', VisitController::class);
+        Route::get('/cari-dokter', [DokterController::class, 'index']);
+        Route::get('/tipe-kunjungan', [VisitController::class, 'tipe_kunjungan']);
+        Route::get('/status-kunjungan', [VisitController::class, 'status_kunjungan']);
     });
 
     Route::middleware('role:dokterumum,apoteker')->group(function () {

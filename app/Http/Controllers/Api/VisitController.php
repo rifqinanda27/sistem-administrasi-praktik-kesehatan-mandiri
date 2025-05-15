@@ -67,4 +67,32 @@ class VisitController extends Controller
 
         return response()->json(['message' => 'Kunjungan deleted successfully']);
     }
+
+    public function tipe_kunjungan()
+    {
+        $columns = \DB::select("SHOW COLUMNS FROM visits WHERE Field = 'tipe_kunjungan'");
+        $columnType = $columns[0]->Type;
+
+        preg_match_all("/'([^']+)'/", $columnType, $matches);
+        $enumValues = $matches[1];
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $enumValues,
+        ]);
+    }
+
+    public function status_kunjungan()
+    {
+        $columns = \DB::select("SHOW COLUMNS FROM visits WHERE Field = 'status_kunjungan'");
+        $columnType = $columns[0]->Type;
+
+        preg_match_all("/'([^']+)'/", $columnType, $matches);
+        $enumValues = $matches[1];
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $enumValues,
+        ]);
+    }
 }

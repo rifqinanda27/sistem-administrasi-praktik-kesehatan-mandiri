@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="{{ asset('') }}plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     @stack('css')
     <link rel="stylesheet" href="{{ asset('') }}dist/css/adminlte.min.css">
+
     <style>
     /* Warna background dan teks saat aktif */
     .nav-sidebar .nav-link.active {
