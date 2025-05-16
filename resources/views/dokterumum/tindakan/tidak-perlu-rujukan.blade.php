@@ -63,7 +63,7 @@
                                             <div class="col-md-6">
                                                 <div class="d-flex mb-2">
                                                     <div style="width: 180px;">Nomor Rekam Medis</div>
-                                                    <div>= {{ $tindakan['pasien']['no_rekam_medis'] }}</div>
+                                                    <div>= {{ $tindakan['catatan_medis']['no_rekam_medis'] ?? '-' }}</div>
                                                 </div>
                                                 <div class="d-flex mb-2">
                                                     <div style="width: 180px;">Tanggal Pemeriksaan</div>

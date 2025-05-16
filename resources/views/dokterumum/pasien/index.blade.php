@@ -78,7 +78,6 @@
                             <table id="datatable-main" class="table table-bordered table-striped">
                                 <thead>
                                     <th style="width: 10px">#</th>
-                                    <th>Nomor Rekam Medis</th>
                                     <th>Nama</th>
                                     <th>Tanggal Lahir</th>
                                     <th>Jenis Kelamin</th>
@@ -92,7 +91,6 @@
                                     @foreach ($pasien as $index => $pasien)
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
-                                            <td>{{ $pasien['no_rekam_medis'] ?? '-'}}</td>
                                             <td>{{ $pasien['nama_lengkap'] }}</td>
                                             <td>{{ \Carbon\Carbon::parse($pasien['tanggal_lahir'])->format('d-m-Y') }}</td>
                                             <td>{{ ucfirst($pasien['jenis_kelamin']) }}</td>

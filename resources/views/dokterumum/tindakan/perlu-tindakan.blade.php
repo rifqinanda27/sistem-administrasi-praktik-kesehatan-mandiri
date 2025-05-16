@@ -49,10 +49,10 @@
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <div class="d-flex mb-2">
+                                            <!-- <div class="d-flex mb-2">
                                                 <div style="width: 180px;">Nomor Rekam Medis</div>
                                                 <div>= {{ $tindakan['pasien']['no_rekam_medis'] }}</div>
-                                            </div>
+                                            </div> -->
                                             <div class="d-flex mb-2">
                                                 <div style="width: 180px;">Tanggal Pemeriksaan</div>
                                                 <div>= {{ \Carbon\Carbon::parse($tindakan['tanggal_kunjungan'])->format('Y-m-d') }}</div>
