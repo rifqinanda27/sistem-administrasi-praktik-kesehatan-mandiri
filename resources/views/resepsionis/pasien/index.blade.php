@@ -78,7 +78,7 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <table id="datatable-main" class="table table-bordered table-striped">
+                            <table id="datatable-main-pasien" class="table table-bordered table-striped">
                                 <thead>
                                     <th style="width: 10px">#</th>
                                     <th>Nama</th>
@@ -120,6 +120,9 @@
 @push('js')
     <script>
         $('.toast').toast('show')
+        $(document).ready(function() {
+            $('#datatable-main-pasien').DataTable();
+        });
     </script>
 @endpush
 
