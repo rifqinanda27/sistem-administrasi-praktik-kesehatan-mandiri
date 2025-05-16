@@ -13,6 +13,7 @@ class CatatanMedis extends Model
     protected $primaryKey = 'id_catatan';
 
     protected $fillable = [
+        'no_rekam_medis',
         'id_kunjungan',
         'keluhan_utama',
         'keluhan_tambahan',

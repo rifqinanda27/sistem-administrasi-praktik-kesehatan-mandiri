@@ -35,19 +35,19 @@
                                         <div class="col-md-6">
                                             <div class="d-flex mb-2">
                                                 <div style="width: 150px;">Nama Pasien</div>
-                                                <div>= {{ $tindakan['visit']['pasien']['nama_lengkap'] }}</div>
+                                                <div>= {{ $tindakan['pasien']['nama_lengkap'] }}</div>
                                             </div>
                                             <div class="d-flex mb-2">
                                                 <div style="width: 150px;">Usia/Tanggal Lahir</div>
-                                                <div>= {{ \Carbon\Carbon::parse($tindakan['visit']['pasien']['tanggal_lahir'])->age }}/{{ \Carbon\Carbon::parse($tindakan['visit']['pasien']['tanggal_lahir'])->format('Y-m-d') }}</div>
+                                                <div>= {{ \Carbon\Carbon::parse($tindakan['pasien']['tanggal_lahir'])->age }}/{{ \Carbon\Carbon::parse($tindakan['pasien']['tanggal_lahir'])->format('Y-m-d') }}</div>
                                             </div>
                                             <div class="d-flex mb-2">
                                                 <div style="width: 150px;">Jenis Kelamin</div>
-                                                <div>= {{ $tindakan['visit']['pasien']['jenis_kelamin'] }}</div>
+                                                <div>= {{ $tindakan['pasien']['jenis_kelamin'] }}</div>
                                             </div>
                                             <div class="d-flex mb-2">
                                                 <div style="width: 150px;">Nama Dokter</div>
-                                                <div>= {{ $tindakan['visit']['id_dokter'] }}</div>
+                                                <div>= {{ $tindakan['id_dokter'] }}</div>
                                             </div>
                                             <div class="d-flex mb-2">
                                                 <div style="width: 150px;">SIP</div>
@@ -55,21 +55,21 @@
                                             </div>
                                             <div class="d-flex mb-2">
                                                 <div style="width: 150px;">Tanggal Rujukan</div>
-                                                <div>= {{ \Carbon\Carbon::parse($tindakan['visit']['tanggal_kunjungan'])->format('Y-m-d') }}</div>
+                                                <div>= {{ \Carbon\Carbon::parse($tindakan['tanggal_kunjungan'])->format('Y-m-d') }}</div>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="d-flex mb-2">
                                                 <div style="width: 180px;">Nomor Rekam Medis</div>
-                                                <div>= {{ $tindakan['visit']['pasien']['no_rekam_medis'] }}</div>
+                                                <div>= {{ $tindakan['pasien']['no_rekam_medis'] }}</div>
                                             </div>
                                             <div class="d-flex mb-2">
                                                 <div style="width: 180px;">Tanggal Pemeriksaan</div>
-                                                <div>= {{ \Carbon\Carbon::parse($tindakan['visit']['tanggal_kunjungan'])->format('Y-m-d') }}</div>
+                                                <div>= {{ \Carbon\Carbon::parse($tindakan['tanggal_kunjungan'])->format('Y-m-d') }}</div>
                                             </div>
                                             <div class="d-flex mb-2">
                                                 <div style="width: 180px;">Alamat</div>
-                                                <div>= {{ $tindakan['visit']['pasien']['alamat'] }}</div>
+                                                <div>= {{ $tindakan['pasien']['alamat'] }}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -81,7 +81,7 @@
                                         <div style="width: 250px;">Keluhan Utama</div>
                                         <div class="d-flex align-items-center">
                                             <span class="mr-2">=</span>
-                                            <span>{{ $tindakan['visit']['catatan_medis']['keluhan_utama'] }}</span>
+                                            <span>{{ $tindakan['catatan_medis']['keluhan_utama'] }}</span>
                                         </div>
                                     </div>
                                     
@@ -89,7 +89,7 @@
                                         <div style="width: 250px;">Diagnosa Sementara</div>
                                         <div class="d-flex align-items-center">
                                             <span class="mr-2">=</span>
-                                            <span>{{ $tindakan['visit']['catatan_medis']['diagnosa_sementara'] }}</span>
+                                            <span>{{ $tindakan['catatan_medis']['diagnosa_sementara'] }}</span>
                                         </div>
                                     </div>
                                     
@@ -97,7 +97,7 @@
                                         <div style="width: 250px;">Riwayat Penyakit</div>
                                         <div class="d-flex align-items-center">
                                             <span class="mr-2">=</span>
-                                            <span>{{ $tindakan['visit']['catatan_medis']['riwayat_penyakit_pribadi'] }}</span>
+                                            <span>{{ $tindakan['catatan_medis']['riwayat_penyakit_pribadi'] }}</span>
                                         </div>
                                     </div>
                                     

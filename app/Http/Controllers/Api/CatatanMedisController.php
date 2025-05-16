@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use App\Models\CatatanMedis;
+use Illuminate\Support\Str;
 
 class CatatanMedisController extends Controller
 {
@@ -40,10 +41,20 @@ class CatatanMedisController extends Controller
             'tanggal' => 'required|date',
         ]);
 
+        // Generate unique no_rekam_medis
+        do {
+            $noRekamMedis = 'RM-' . now()->format('Ymd') . '-' . Str::random(5);
+        } while (CatatanMedis::where('no_rekam_medis', $noRekamMedis)->exists());
+
+        // Tambahkan ke data
+        $data['no_rekam_medis'] = $noRekamMedis;
+
+        // Simpan
         $catatan = CatatanMedis::create($data);
 
         return response()->json($catatan, 201);
     }
+
 
     
     public function update(Request $request, $id)

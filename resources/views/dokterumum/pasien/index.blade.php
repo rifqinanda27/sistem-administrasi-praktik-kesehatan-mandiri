@@ -92,7 +92,7 @@
                                     @foreach ($pasien as $index => $pasien)
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
-                                            <td>{{ $pasien['no_rekam_medis'] }}</td>
+                                            <td>{{ $pasien['no_rekam_medis'] ?? '-'}}</td>
                                             <td>{{ $pasien['nama_lengkap'] }}</td>
                                             <td>{{ \Carbon\Carbon::parse($pasien['tanggal_lahir'])->format('d-m-Y') }}</td>
                                             <td>{{ ucfirst($pasien['jenis_kelamin']) }}</td>

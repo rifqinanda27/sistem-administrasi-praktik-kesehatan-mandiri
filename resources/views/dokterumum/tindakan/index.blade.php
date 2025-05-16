@@ -35,7 +35,7 @@
                             <h3 class="card-title">Tindakan & Pemeriksaan Mendatang</h3>
                         </div>
                         <div class="card-body">
-                            <table id="datatable-main" class="table table-bordered">
+                            <table id="datatable-main-upcoming" class="table table-bordered">
                                 <thead>
                                     <th>#</th>
                                     <th>Nomor Rekam Medis</th>
@@ -50,23 +50,23 @@
                                 </thead>
                                 <tbody>
                                     @foreach($pasien as $ps)
-                                        @if($ps['status'] == 'terjadwal')
+                                        @if($ps['status_kunjungan'] == 'terjadwal')
                                         <tr class="align-middle">
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $ps['visit']['pasien']['no_rekam_medis'] ?? '-'}}</td>
-                                            <td>{{ $ps['visit']['pasien']['nama_lengkap'] ?? '-' }}</td>
-                                            <td>{{ $ps['visit']['pasien']['tanggal_lahir'] ?? '-' }}</td>
-                                            <td>{{ $ps['visit']['pasien']['jenis_kelamin'] ?? '-' }}</td>
-                                            <td>{{ $ps['visit']['pasien']['no_ktp'] ?? '-' }}</td>
-                                            <td>{{ $ps['visit']['pasien']['alamat'] ?? '-' }}</td>
-                                            <td>{{ $ps['visit']['pasien']['telepon'] ?? '-' }}</td>
+                                            <td>{{ $ps['catatan_medis']['no_rekam_medis'] ?? '-'}}</td>
+                                            <td>{{ $ps['pasien']['nama_lengkap'] ?? '-' }}</td>
+                                            <td>{{ $ps['pasien']['tanggal_lahir'] ?? '-' }}</td>
+                                            <td>{{ $ps['pasien']['jenis_kelamin'] ?? '-' }}</td>
+                                            <td>{{ $ps['pasien']['no_ktp'] ?? '-' }}</td>
+                                            <td>{{ $ps['pasien']['alamat'] ?? '-' }}</td>
+                                            <td>{{ $ps['pasien']['telepon'] ?? '-' }}</td>
                                             <td>{{ \Carbon\Carbon::parse($ps['created_at'])->format('Y-m-d') }}</td>
                                             <td>
-                                                @if($ps['status'] == "terjadwal")
-                                                <a href="{{ url('perlu-tindakan/' . $ps['id_tindakan']) }}">
+                                                @if($ps['status_kunjungan'] == "terjadwal")
+                                                <a href="{{ url('perlu-tindakan/' . $ps['id_kunjungan']) }}">
                                                     <span class="badge bg-danger">Perlu Tindakan</span>
                                                 </a>
-                                                @elseif($ps['status'] == "selesai")
+                                                @elseif($ps['status_kunjungan'] == "selesai")
                                                 <span class="badge bg-success">Diberi Resep</span>
                                                 @endif
                                             </td>
@@ -83,7 +83,7 @@
                             <h3 class="card-title">Riwayat Tindakan & Pemeriksaan</h3>
                         </div>
                         <div class="card-body">
-                            <table id="datatable-main" class="table table-bordered">
+                            <table id="datatable-main-history" class="table table-bordered">
                                 <thead>
                                     <th>#</th>
                                     <th>Nomor Rekam Medis</th>
@@ -98,23 +98,23 @@
                                 </thead>
                                 <tbody>
                                     @foreach($pasien as $ps)
-                                        @if($ps['status'] == "selesai")
+                                        @if($ps['status_kunjungan'] == "selesai")
                                         <tr class="align-middle">
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $ps['visit']['pasien']['no_rekam_medis'] ?? '-'}}</td>
-                                            <td>{{ $ps['visit']['pasien']['nama_lengkap'] ?? '-' }}</td>
-                                            <td>{{ $ps['visit']['pasien']['tanggal_lahir'] ?? '-' }}</td>
-                                            <td>{{ $ps['visit']['pasien']['jenis_kelamin'] ?? '-' }}</td>
-                                            <td>{{ $ps['visit']['pasien']['no_ktp'] ?? '-' }}</td>
-                                            <td>{{ $ps['visit']['pasien']['alamat'] ?? '-' }}</td>
-                                            <td>{{ $ps['visit']['pasien']['telepon'] ?? '-' }}</td>
+                                            <td>{{ $ps['catatan_medis']['no_rekam_medis'] ?? '-'}}</td>
+                                            <td>{{ $ps['pasien']['nama_lengkap'] ?? '-' }}</td>
+                                            <td>{{ $ps['pasien']['tanggal_lahir'] ?? '-' }}</td>
+                                            <td>{{ $ps['pasien']['jenis_kelamin'] ?? '-' }}</td>
+                                            <td>{{ $ps['pasien']['no_ktp'] ?? '-' }}</td>
+                                            <td>{{ $ps['pasien']['alamat'] ?? '-' }}</td>
+                                            <td>{{ $ps['pasien']['telepon'] ?? '-' }}</td>
                                             <td>{{ \Carbon\Carbon::parse($ps['created_at'])->format('Y-m-d') }}</td>
                                             <td>
-                                                @if($ps['status'] == "terjadwal")
-                                                <a href="{{ url('perlu-tindakan/' . $ps['id_tindakan']) }}">
+                                                @if($ps['status_kunjungan'] == "terjadwal")
+                                                <a href="{{ url('perlu-tindakan/' . $ps['id_kunjungan']) }}">
                                                     <span class="badge bg-danger">Perlu Tindakan</span>
                                                 </a>
-                                                @elseif($ps['status'] == "selesai")
+                                                @elseif($ps['status_kunjungan'] == "selesai")
                                                 <span class="badge bg-success">Diberi Resep</span>
                                                 @endif
                                             </td>
@@ -133,6 +133,10 @@
 @push('js')
     <script>
         $('.toast').toast('show')
+        $(document).ready(function() {
+            $('#datatable-main-upcoming').DataTable();
+            $('#datatable-main-history').DataTable();
+        });
     </script>
 @endpush
 

@@ -33,37 +33,37 @@
                                         <div class="col-md-6">
                                             <div class="d-flex mb-2">
                                                 <div style="width: 150px;">Nama Pasien</div>
-                                                <div>= {{ $tindakan['visit']['pasien']['nama_lengkap'] }}</div>
+                                                <div>= {{ $tindakan['pasien']['nama_lengkap'] }}</div>
                                             </div>
                                             <div class="d-flex mb-2">
                                                 <div style="width: 150px;">Tanggal Lahir</div>
-                                                <div>= {{ $tindakan['visit']['pasien']['tanggal_lahir'] }}</div>
+                                                <div>= {{ $tindakan['pasien']['tanggal_lahir'] }}</div>
                                             </div>
                                             <div class="d-flex mb-2">
                                                 <div style="width: 150px;">Jenis Kelamin</div>
-                                                <div>= {{ $tindakan['visit']['pasien']['jenis_kelamin'] }}</div>
+                                                <div>= {{ $tindakan['pasien']['jenis_kelamin'] }}</div>
                                             </div>
                                             <div class="d-flex mb-2">
                                                 <div style="width: 150px;">No KTP</div>
-                                                <div>= {{ $tindakan['visit']['pasien']['no_ktp'] }}</div>
+                                                <div>= {{ $tindakan['pasien']['no_ktp'] }}</div>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="d-flex mb-2">
                                                 <div style="width: 180px;">Nomor Rekam Medis</div>
-                                                <div>= {{ $tindakan['visit']['pasien']['no_rekam_medis'] }}</div>
+                                                <div>= {{ $tindakan['pasien']['no_rekam_medis'] }}</div>
                                             </div>
                                             <div class="d-flex mb-2">
                                                 <div style="width: 180px;">Tanggal Pemeriksaan</div>
-                                                <div>= {{ \Carbon\Carbon::parse($tindakan['visit']['tanggal_kunjungan'])->format('Y-m-d') }}</div>
+                                                <div>= {{ \Carbon\Carbon::parse($tindakan['tanggal_kunjungan'])->format('Y-m-d') }}</div>
                                             </div>
                                             <div class="d-flex mb-2">
                                                 <div style="width: 180px;">Alamat</div>
-                                                <div>= {{ $tindakan['visit']['pasien']['alamat'] }}</div>
+                                                <div>= {{ $tindakan['pasien']['alamat'] }}</div>
                                             </div>
                                             <div class="d-flex mb-2">
                                                 <div style="width: 180px;">No Telepon</div>
-                                                <div>= {{ $tindakan['visit']['pasien']['telepon'] }}</div>
+                                                <div>= {{ $tindakan['pasien']['telepon'] }}</div>
                                             </div>
                                         </div>
                                     </div>

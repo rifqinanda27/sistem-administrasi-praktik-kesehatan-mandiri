@@ -29,7 +29,7 @@ class TindakanController extends Controller
         $idDokterLogin = $user['id'];
 
         // Ambil data tindakan
-        $response = Http::withToken($token)->get("$this->apiBaseUrl/tindakan");
+        $response = Http::withToken($token)->get("$this->apiBaseUrl/kunjungan");
         if (!$response->successful()) {
             return back()->withErrors(['message' => 'Gagal mengambil data tindakan']);
         }
@@ -38,7 +38,7 @@ class TindakanController extends Controller
 
         // Filter tindakan berdasarkan id_dokter yang sesuai
         $pasien = collect($allTindakan)->filter(function ($item) use ($idDokterLogin) {
-            return isset($item['visit']['dokter']['id']) && $item['visit']['dokter']['id'] == $idDokterLogin;
+            return isset($item['dokter']['id']) && $item['dokter']['id'] == $idDokterLogin;
         });
 
         return view('dokterumum.tindakan.index', compact('pasien'));
@@ -49,7 +49,7 @@ class TindakanController extends Controller
     {
         $token = session('api_token');
 
-        $response = Http::withToken($token)->get("$this->apiBaseUrl/tindakan/{$id}");
+        $response = Http::withToken($token)->get("$this->apiBaseUrl/kunjungan/{$id}");
 
         if (!$response->successful()) {
             return back()->withErrors(['message' => 'Gagal mengambil data users']);
@@ -124,7 +124,7 @@ class TindakanController extends Controller
     {
         $token = session('api_token');
 
-        $response = Http::withToken($token)->get("$this->apiBaseUrl/tindakan/{$id}");
+        $response = Http::withToken($token)->get("$this->apiBaseUrl/kunjungan/{$id}");
 
         if (!$response->successful()) {
             return back()->withErrors(['message' => 'Gagal mengambil data users']);
@@ -139,7 +139,7 @@ class TindakanController extends Controller
     {
         $token = session('api_token');
 
-        $response = Http::withToken($token)->get("$this->apiBaseUrl/tindakan/{$id}");
+        $response = Http::withToken($token)->get("$this->apiBaseUrl/kunjungan/{$id}");
 
         if (!$response->successful()) {
             return back()->withErrors(['message' => 'Gagal mengambil data users']);
@@ -166,15 +166,15 @@ class TindakanController extends Controller
             return back()->withErrors(['message' => $response->json('message') ?? 'Gagal membuat resep']);
         }
 
-        $tindakan = Http::withToken($token)->put("$this->apiBaseUrl/tindakan/{$request->id_tindakan}", [
-            'status' => 'selesai',
+        $tindakan = Http::withToken($token)->put("$this->apiBaseUrl/kunjungan/{$request->id_kunjungan}", [
+            'status_kunjungan' => 'selesai',
         ]);
 
         if (!$tindakan->successful()) {
             return back()->withErrors(['message' => 'Gagal memperbarui user']);
         }
 
-        return redirect()->route('tindakan-complete', ['id' => $request->id_tindakan]);
+        return redirect()->route('tindakan-complete', ['id' => $request->id_kunjungan]);
     }
 
     public function tindakan_complete($id)

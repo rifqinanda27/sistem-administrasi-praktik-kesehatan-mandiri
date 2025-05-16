@@ -40,6 +40,6 @@ class Visit extends Model
 
     public function catatan_medis()
     {
-        return $this->belongsTo(CatatanMedis::class, 'id_kunjungan');
+        return $this->belongsTo(CatatanMedis::class, 'id_kunjungan', 'id_kunjungan');
     }
 }
