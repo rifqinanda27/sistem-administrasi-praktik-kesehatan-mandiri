@@ -171,14 +171,8 @@
         margin-right: 0;
     }
 
-
-
-
     
     /* Navigation Steps tindakan */
- 
-   
-    
     .stepper-wrapper {
         display: flex;
         justify-content: center;
@@ -245,8 +239,14 @@
         background-color: #014A5B; /* garis biru sampai step aktif */
     }
 
-    
-    
+    /* warna tabel rekam medis */
+    .bg-tabel-medis {
+        background-color:rgb(92, 95, 96) !important;
+        color:rgb(229, 231, 231) !important;
+        border-radius: 10px; /* Sesuaikan nilai sesuai kebutuhan */
+    }
+
+
     </style>
 
 </head>

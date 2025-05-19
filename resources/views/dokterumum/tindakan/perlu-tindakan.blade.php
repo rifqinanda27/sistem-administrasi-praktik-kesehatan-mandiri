@@ -157,7 +157,7 @@
                                                         <div style="width: 120px;" class="my-auto">BB</div>
                                                         <div class="d-flex align-items-center">
                                                             <span class="mx-1">=</span>
-                                                            <input type="text" class="form-control" name="berat_badan">
+                                                            <input type="text" class="form-control" name="berat_badan" placeholder="0">
                                                             @error('keluhan_utama')
                                                                 <div class="invalid-feedback">{{ $message }}</div>
                                                             @enderror
@@ -169,7 +169,7 @@
                                                         <div style="width: 120px;" class="my-auto">TB</div>
                                                         <div class="d-flex align-items-center">
                                                             <span class="mx-1">=</span>
-                                                            <input type="text" class="form-control" name="tinggi_badan">
+                                                            <input type="text" class="form-control" name="tinggi_badan" placeholder="0">
                                                             @error('keluhan_utama')
                                                                 <div class="invalid-feedback">{{ $message }}</div>
                                                             @enderror
@@ -181,7 +181,7 @@
                                                         <div style="width: 120px;" class="my-auto">TD</div>
                                                         <div class="d-flex align-items-center">
                                                             <span class="mx-1">=</span>
-                                                            <input type="text" class="form-control" name="tekanan_darah">
+                                                            <input type="text" class="form-control" name="tekanan_darah" placeholder="0/0">
                                                             @error('keluhan_utama')
                                                                 <div class="invalid-feedback">{{ $message }}</div>
                                                             @enderror
@@ -193,7 +193,7 @@
                                                         <div style="width: 120px;" class="my-auto">N</div>
                                                         <div class="d-flex align-items-center">
                                                             <span class="mx-1">=</span>
-                                                            <input type="text" class="form-control" name="neurologi">
+                                                            <input type="text" class="form-control" name="neurologi" placeholder="0">
                                                             @error('keluhan_utama')
                                                                 <div class="invalid-feedback">{{ $message }}</div>
                                                             @enderror
@@ -205,7 +205,7 @@
                                                         <div style="width: 120px;" class="my-auto">RR</div>
                                                         <div class="d-flex align-items-center">
                                                             <span class="mx-1">=</span>
-                                                            <input type="text" class="form-control" name="frekuensi_nafas">
+                                                            <input type="text" class="form-control" name="frekuensi_nafas" placeholder="0">
                                                             @error('keluhan_utama')
                                                                 <div class="invalid-feedback">{{ $message }}</div>
                                                             @enderror
@@ -217,7 +217,7 @@
                                                         <div style="width: 120px;" class="my-auto">S</div>
                                                         <div class="d-flex align-items-center">
                                                             <span class="mx-1">=</span>
-                                                            <input type="text" class="form-control" name="suhu_tubuh">
+                                                            <input type="text" class="form-control" name="suhu_tubuh" placeholder="0">
                                                             @error('keluhan_utama')
                                                                 <div class="invalid-feedback">{{ $message }}</div>
                                                             @enderror
@@ -326,6 +326,7 @@
                 $('form').submit();
             });
         });
+
     </script>
 @endpush
 

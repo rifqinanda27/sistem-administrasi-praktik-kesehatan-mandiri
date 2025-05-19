@@ -99,7 +99,11 @@
                                             <td>{{ $pasien['telepon'] }}</td>
                                             <td>{{ $pasien['status_aktif'] ? 'Pasien Aktif' : 'Tidak Aktif' }}</td>
                                             <td>
-                                                <button class="btn btn-primary" onclick="window.location.href='rekam-medis/{{ $pasien['id_pasien'] }}'">Lihat</button>
+                                                <button class="btn btn-sm btn-outline-primary px-4" onclick="window.location.href='rekam-medis/{{ $pasien['id_pasien'] }}'">
+                                                    <span class="fas fa-eye" style="font-size: 20px;"></span>
+                                                </button>
+
+                                                <!-- <button class="btn btn-sm btn-outline-primary px-4" onclick="window.location.href='rekam-medis/{{ $pasien['id_pasien'] }}'">Lihat</button> -->
                                             </td>
                                         </tr>
                                     @endforeach

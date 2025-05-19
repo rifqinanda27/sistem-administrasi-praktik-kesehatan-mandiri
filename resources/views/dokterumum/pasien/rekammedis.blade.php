@@ -114,7 +114,7 @@
                             <div id="visits-content" class="tab-content active">
                                 <div class="table-responsive">
                                     <table class="table table-bordered m-0">
-                                        <thead class="bg-light">
+                                        <thead class="bg-tabel-medis ">
                                             <tr>
                                                 <th class="py-3">Tanggal Kunjungan</th>
                                                 <th class="py-3">Tipe Kunjungan</th>
@@ -131,7 +131,7 @@
                                                 <td class="py-3">BPJS</td>
                                                 <td class="py-3">{{ $kunjungan['id_dokter'] ?? '-' }}</td>
                                                 <td class="py-3 text-center">
-                                                    <button class="btn btn-sm btn-outline-secondary px-4">Lihat</button>
+                                                    <button class="btn btn-sm btn-outline-primary px-4"><span class="fas fa-eye" style="font-size: 20px;"></span></button>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -144,7 +144,7 @@
                             <div id="medications-content" class="tab-content d-none">
                                 <div class="table-responsive">
                                     <table class="table table-bordered m-0">
-                                        <thead class="bg-light">
+                                        <thead class="bg-tabel-medis ">
                                             <tr>
                                                 <th class="py-3">Tanggal Pemberian</th>
                                                 <th class="py-3">Nama Obat</th>
@@ -170,7 +170,9 @@
                             <div id="labs-content" class="tab-content d-none">
                                 <div class="table-responsive">
                                     <table class="table table-bordered m-0">
-                                        <thead class="bg-light">
+                                        <!-- <thead class="bg-primary"> -->
+                                        <thead class="bg-tabel-medis">
+
                                             <tr>
                                                 <th class="py-3">Tanggal Pemeriksaan</th>
                                                 <th class="py-3">Jenis Pemeriksaan</th>
@@ -188,7 +190,7 @@
                                                 <td class="py-3">Normal</td>
                                                 <td class="py-3">Tidak Perlu Tindakan Lanjut</td>
                                                 <td class="py-3 text-center">
-                                                    <button class="btn btn-sm btn-outline-secondary px-4">Lihat</button>
+                                                    <button class="btn btn-sm btn-outline-primary px-4"><span class="fas fa-eye" style="font-size: 20px;"></span></button>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -209,32 +211,36 @@
 
 @push('js')
 <script>
-    $(document).ready(function() {
-        // Simple tab system
-        $('#visits-tab').addClass('active');
+$(document).ready(function() {
+    // Initialize the first tab as active
+    $('#visits-tab').addClass('active btn-primary');
+    $('#visits-content').removeClass('d-none');
+    
+    // When 'Visits' tab is clicked
+    $('#visits-tab').click(function() {
+        $('.btn').removeClass('active btn-primary');
+        $(this).addClass('active btn-primary');
+        $('.tab-content').addClass('d-none');
         $('#visits-content').removeClass('d-none');
-        
-        $('#visits-tab').click(function() {
-            $('.btn').removeClass('active');
-            $(this).addClass('active');
-            $('.tab-content').addClass('d-none');
-            $('#visits-content').removeClass('d-none');
-        });
-        
-        $('#medications-tab').click(function() {
-            $('.btn').removeClass('active');
-            $(this).addClass('active');
-            $('.tab-content').addClass('d-none');
-            $('#medications-content').removeClass('d-none');
-        });
-        
-        $('#labs-tab').click(function() {
-            $('.btn').removeClass('active');
-            $(this).addClass('active');
-            $('.tab-content').addClass('d-none');
-            $('#labs-content').removeClass('d-none');
-        });
     });
+    
+    // When 'Medications' tab is clicked
+    $('#medications-tab').click(function() {
+        $('.btn').removeClass('active btn-primary');
+        $(this).addClass('active btn-primary');
+        $('.tab-content').addClass('d-none');
+        $('#medications-content').removeClass('d-none');
+    });
+    
+    // When 'Labs' tab is clicked
+    $('#labs-tab').click(function() {
+        $('.btn').removeClass('active btn-primary');
+        $(this).addClass('active btn-primary');
+        $('.tab-content').addClass('d-none');
+        $('#labs-content').removeClass('d-none');
+    });
+});
+
 </script>
 @endpush
 
