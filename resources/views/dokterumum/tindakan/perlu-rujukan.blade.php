@@ -169,5 +169,6 @@
 @push('js')
     <script>
         $('.toast').toast('show')
+
     </script>
 @endpush
