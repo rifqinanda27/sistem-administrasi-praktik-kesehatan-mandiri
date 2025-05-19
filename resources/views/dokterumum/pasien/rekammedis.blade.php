@@ -131,7 +131,7 @@
                                                 <td class="py-3">BPJS</td>
                                                 <td class="py-3">{{ $kunjungan['id_dokter'] ?? '-' }}</td>
                                                 <td class="py-3 text-center">
-                                                    <button class="btn btn-sm btn-outline-primary px-4"><span class="fas fa-eye" style="font-size: 20px;"></span></button>
+                                                    <button class="btn btn-sm custom-outline-btn px-4"><span class="fas fa-eye" style="font-size: 20px;"></span></button>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -190,7 +190,7 @@
                                                 <td class="py-3">Normal</td>
                                                 <td class="py-3">Tidak Perlu Tindakan Lanjut</td>
                                                 <td class="py-3 text-center">
-                                                    <button class="btn btn-sm btn-outline-primary px-4"><span class="fas fa-eye" style="font-size: 20px;"></span></button>
+                                                    <button class="btn btn-sm custom-outline-btn px-4"><span class="fas fa-eye" style="font-size: 20px;"></span></button>
                                                 </td>
                                             </tr>
                                         </tbody>

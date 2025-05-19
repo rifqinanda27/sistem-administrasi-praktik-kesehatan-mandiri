@@ -157,7 +157,7 @@
                                                         <div style="width: 120px;" class="my-auto">BB</div>
                                                         <div class="d-flex align-items-center">
                                                             <span class="mx-1">=</span>
-                                                            <input type="text" class="form-control" name="berat_badan" placeholder="0">
+                                                            <input type="text" class="form-control" name="berat_badan" placeholder="Berat Badan">
                                                             @error('keluhan_utama')
                                                                 <div class="invalid-feedback">{{ $message }}</div>
                                                             @enderror
@@ -169,7 +169,7 @@
                                                         <div style="width: 120px;" class="my-auto">TB</div>
                                                         <div class="d-flex align-items-center">
                                                             <span class="mx-1">=</span>
-                                                            <input type="text" class="form-control" name="tinggi_badan" placeholder="0">
+                                                            <input type="text" class="form-control" name="tinggi_badan" placeholder="Tinggi Badan">
                                                             @error('keluhan_utama')
                                                                 <div class="invalid-feedback">{{ $message }}</div>
                                                             @enderror
@@ -181,7 +181,7 @@
                                                         <div style="width: 120px;" class="my-auto">TD</div>
                                                         <div class="d-flex align-items-center">
                                                             <span class="mx-1">=</span>
-                                                            <input type="text" class="form-control" name="tekanan_darah" placeholder="0/0">
+                                                            <input type="text" id="tekananDarah" class="form-control" name="tekanan_darah" placeholder="Tekanan Darah">
                                                             @error('keluhan_utama')
                                                                 <div class="invalid-feedback">{{ $message }}</div>
                                                             @enderror
@@ -193,7 +193,7 @@
                                                         <div style="width: 120px;" class="my-auto">N</div>
                                                         <div class="d-flex align-items-center">
                                                             <span class="mx-1">=</span>
-                                                            <input type="text" class="form-control" name="neurologi" placeholder="0">
+                                                            <input type="text" class="form-control" name="neurologi" placeholder="Neurologi">
                                                             @error('keluhan_utama')
                                                                 <div class="invalid-feedback">{{ $message }}</div>
                                                             @enderror
@@ -205,7 +205,7 @@
                                                         <div style="width: 120px;" class="my-auto">RR</div>
                                                         <div class="d-flex align-items-center">
                                                             <span class="mx-1">=</span>
-                                                            <input type="text" class="form-control" name="frekuensi_nafas" placeholder="0">
+                                                            <input type="text" class="form-control" name="Frekuensi_nafas" placeholder="frekuensi Nafas">
                                                             @error('keluhan_utama')
                                                                 <div class="invalid-feedback">{{ $message }}</div>
                                                             @enderror
@@ -217,7 +217,7 @@
                                                         <div style="width: 120px;" class="my-auto">S</div>
                                                         <div class="d-flex align-items-center">
                                                             <span class="mx-1">=</span>
-                                                            <input type="text" class="form-control" name="suhu_tubuh" placeholder="0">
+                                                            <input type="text" class="form-control" name="suhu_tubuh" placeholder="Suhu Tubuh">
                                                             @error('keluhan_utama')
                                                                 <div class="invalid-feedback">{{ $message }}</div>
                                                             @enderror
@@ -326,6 +326,19 @@
                 $('form').submit();
             });
         });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const input = document.getElementById('tekananDarah');
+
+            input.addEventListener('input', function (e) {
+                let value = input.value.replace(/\D/g, ''); // Hanya angka
+                if (value.length > 3) {
+                value = value.slice(0, 3) + '/' + value.slice(3, 5);
+                }
+                input.value = value;
+            });
+        });
+
 
     </script>
 @endpush
