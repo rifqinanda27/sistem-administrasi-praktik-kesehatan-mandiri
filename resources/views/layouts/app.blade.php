@@ -241,10 +241,37 @@
 
     /* warna tabel rekam medis */
     .bg-tabel-medis {
-        background-color:rgb(92, 95, 96) !important;
+        background-color:rgb(75, 85, 87) !important;
         color:rgb(229, 231, 231) !important;
-        border-radius: 10px; /* Sesuaikan nilai sesuai kebutuhan */
+        border-radius: 10px; 
     }
+
+    /* custom Button */
+    .custom-outline-btn {
+        background-color: transparent;
+        color: #1B6B93;
+        border: 1px solid #1B6B93;
+        transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+    }
+
+    .custom-outline-btn .eye-icon {
+        font-size: 20px;
+        color: #1B6B93;
+        transition: color 0.3s;
+    }
+
+    .custom-outline-btn:hover {
+        background-color: #1B6B93;
+        color: white;
+    }
+
+    .custom-outline-btn:hover .eye-icon {
+        color: white;
+    }
+
+
+
+
 
 
     </style>
