@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\LaboratoriumController;
 use App\Http\Controllers\Api\JenisPemeriksaanLabController;
 use App\Http\Controllers\Api\PermintaanLabController;
 use App\Http\Controllers\Api\HasilLabController;
+use App\Http\Controllers\Api\ApotekerController;
 use App\Http\Controllers\Api\DokterController;
 
 // Route::get('/user', function (Request $request) {
@@ -68,4 +69,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('hasil-lab', HasilLabController::class);
     });
     
+    Route::middleware('role:apoteker')->group(function() {
+        Route::get('detail-resep', [ApotekerController::class, 'detail_resep_index']);
+        Route::get('instruksi', [ApotekerController::class, 'instruksi_index']);
+    });
+
 });
