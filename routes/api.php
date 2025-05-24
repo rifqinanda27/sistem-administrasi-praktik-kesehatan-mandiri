@@ -49,6 +49,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/cari-dokter', [DokterController::class, 'index']);
         Route::get('/tipe-kunjungan', [VisitController::class, 'tipe_kunjungan']);
         Route::get('/status-kunjungan', [VisitController::class, 'status_kunjungan']);
+        Route::apiResource('/catatan-medis', CatatanMedisController::class);
     });
 
     Route::middleware('role:dokterumum,apoteker')->group(function () {
@@ -58,7 +59,6 @@ Route::middleware('auth:sanctum')->group(function () {
     });
     
     Route::middleware('role:dokterumum')->group(function () {
-        Route::apiResource('/catatan-medis', CatatanMedisController::class);
         Route::apiResource('/tindakan', TindakanController::class);
     });
 

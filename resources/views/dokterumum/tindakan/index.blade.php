@@ -62,12 +62,12 @@
                                             <td>{{ $ps['pasien']['telepon'] ?? '-' }}</td>
                                             <td>{{ \Carbon\Carbon::parse($ps['created_at'])->format('Y-m-d') }}</td>
                                             <td>
-                                                @if($ps['status_kunjungan'] == "terjadwal")
-                                                <a href="{{ url('perlu-tindakan/' . $ps['id_kunjungan']) }}">
-                                                    <span class="badge bg-danger">Perlu Tindakan</span>
-                                                </a>
+                                                @if($ps['status_kunjungan'] == "terjadwal" && isset($ps['catatan_medis']['id_catatan']))
+                                                    <a href="{{ url('perlu-tindakan/' . $ps['catatan_medis']['id_catatan']) }}">
+                                                        <span class="badge bg-danger">Perlu Tindakan</span>
+                                                    </a>
                                                 @elseif($ps['status_kunjungan'] == "selesai")
-                                                <span class="badge bg-success">Diberi Resep</span>
+                                                    <span class="badge bg-success">Diberi Resep</span>
                                                 @endif
                                             </td>
                                         </tr>

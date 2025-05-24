@@ -11,12 +11,12 @@ class CatatanMedisController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:dokterumum');
+        $this->middleware('role:dokterumum,resepsionis');
     }
 
     public function index()
     {
-        $catatan = CatatanMedis::all();
+        $catatan = CatatanMedis::with('kunjungan', 'kunjungan.pasien', 'kunjungan.dokter', 'kunjungan.dokter.dokter_detail', 'kunjungan.catatan_medis:id_catatan,id_kunjungan,no_rekam_medis')->get();
         return response()->json($catatan);
     }
 
@@ -91,5 +91,19 @@ class CatatanMedisController extends Controller
         $catatan->delete();
 
         return response()->json(['message' => 'Catatan medis berhasil dihapus.']);
+    }
+
+    public function show($id)
+    {
+        $catatan = CatatanMedis::with('kunjungan', 'kunjungan.pasien', 'kunjungan.dokter', 'kunjungan.dokter.dokter_detail', 'kunjungan.catatan_medis:id_catatan,id_kunjungan,no_rekam_medis')->findOrFail($id);
+
+        if (!$catatan) {
+            return response()->json(['message' => 'Catatan medis tidak ditemukan.'], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $catatan
+        ]);
     }
 }

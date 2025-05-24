@@ -63,16 +63,16 @@
                                         @endforeach
                                     </select>
                                 </div>
-
-                                <div class="form-group">
-                                    <label>Catatan</label>
-                                    <textarea name="catatan" id="" cols="10" rows="3" class="form-control"></textarea>
-                                </div>
-
                             </div>
                             <div class="card-footer">
-                                <button type="submit" class="btn btn-info btn-block btn-primary"><i class="fa fa-save"></i>
-                                    Simpan</button>
+                                <div class="row">
+                                    <div class="d-flex col-6 justify-content-start ">
+                                        <a class="btn btn-secondary" href="{{ route('kunjungan.index') }}">Kembali</a>
+                                    </div>
+                                    <div class="d-flex col-6 justify-content-end ">
+                                        <button type="submit" class="btn btn-primary">Lanjut</button>
+                                    </div>
+                                </div>
                             </div>
                         </form>
                     </div>

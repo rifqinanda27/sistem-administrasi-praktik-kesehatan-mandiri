@@ -27,7 +27,7 @@
                     @csrf
                         <div class="card card-primary card-outline">
                             <div class="card-body">
-                            <h5 class="font-weight-bold mb-3">Form Resep Obat</h5>
+                            <h5 class="font-weight-bold mb-3">Form Diagnosa</h5>
                                 <!-- Identitas Pasien -->
                                 <div class="card">
                                     <div class="card-body">
@@ -76,13 +76,43 @@
                                             </div>
                                         </div>
                                         
+                                        <!-- Diagnosa -->
+                                        <div class="mt-4">
+                                            <h5 class="font-weight-bold">II. Diagnosa</h5>
+                                            <div class="ml-3 mt-2">
+                                                <div class="d-flex mt-2">
+                                                    <div style="width: 250px;" class="my-auto">Diagnosa Sementara</div>
+                                                    <div class="d-flex align-items-center">
+                                                        <input type="text" class="form-control bg-light" name="diagnosa_sementara">
+                                                        @error('keluhan_utama')
+                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="d-flex mt-2">
+                                                    <div style="width: 250px;" class="my-auto">Diagnosa Tambahan</div>
+                                                    <div class="d-flex align-items-center">
+                                                        <input type="text" class="form-control bg-light" name="diagnosa_tambahan">
+                                                        @error('keluhan_utama')
+                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <!-- Resep Obat -->
-                                        <h5 class="font-weight-bold mt-4">II. Resep Obat</h5>
+                                        <h5 class="font-weight-bold mt-4">III. Resep Obat</h5>
                                         <input type="hidden" value="{{ $tindakan['id_kunjungan'] }}" name="id_kunjungan">
                                         <input type="hidden" value="{{ $tindakan['id_dokter'] }}" name="id_dokter">
                                         <div class="mt-3">
                                             <textarea class="form-control" rows="5" placeholder="Masukkan resep obat di sini..." name="resep_obat"></textarea>
                                         </div>
+                                        <!-- <div class="mt-3">
+                                            <label>Pilih Obat</label>
+                                            <select id="pasien" name="id_pasien" class="form-control"></select>
+                                        </div> -->
                                         <div class="row">
                                             <div class="d-flex col-6 justify-content-start mt-4">
                                                 <button class="btn btn-secondary" onclick="window.history.back()">

@@ -49,8 +49,8 @@ class TindakanController extends Controller
     {
         $token = session('api_token');
 
-        $response = Http::withToken($token)->get("$this->apiBaseUrl/kunjungan/{$id}");
-
+        $response = Http::withToken($token)->get("$this->apiBaseUrl/catatan-medis/{$id}");
+        
         if (!$response->successful()) {
             return back()->withErrors(['message' => 'Gagal mengambil data users']);
         }
@@ -129,7 +129,7 @@ class TindakanController extends Controller
         if (!$response->successful()) {
             return back()->withErrors(['message' => 'Gagal mengambil data users']);
         }
-
+        
         $tindakan = $response->json('data');
 
         return view('dokterumum.tindakan.tidak-perlu-rujukan', compact('tindakan'));
@@ -180,5 +180,33 @@ class TindakanController extends Controller
     public function tindakan_complete($id)
     {
         return view('dokterumum.tindakan.complete');
+    }
+
+    public function cari_obat(Request $request)
+    {
+        $token = session('api_token');
+        $search = strtolower($request->input('term'));
+
+        $response = Http::withToken($token)->get(config('services.api.base_url') . '/obat');
+
+        if (!$response->successful()) {
+            return response()->json([]);
+        }
+
+        $allObat = $response->json('data');
+
+        // Filter manual berdasarkan nama_lengkap
+        $filtered = collect($allObat)->filter(function ($obat) use ($search) {
+            return str_contains(strtolower($obat['nama_obat']), $search);
+        });
+
+        $result = $filtered->map(function ($obat) {
+            return [
+                'id' => $obat['id_obat'],
+                'text' => $obat['nama_obat']
+            ];
+        })->values();
+
+        return response()->json($result);
     }
 }

@@ -41,12 +41,15 @@ Route::middleware('check.api.token')->group(function () {
     Route::get('rekam-medis/{id}', [PasienController::class, 'rekam_medis']);
     Route::post('perlu-tindakan', [TindakanController::class, 'tambah_catatan_medis'])->name('perlu-tindakan-store');
     Route::post('perlu-tindakan/resep-obat-dokter', [TindakanController::class, 'resep_obat_dokter'])->name('resep-obat-dokter');
+    Route::get('/cari-obat', [TindakanController::class, 'cari_obat']);
     
     // Resepsionis
     Route::resource('pasien-resepsionis', ResepsionisController::class);
     Route::get('kunjungan-pasien', [ResepsionisController::class, 'kunjungan_index'])->name('kunjungan.index');
     Route::get('kunjungan-pasien/create', [ResepsionisController::class, 'kunjungan_create'])->name('kunjungan.create');
+    Route::get('kunjungan-pasien/{id_kunjungan}/anamnesa', [ResepsionisController::class, 'anamnesa_create'])->name('anamnesa');
     Route::get('/cari-pasien', [ResepsionisController::class, 'cari_pasien']);
     Route::get('/cari-dokter', [ResepsionisController::class, 'cari_dokter']);
     Route::post('kunjungan-pasien', [ResepsionisController::class, 'kunjungan_store'])->name('kunjungan.store');
+    Route::post('anamnesa-pasien', [ResepsionisController::class, 'anamnesa_store'])->name('anamnesa.store');
 });

@@ -31,4 +31,10 @@ class CatatanMedis extends Model
         'diagnosa_tambahan',
         'tanggal',
     ];
+
+    // Relasi ke kunjungan
+    public function kunjungan()
+    {
+        return $this->belongsTo(Visit::class, 'id_kunjungan');
+    }
 }
