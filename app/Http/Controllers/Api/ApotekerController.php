@@ -13,7 +13,7 @@ class ApotekerController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:apoteker');
+        $this->middleware('role:apoteker,dokterumum');
     }
 
     public function detail_resep_index()
@@ -26,15 +26,15 @@ class ApotekerController extends Controller
         ]);
     }
 
-    public function detail_resep_store()
+    public function detail_resep_store(Request $request)
     {
         $data = $request->validate([
-            'id_resep' => 'required',
+            'id_dokter' => 'required',
             'id_obat' => 'required',
             'id_instruksi' => 'required',
         ]);
 
-        $detail_resep = detail_resep::create();
+        $detail_resep = detail_resep::create($data);
 
         return response()->json([
            'success'  => true,

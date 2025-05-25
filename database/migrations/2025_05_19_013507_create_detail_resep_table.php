@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('detail_resep', function (Blueprint $table) {
             $table->id('id_detail_resep');
 
-            $table->unsignedBigInteger('id_resep');
-            $table->unsignedBigInteger('id_obat');
-            $table->unsignedBigInteger('id_instruksi');
+            $table->unsignedBigInteger('id_resep')->nullable();
+            $table->unsignedBigInteger('id_obat')->nullable();
+            $table->unsignedBigInteger('id_instruksi')->nullable();
 
             $table->timestamps();
 

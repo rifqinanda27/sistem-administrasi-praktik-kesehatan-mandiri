@@ -13,7 +13,7 @@ class detail_resep extends Model
     protected $primaryKey = 'id_detail_resep';
 
     protected $fillable = [
-        'id_resep',
+        'id_dokter',
         'id_obat',
         'id_instruksi'
     ];

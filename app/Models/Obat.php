@@ -17,6 +17,11 @@ class Obat extends Model
         'bentuk',
         'dosis',
         'jumlah_stok',
+        'satuan',
+        'golongan',
+        'indikasi',
+        'tanggal_kadaluarsa',
+        'harga_satuan',
     ];
 
     public function resep()

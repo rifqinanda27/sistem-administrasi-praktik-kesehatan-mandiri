@@ -71,151 +71,107 @@
                             </div>
                             
                             <!-- Form Anamnesis dan Pemeriksaan -->
-                            <form method="POST" action="{{ route('perlu-tindakan-store') }}">
-                                @csrf
+                            <form>
                                 <div class="card">
                                     <div class="card-body">
-                                        <h5 class="font-weight-bold">Form Anamnesa dan Pemeriksaan Utama</h5>
-                                        <input type="hidden" value="{{ $tindakan['kunjungan']['id_kunjungan'] }}" name="id_kunjungan">
-                                        <input type="hidden" value="{{ now()->toDateString() }}" name="tanggal">
-                                        <input type="hidden" name="buat_rujukan" id="buatRujukan" value="">
-                                        <div class="mt-3">
-                                            <div class="font-weight-bold">I. Anamnesa</div>
-                                            <div class="ml-3 mt-2">
-                                                <div class="font-weight-bold">a. Keluhan</div>
-                                                
-                                                <div class="d-flex mt-2">
-                                                    <div style="width: 250px;" class="my-auto">Keluhan Utama</div>
-                                                    <div class="d-flex align-items-center">
-                                                        <span class="mr-2">=</span>
-                                                        <div>{{ $tindakan['keluhan_utama'] }}</div>
-                                                    </div>
-                                                </div>
-                                                
-                                                <div class="d-flex mt-2">
-                                                    <div style="width: 250px;" class="my-auto">Keluhan Tambahan</div>
-                                                    <div class="d-flex align-items-center">
-                                                        <span class="mr-2">=</span>
-                                                        <div>{{ $tindakan['keluhan_tambahan'] }}</div>
-                                                    </div>
-                                                </div>
+                                    <h5 class="font-weight-bold">Form Anamnesa dan Pemeriksaan Utama</h5>
+
+                                    <!-- Anamnesa -->
+                                    <div class="mt-3">
+                                        <div class="font-weight-bold">I. Anamnesa</div>
+
+                                        <!-- a. Keluhan -->
+                                        <div class="ml-3 mt-2">
+                                            <div class="font-weight-bold">a. Keluhan</div>
+
+                                            <div class="row mt-2">
+                                                <div class="col-md-4">Keluhan Utama</div>
+                                                <div class="col-md-8">= {{ $tindakan['keluhan_utama'] }}</div>
                                             </div>
-                                            
-                                            <div class="ml-3 mt-3">
-                                                <div class="font-weight-bold">b. Riwayat Penyakit</div>
-                                                
-                                                <div class="d-flex mt-2">
-                                                    <div style="width: 250px;" class="my-auto">Riwayat Penyakit Yang Pernah Atau Sedang Diderita Pasien</div>
-                                                    <div class="d-flex align-items-center">
-                                                        <span class="mr-2">=</span>
-                                                        <div>{{ $tindakan['riwayat_penyakit_pribadi'] }}</div>
-                                                    </div>
-                                                </div>
-                                                
-                                                <div class="d-flex mt-2">
-                                                    <div style="width: 250px;" class="my-auto">Riwayat Penyakit Keluarga Pasien</div>
-                                                    <div class="d-flex align-items-center">
-                                                        <span class="mr-2">=</span>
-                                                        <div>{{ $tindakan['riwayat_penyakit_keluarga'] }}</div>
-                                                    </div>
-                                                </div>
-                                                
-                                                <div class="d-flex mt-2">
-                                                    <div style="width: 250px;" class="my-auto">Kebiasaan Pasien</div>
-                                                    <div class="d-flex align-items-center">
-                                                        <span class="mr-2">=</span>
-                                                        <div>{{ $tindakan['kebiasaan_pasien'] }}</div>
-                                                    </div>
-                                                </div>
+                                            <div class="row mt-2">
+                                                <div class="col-md-4">Keluhan Tambahan</div>
+                                                <div class="col-md-8">= {{ $tindakan['keluhan_tambahan'] }}</div>
                                             </div>
                                         </div>
-                                        
-    
-                                        <div class="mt-4">
-                                            <div class="font-weight-bold">II. Pemeriksaan Fisik</div>
-                                            <div class="ml-3 mt-2">
-                                                <div class="font-weight-bold">a. Pemeriksaan Umum</div>
-                                                
-                                                <div class="d-flex flex-wrap mt-2">
-                                                    <!-- BB -->
-                                                    <div class="d-flex mr-4 mb-2">
-                                                        <div style="width: 120px;" class="my-auto">BB</div>
-                                                        <div class="d-flex align-items-center">
-                                                            <span class="mx-1">=</span>
-                                                            <div>{{ $tindakan['berat_badan'] }}</div>
-                                                        </div>
-                                                    </div>
-    
-                                                    <!-- TB -->
-                                                    <div class="d-flex mr-4 mb-2">
-                                                        <div style="width: 120px;" class="my-auto">TB</div>
-                                                        <div class="d-flex align-items-center">
-                                                            <span class="mx-1">=</span>
-                                                            <div>{{ $tindakan['tinggi_badan'] }}</div>
-                                                        </div>
-                                                    </div>
-    
-                                                    <!-- TD -->
-                                                    <div class="d-flex mr-4 mb-2">
-                                                        <div style="width: 120px;" class="my-auto">TD</div>
-                                                        <div class="d-flex align-items-center">
-                                                            <span class="mx-1">=</span>
-                                                            <div>{{ $tindakan['tekanan_darah'] }}</div>
-                                                        </div>
-                                                    </div>
-    
-                                                    <!-- N -->
-                                                    <div class="d-flex mr-4 mb-2">
-                                                        <div style="width: 120px;" class="my-auto">N</div>
-                                                        <div class="d-flex align-items-center">
-                                                            <span class="mx-1">=</span>
-                                                            <div>{{ $tindakan['neurologi'] }}</div>
-                                                        </div>
-                                                    </div>
-    
-                                                    <!-- RR -->
-                                                    <div class="d-flex mr-4 mb-2">
-                                                        <div style="width: 120px;" class="my-auto">RR</div>
-                                                        <div class="d-flex align-items-center">
-                                                            <span class="mx-1">=</span>
-                                                            <div>{{ $tindakan['frekuensi_nafas'] }}</div>
-                                                        </div>
-                                                    </div>
-    
-                                                    <!-- S -->
-                                                    <div class="d-flex mr-4 mb-2">
-                                                        <div style="width: 120px;" class="my-auto">S</div>
-                                                        <div class="d-flex align-items-center">
-                                                            <span class="mx-1">=</span>
-                                                            <div>{{ $tindakan['suhu_tubuh'] }}</div>
-                                                        </div>
-                                                    </div>
-    
-                                                    <!-- KU -->
-                                                    <div class="d-flex mr-4 mb-2">
-                                                        <div style="width: 120px;" class="my-auto">KU</div>
-                                                        <div class="d-flex align-items-center">
-                                                            <span class="mx-1">=</span>
-                                                            <div>{{ $tindakan['keadaan_umum'] }}</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+
+                                        <!-- b. Riwayat Penyakit -->
+                                        <div class="ml-3 mt-3">
+                                            <div class="font-weight-bold">b. Riwayat Penyakit</div>
+
+                                            <div class="row mt-2">
+                                                <div class="col-md-4">Riwayat Penyakit Yang Pernah Atau Sedang Diderita Pasien</div>
+                                                <div class="col-md-8">= {{ $tindakan['riwayat_penyakit_pribadi'] }}</div>
                                             </div>
-                                        </div>
-    
-                                        
-                          
-                                        <div class="row">
-                                            <div class="d-flex col-6 justify-content-start mt-4">
-                                                <button class="btn btn-secondary" onclick="window.history.back()">
-                                                    <i class=""></i> Kembali
-                                                </button>
+                                            <div class="row mt-2">
+                                                <div class="col-md-4">Riwayat Penyakit Keluarga Pasien</div>
+                                                <div class="col-md-8">= {{ $tindakan['riwayat_penyakit_keluarga'] }}</div>
                                             </div>
-                                            <div class="d-flex col-6 justify-content-end mt-4">
-                                                <button type="button" id="btnLanjut" class="btn btn-primary" data-toggle="modal" data-target="#modalRujukan">Lanjut</button>
+                                            <div class="row mt-2">
+                                                <div class="col-md-4">Kebiasaan Pasien</div>
+                                                <div class="col-md-8">= {{ $tindakan['kebiasaan_pasien'] }}</div>
                                             </div>
                                         </div>
                                     </div>
+
+                                    <!-- Pemeriksaan Fisik -->
+                                    <div class="mt-4">
+                                        <div class="font-weight-bold">II. Pemeriksaan Fisik</div>
+
+                                        <!-- a. Pemeriksaan Umum -->
+                                        <div class="ml-3 mt-2">
+                                            <div class="font-weight-bold">a. Pemeriksaan Umum</div>
+
+                                            <div class="row mt-2">
+                                                <!-- BB -->
+                                                <div class="col-6 col-md-3 mb-2">
+                                                    <p>BB = {{ $tindakan['berat_badan'] }}</p>
+                                                </div>
+
+                                                <!-- TB -->
+                                                <div class="col-6 col-md-3 mb-2">
+                                                    <p>TB = {{ $tindakan['tinggi_badan'] }}</p>
+                                                </div>
+
+                                                <!-- TD -->
+                                                <div class="col-6 col-md-3 mb-2">
+                                                    <p>TD = {{ $tindakan['tekanan_darah'] }}</p>
+                                                </div>
+
+                                                <!-- N -->
+                                                <div class="col-6 col-md-3 mb-2">
+                                                    <p>N  = {{ $tindakan['neurologi'] }}</p>
+                                                </div>
+
+                                                <!-- RR -->
+                                                <div class="col-6 col-md-3 mb-2">
+                                                    <p>RR = {{ $tindakan['frekuensi_nafas'] }}</p>
+                                                </div>
+
+                                                <!-- S -->
+                                                <div class="col-6 col-md-3 mb-2">
+                                                    <p>S  = {{ $tindakan['suhu_tubuh'] }}</p>
+                                                </div>
+
+                                                <!-- KU -->
+                                                <div class="col-6 col-md-3 mb-2">
+                                                    <p>KU = {{ $tindakan['keadaan_umum'] }}</p>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <!-- Tombol Navigasi -->
+                                    <div class="row">
+                                        <div class="col-6 d-flex justify-content-start mt-4">
+                                            <button class="btn btn-secondary" onclick="window.history.back()">Kembali</button>
+                                        </div>
+                                        <div class="col-6 d-flex justify-content-end mt-4">
+                                            <button type="button" id="btnLanjut" class="btn btn-primary" data-toggle="modal" data-target="#modalRujukan">Lanjut</button>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 </div>
                             </form>
                         </div>
@@ -241,24 +197,22 @@
             </div>
         </div>
     </div>
-    
 @endsection
 
 @push('js')
     <script>
+        
         $(document).ready(function() {
             $('#btnLanjut').click(function() {
                 $('#modalRujukan').modal('show');
             });
 
             $('#btnYaRujukan').click(function() {
-                $('#buatRujukan').val('ya'); // bisa juga true
-                $('form').submit();
+                window.location.href = "{{ route('perlu-rujukan', $tindakan['id_catatan']) }}";
             });
 
             $('#btnTidakRujukan').click(function() {
-                $('#buatRujukan').val('tidak'); // bisa juga false
-                $('form').submit();
+                window.location.href = "{{ route('tidak-perlu-rujukan', $tindakan['id_catatan']) }}";
             });
         });
 

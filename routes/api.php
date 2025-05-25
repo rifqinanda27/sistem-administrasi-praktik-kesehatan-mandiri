@@ -55,7 +55,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('role:dokterumum,apoteker')->group(function () {
         Route::apiResource('obat', ObatController::class);
         Route::apiResource('resep', ResepController::class);
+        Route::get('instruksi', [ApotekerController::class, 'instruksi_index']);
+        Route::post('detail-resep', [ApotekerController::class, 'detail_resep_store']);
         // Route::get('dokter', [UserController::class, 'index']);
+        Route::get('detail-resep', [ApotekerController::class, 'detail_resep_index']);
     });
     
     Route::middleware('role:dokterumum')->group(function () {
@@ -69,9 +72,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('hasil-lab', HasilLabController::class);
     });
     
-    Route::middleware('role:apoteker')->group(function() {
-        Route::get('detail-resep', [ApotekerController::class, 'detail_resep_index']);
-        Route::get('instruksi', [ApotekerController::class, 'instruksi_index']);
-    });
+    // Route::middleware('role:apoteker')->group(function() {
+    // });
 
 });

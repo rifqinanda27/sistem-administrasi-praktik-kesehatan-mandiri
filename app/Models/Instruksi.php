@@ -14,6 +14,7 @@ class Instruksi extends Model
 
     protected $fillable = [
         'nama_instruksi',
-        'keterangan'
+        'keterangan',
+        'arti_latin',
     ];
 }

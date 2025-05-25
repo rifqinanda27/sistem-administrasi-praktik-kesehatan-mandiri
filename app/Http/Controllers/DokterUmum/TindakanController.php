@@ -120,11 +120,72 @@ class TindakanController extends Controller
         // return redirect()->route('tindakan.index');
     }
 
+    public function update_catatan_medis(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'diagnosa_sementara' => 'required|string',
+            'diagnosa_tambahan' => 'nullable|string',
+            'id_obat' => 'required|array',
+            'id_instruksi' => 'required|array',
+            'id_obat.*' => 'required|integer',
+            'id_instruksi.*' => 'required|integer',
+            'id_kunjungan' => 'required|integer',
+            'id_dokter' => 'nullable|integer',
+        ]);
+
+        $token = session('api_token');
+
+        // Update catatan medis dan dapatkan response
+        $response = Http::withToken($token)->put("$this->apiBaseUrl/catatan-medis/{$id}", [
+            'diagnosa_sementara' => $request->diagnosa_sementara,
+            'diagnosa_tambahan' => $request->diagnosa_tambahan,
+        ]);
+
+        if (!$response->successful()) {
+            return back()->withErrors(['message' => 'Gagal memperbarui catatan medis']);
+        }
+
+        $catatanMedisData = $response->json();
+
+        // Simpan detail resep
+        // Kemudian simpan detail resep
+        if ($response->successful() && $request->has('id_obat')) {
+            foreach ($request->id_obat as $index => $id_obat) {
+                $id_instruksi = $request->id_instruksi[$index] ?? null;
+
+                $responseDetail = Http::withToken($token)->post("$this->apiBaseUrl/detail-resep", [
+                    'id_obat' => $id_obat,
+                    'id_instruksi' => $id_instruksi,
+                    'id_dokter' => $request->id_dokter,
+                ]);
+
+                if (!$responseDetail->successful()) {
+                    dd('Gagal simpan detail resep', $responseDetail->status(), $responseDetail->body());
+                }
+            }
+        }
+
+        // Update status kunjungan
+        $tindakan = Http::withToken($token)->put("$this->apiBaseUrl/kunjungan/{$request->id_kunjungan}", [
+            'status_kunjungan' => 'selesai',
+        ]);
+
+        if (!$tindakan->successful()) {
+            return back()->withErrors(['message' => 'Gagal memperbarui data kunjungan']);
+        }
+
+        // dd($request->all());
+
+
+        return redirect()->route('tindakan-complete', ['id' => $id]);
+    }
+
+
     public function tidak_perlu_rujukan($id)
     {
         $token = session('api_token');
 
-        $response = Http::withToken($token)->get("$this->apiBaseUrl/kunjungan/{$id}");
+        $response = Http::withToken($token)->get("$this->apiBaseUrl/catatan-medis/{$id}");
 
         if (!$response->successful()) {
             return back()->withErrors(['message' => 'Gagal mengambil data users']);
@@ -166,13 +227,7 @@ class TindakanController extends Controller
             return back()->withErrors(['message' => $response->json('message') ?? 'Gagal membuat resep']);
         }
 
-        $tindakan = Http::withToken($token)->put("$this->apiBaseUrl/kunjungan/{$request->id_kunjungan}", [
-            'status_kunjungan' => 'selesai',
-        ]);
-
-        if (!$tindakan->successful()) {
-            return back()->withErrors(['message' => 'Gagal memperbarui user']);
-        }
+        
 
         return redirect()->route('tindakan-complete', ['id' => $request->id_kunjungan]);
     }
@@ -204,6 +259,34 @@ class TindakanController extends Controller
             return [
                 'id' => $obat['id_obat'],
                 'text' => $obat['nama_obat']
+            ];
+        })->values();
+
+        return response()->json($result);
+    }
+
+    public function cari_instruksi(Request $request)
+    {
+        $token = session('api_token');
+        $search = strtolower($request->input('term'));
+
+        $response = Http::withToken($token)->get(config('services.api.base_url') . '/instruksi');
+
+        if (!$response->successful()) {
+            return response()->json([]);
+        }
+
+        $allInstruksi = $response->json('data');
+
+        // Filter manual berdasarkan nama_lengkap
+        $filtered = collect($allInstruksi)->filter(function ($instruksi) use ($search) {
+            return str_contains(strtolower($instruksi['nama_instruksi']), $search);
+        });
+
+        $result = $filtered->map(function ($instruksi) {
+            return [
+                'id' => $instruksi['id_instruksi'],
+                'text' => $instruksi['nama_instruksi']
             ];
         })->values();
 
