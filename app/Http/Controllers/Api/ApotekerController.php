@@ -28,19 +28,34 @@ class ApotekerController extends Controller
 
     public function detail_resep_store(Request $request)
     {
-        $data = $request->validate([
-            'id_dokter' => 'required',
-            'id_obat' => 'required',
-            'id_instruksi' => 'required',
+        $validated = $request->validate([
+            'id_dokter' => 'required|integer',
+            'id_obat' => 'required|array',
+            'id_obat.*' => 'required|integer',
+            'id_instruksi' => 'required|array',
+            'id_instruksi.*' => 'required|integer',
         ]);
 
-        $detail_resep = detail_resep::create($data);
+        $results = [];
+
+        foreach ($validated['id_obat'] as $index => $id_obat) {
+            $id_instruksi = $validated['id_instruksi'][$index] ?? null;
+
+            $detail_resep = detail_resep::create([
+                'id_dokter' => $validated['id_dokter'],
+                'id_obat' => $id_obat,
+                'id_instruksi' => $id_instruksi,
+            ]);
+
+            $results[] = $detail_resep;
+        }
 
         return response()->json([
-           'success'  => true,
-           'data' => $detail_resep
+        'success' => true,
+        'data' => $results,
         ]);
     }
+
 
     public function instruksi_index()
     {

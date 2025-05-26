@@ -26,7 +26,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <form action="{{ route('perlu-tindakan-update', ['id' => $tindakan['id_catatan']]) }}" method="POST">
-                    @csrf
+                    @csrf   
                         <div class="card card-primary card-outline">
                             <div class="card-body">
                                 <h5 class="font-weight-bold mb-3">Form Diagnosa</h5>
@@ -107,7 +107,7 @@
                                         <!-- Resep Obat -->
                                         <h5 class="font-weight-bold mt-4">III. Resep Obat</h5>
                                         <input type="hidden" value="{{ $tindakan['kunjungan']['id_kunjungan'] }}" name="id_kunjungan">
-                                        <input type="hidden" value="{{ $tindakan['kunjungan']['id_dokter'] }}" name="id_dokter">
+                                        <input type="hidden" value="{{ $tindakan['kunjungan']['dokter']['dokter_detail']['id_dokter'] }}" name="id_dokter">
                                         <!-- <div class="mt-3">
                                             <textarea class="form-control" rows="5" placeholder="Masukkan resep obat di sini..." name="resep_obat"></textarea>
                                         </div> -->

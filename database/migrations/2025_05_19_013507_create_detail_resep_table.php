@@ -14,14 +14,14 @@ return new class extends Migration
         Schema::create('detail_resep', function (Blueprint $table) {
             $table->id('id_detail_resep');
 
-            $table->unsignedBigInteger('id_resep')->nullable();
+            $table->unsignedBigInteger('id_dokter')->nullable();
             $table->unsignedBigInteger('id_obat')->nullable();
             $table->unsignedBigInteger('id_instruksi')->nullable();
 
             $table->timestamps();
 
             // Foreign keys
-            $table->foreign('id_resep')->references('id_resep')->on('resep')->onDelete('cascade');
+            $table->foreign('id_dokter')->references('id_dokter')->on('dokter')->onDelete('cascade');
             $table->foreign('id_obat')->references('id_obat')->on('obat')->onDelete('restrict');
             $table->foreign('id_instruksi')->references('id_instruksi')->on('instruksi')->onDelete('restrict');
         });

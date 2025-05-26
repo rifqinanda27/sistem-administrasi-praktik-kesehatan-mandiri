@@ -135,7 +135,6 @@ class TindakanController extends Controller
 
         $token = session('api_token');
 
-        // Update catatan medis dan dapatkan response
         $response = Http::withToken($token)->put("$this->apiBaseUrl/catatan-medis/{$id}", [
             'diagnosa_sementara' => $request->diagnosa_sementara,
             'diagnosa_tambahan' => $request->diagnosa_tambahan,
@@ -147,25 +146,14 @@ class TindakanController extends Controller
 
         $catatanMedisData = $response->json();
 
-        // Simpan detail resep
-        // Kemudian simpan detail resep
-        if ($response->successful() && $request->has('id_obat')) {
-            foreach ($request->id_obat as $index => $id_obat) {
-                $id_instruksi = $request->id_instruksi[$index] ?? null;
-
-                $responseDetail = Http::withToken($token)->post("$this->apiBaseUrl/detail-resep", [
-                    'id_obat' => $id_obat,
-                    'id_instruksi' => $id_instruksi,
-                    'id_dokter' => $request->id_dokter,
-                ]);
-
-                if (!$responseDetail->successful()) {
-                    dd('Gagal simpan detail resep', $responseDetail->status(), $responseDetail->body());
-                }
-            }
-        }
-
-        // Update status kunjungan
+        $response = Http::withToken($token)
+            ->asForm()
+            ->post("$this->apiBaseUrl/detail-resep", [
+                'id_dokter' => $request->id_dokter,
+                'id_instruksi' => $request->id_instruksi,
+                'id_obat' => $request->id_obat,
+            ]);
+        
         $tindakan = Http::withToken($token)->put("$this->apiBaseUrl/kunjungan/{$request->id_kunjungan}", [
             'status_kunjungan' => 'selesai',
         ]);
@@ -173,13 +161,10 @@ class TindakanController extends Controller
         if (!$tindakan->successful()) {
             return back()->withErrors(['message' => 'Gagal memperbarui data kunjungan']);
         }
-
         // dd($request->all());
-
 
         return redirect()->route('tindakan-complete', ['id' => $id]);
     }
-
 
     public function tidak_perlu_rujukan($id)
     {

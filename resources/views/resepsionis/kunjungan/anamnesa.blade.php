@@ -251,5 +251,18 @@
                 cache: true
             }
         });
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const input = document.getElementById('tekananDarah');
+
+            input.addEventListener('input', function (e) {
+                let value = input.value.replace(/\D/g, ''); // Hanya angka
+                if (value.length > 3) {
+                value = value.slice(0, 3) + '/' + value.slice(3, 5);
+                }
+                input.value = value;
+            });
+        });
     </script>
 @endpush
