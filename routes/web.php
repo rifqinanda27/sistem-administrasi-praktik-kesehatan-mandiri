@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\DokterController;
 use App\Http\Controllers\DokterUmum\PasienController;
 use App\Http\Controllers\DokterUmum\TindakanController;
+use App\Http\Controllers\ApotekerController;
 use App\Http\Controllers\ResepsionisController;
 
 // Route::get('/', function () {
@@ -54,4 +55,8 @@ Route::middleware('check.api.token')->group(function () {
     Route::get('/cari-dokter', [ResepsionisController::class, 'cari_dokter']);
     Route::post('kunjungan-pasien', [ResepsionisController::class, 'kunjungan_store'])->name('kunjungan.store');
     Route::post('anamnesa-pasien', [ResepsionisController::class, 'anamnesa_store'])->name('anamnesa.store');
+
+    // Apoteker
+    Route::get('/obat', [ApotekerController::class, 'index']);
+
 });

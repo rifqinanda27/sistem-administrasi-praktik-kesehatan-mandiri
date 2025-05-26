@@ -11,7 +11,8 @@ class ApotekerController extends Controller
      */
     public function index()
     {
-        //
+        return 'halo';
+        // return view('apoteker.obat.obat');
     }
 
     /**
