@@ -61,4 +61,5 @@ class LaboratoriumController extends Controller
 
         return response()->json(['message' => 'Laboratorium dihapus.']);
     }
+
 }

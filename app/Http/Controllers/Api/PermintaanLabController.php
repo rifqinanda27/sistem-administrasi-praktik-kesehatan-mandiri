@@ -54,4 +54,9 @@ class PermintaanLabController extends Controller
 
         return response()->json(['message' => 'Permintaan lab dihapus.']);
     }
+
+    public function cetak_permintaan()
+    {
+        return view('resepsionis.lab.cetak_rujukan_lab');
+    }
 }

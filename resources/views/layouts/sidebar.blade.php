@@ -68,18 +68,11 @@
             <p>Kunjungan</p>
         </a>
     </li>
-    @elseif(isset($user['role']['name']) && $user['role']['name'] === 'apoteker')
-    <!-- Menu dengan submenu -->
+
     <li class="nav-item">
-        <a href="{{ url('obat') }}" class="nav-link {{ Request::segment(1) == 'obat' ? 'active' : '' }}">
-            <i class="nav-icon fas fa-users"></i>
-            <p>Obat</p>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a href="{{ url('kunjungan-pasien') }}" class="nav-link {{ Request::segment(1) == 'kunjungan-pasien' ? 'active' : '' }}">
-            <i class="nav-icon fas fa-calendar"></i>
-            <p>Kunjungan</p>
+        <a href="{{ url('lab-pasien') }}" class="nav-link {{ Request::segment(1) == 'lab-pasien' ? 'active' : '' }}">
+            <i class="nav-icon fas fa-flask"></i>
+            <p>Laboratorium</p>
         </a>
     </li>
     @endif

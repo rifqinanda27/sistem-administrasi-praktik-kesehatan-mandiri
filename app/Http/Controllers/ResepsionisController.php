@@ -290,4 +290,10 @@ class ResepsionisController extends Controller
 
         return redirect()->route('kunjungan.index');
     }
+
+    public function lab_resepsionis()
+    {
+        return view('resepsionis.lab.daftar_lab_pasien');
+    }
+
 }
