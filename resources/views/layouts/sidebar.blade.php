@@ -68,12 +68,27 @@
             <p>Kunjungan</p>
         </a>
     </li>
-
     <li class="nav-item">
         <a href="{{ url('lab-pasien') }}" class="nav-link {{ Request::segment(1) == 'lab-pasien' ? 'active' : '' }}">
             <i class="nav-icon fas fa-flask"></i>
             <p>Laboratorium</p>
+    @elseif(isset($user['role']['name']) && $user['role']['name'] === 'apoteker')
+    <!-- Menu dengan submenu -->
+    <li class="nav-item">
+        <a href="{{ url('obat') }}" class="nav-link {{ Request::segment(1) == 'obat' ? 'active' : '' }}">
+            <i class="nav-icon fas fa-pills"></i>
+            <p>Obat</p>
         </a>
     </li>
+    <li class="nav-item">
+        <a href="{{ url('resep') }}" class="nav-link {{ Request::segment(1) == 'resep' ? 'active' : '' }}">
+            <i class="nav-icon fas fa-clipboard"></i>
+            <p>Resep Obat</p>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="{{ url('intruksi') }}" class="nav-link {{ Request::segment(1) == 'instruksi' ? 'active' : '' }}">
+            <i class="nav-icon fas fa-calendar"></i>
+            <p>Intruksi Resep</p>
     @endif
 </ul>

@@ -57,4 +57,8 @@ Route::middleware('check.api.token')->group(function () {
     Route::post('anamnesa-pasien', [ResepsionisController::class, 'anamnesa_store'])->name('anamnesa.store');
     Route::get('lab-pasien', [ResepsionisController::class, 'lab_resepsionis']);
     Route::get('cetak-permintaan/{id}', [ResepsionisController::class, 'getPermintaanLab'])->name('cetak-permintaan');
+
+    // Apoteker
+    Route::get('obat', [ApotekerController::class, 'index']);
+    Route::get('intruksi', [ApotekerController::class, 'intruksi_apoteker']);
 });

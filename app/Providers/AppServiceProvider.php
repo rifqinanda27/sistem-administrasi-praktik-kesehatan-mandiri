@@ -25,7 +25,9 @@ class AppServiceProvider extends ServiceProvider
             $token = session('api_token');
     
             if ($token) {
-                $response = Http::withToken($token)->get('http://pbl-healthcare.test/api/user');
+                $apiBaseUrl = config('services.api.base_url');
+
+                $response = Http::withToken($token)->get($apiBaseUrl . '/user');
     
                 if ($response->successful()) {
                     $user = $response->json();
