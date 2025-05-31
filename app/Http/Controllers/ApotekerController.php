@@ -11,7 +11,7 @@ class ApotekerController extends Controller
      */
     public function index()
     {
-        return 'halo';
+       return view('apoteker.obat.index');
         // return view('apoteker.obat.obat');
     }
 
@@ -61,5 +61,10 @@ class ApotekerController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function intruksi_apoteker()
+    {
+        return view('apoteker.instruksi.intruksi_resep');
     }
 }

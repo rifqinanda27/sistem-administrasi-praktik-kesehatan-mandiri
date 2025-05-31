@@ -57,6 +57,7 @@ Route::middleware('check.api.token')->group(function () {
     Route::post('anamnesa-pasien', [ResepsionisController::class, 'anamnesa_store'])->name('anamnesa.store');
 
     // Apoteker
-    Route::get('/obat', [ApotekerController::class, 'index']);
+    Route::get('obat', [ApotekerController::class, 'index']);
+    Route::get('intruksi', [ApotekerController::class, 'intruksi_apoteker']);
 
 });
