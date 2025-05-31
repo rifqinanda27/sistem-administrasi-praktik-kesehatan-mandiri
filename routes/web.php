@@ -7,7 +7,6 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\DokterController;
 use App\Http\Controllers\DokterUmum\PasienController;
 use App\Http\Controllers\DokterUmum\TindakanController;
-use App\Http\Controllers\ApotekerController;
 use App\Http\Controllers\ResepsionisController;
 
 // Route::get('/', function () {
@@ -42,6 +41,7 @@ Route::middleware('check.api.token')->group(function () {
     Route::get('rekam-medis/{id}', [PasienController::class, 'rekam_medis']);
     Route::post('perlu-tindakan', [TindakanController::class, 'tambah_catatan_medis'])->name('perlu-tindakan-store');
     Route::post('perlu-tindakan/{id}', [TindakanController::class, 'update_catatan_medis'])->name('perlu-tindakan-update');
+    Route::post('perlu-rujukan-store/{id}', [TindakanController::class, 'perlu_rujukan_store'])->name('perlu-rujukan-store');
     Route::post('perlu-tindakan/resep-obat-dokter', [TindakanController::class, 'resep_obat_dokter'])->name('resep-obat-dokter');
     Route::get('/cari-obat', [TindakanController::class, 'cari_obat']);
     Route::get('/cari-instruksi', [TindakanController::class, 'cari_instruksi']);
@@ -55,9 +55,10 @@ Route::middleware('check.api.token')->group(function () {
     Route::get('/cari-dokter', [ResepsionisController::class, 'cari_dokter']);
     Route::post('kunjungan-pasien', [ResepsionisController::class, 'kunjungan_store'])->name('kunjungan.store');
     Route::post('anamnesa-pasien', [ResepsionisController::class, 'anamnesa_store'])->name('anamnesa.store');
+    Route::get('lab-pasien', [ResepsionisController::class, 'lab_resepsionis']);
+
 
     // Apoteker
     Route::get('obat', [ApotekerController::class, 'index']);
     Route::get('intruksi', [ApotekerController::class, 'intruksi_apoteker']);
-
 });

@@ -44,6 +44,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
     
     Route::middleware('role:resepsionis,dokterumum')->group(function () {
+        Route::get('cetak-permintaan', [PermintaanLabController::class, 'cetak_permintaan']);
         Route::apiResource('/pasien', PatientController::class);
         Route::apiResource('/kunjungan', VisitController::class);
         Route::get('/cari-dokter', [DokterController::class, 'index']);
@@ -51,7 +52,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/status-kunjungan', [VisitController::class, 'status_kunjungan']);
         Route::apiResource('/catatan-medis', CatatanMedisController::class);
     });
-
+    
     Route::middleware('role:dokterumum,apoteker')->group(function () {
         Route::apiResource('obat', ObatController::class);
         Route::apiResource('resep', ResepController::class);
@@ -61,14 +62,14 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('detail-resep', [ApotekerController::class, 'detail_resep_index']);
     });
     
-    Route::middleware('role:dokterumum')->group(function () {
+    Route::middleware('role:dokterumum,laboran,resepsionis')->group(function () {
         Route::apiResource('/tindakan', TindakanController::class);
-    });
-
-    Route::middleware('role:laboran')->group(function() {
-        Route::apiResource('laboratorium', LaboratoriumController::class);
         Route::apiResource('jenis-pemeriksaan-lab', JenisPemeriksaanLabController::class);
+        Route::apiResource('laboratorium', LaboratoriumController::class);
         Route::apiResource('permintaan-lab', PermintaanLabController::class);
+    });
+    
+    Route::middleware('role:laboran')->group(function() {
         Route::apiResource('hasil-lab', HasilLabController::class);
     });
     

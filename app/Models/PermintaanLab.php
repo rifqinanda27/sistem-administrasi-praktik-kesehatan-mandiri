@@ -13,6 +13,7 @@ class PermintaanLab extends Model
     protected $fillable = [
         'id_kunjungan',
         'id_laboratorium',
+        'id_jenis_pemeriksaan',
         'diminta_oleh',
         'status_permintaan',
         'tanggal_permintaan'

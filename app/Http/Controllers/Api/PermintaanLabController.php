@@ -11,12 +11,16 @@ class PermintaanLabController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:laboran');
+        $this->middleware('role:laboran,resepsionis,dokterumum');
     }
 
     public function index()
     {
-        return response()->json(PermintaanLab::all());
+        $permintaan = PermintaanLab::all();
+        return response()->json([
+            'success' => true,
+            'data' => $permintaan
+        ]);
     }
 
     public function store(Request $request)
@@ -31,7 +35,10 @@ class PermintaanLabController extends Controller
 
         $permintaan = PermintaanLab::create($data);
 
-        return response()->json($permintaan, 201);
+        return response()->json([
+            'success' => true,
+            'data' => $permintaan,
+        ]);
     }
 
     public function update(Request $request, $id)
@@ -44,7 +51,10 @@ class PermintaanLabController extends Controller
 
         $permintaan->update($data);
 
-        return response()->json($permintaan);
+        return response()->json([
+            'success' => true,
+            'data' => $permintaan,
+        ]);
     }
 
     public function destroy($id)
@@ -53,5 +63,10 @@ class PermintaanLabController extends Controller
         $permintaan->delete();
 
         return response()->json(['message' => 'Permintaan lab dihapus.']);
+    }
+
+    public function cetak_permintaan()
+    {
+        return view('resepsionis.lab.cetak_rujukan_lab');
     }
 }

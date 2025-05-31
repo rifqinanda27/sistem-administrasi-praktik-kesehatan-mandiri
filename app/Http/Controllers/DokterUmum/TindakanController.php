@@ -185,15 +185,57 @@ class TindakanController extends Controller
     {
         $token = session('api_token');
 
-        $response = Http::withToken($token)->get("$this->apiBaseUrl/kunjungan/{$id}");
+        $response = Http::withToken($token)->get("$this->apiBaseUrl/catatan-medis/{$id}");
 
+        
         if (!$response->successful()) {
             return back()->withErrors(['message' => 'Gagal mengambil data users']);
         }
-
+        
         $tindakan = $response->json('data');
 
-        return view('dokterumum.tindakan.perlu-rujukan', compact('tindakan'));
+        $jenis_laboratorium = Http::withToken($token)->get("$this->apiBaseUrl/jenis-pemeriksaan-lab")->json('data');
+
+        $laboratorium = Http::withToken($token)->get("$this->apiBaseUrl/laboratorium")->json('data');
+        // dd($tindakan);
+
+        return view('dokterumum.tindakan.perlu-rujukan', compact('tindakan', 'jenis_laboratorium', 'laboratorium'));
+    }
+
+    public function perlu_rujukan_store(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'id_laboratorium' => 'required|integer',
+            'id_jenis_pemeriksaan' => 'required|integer',
+            'id_kunjungan' => 'required|integer',
+            'diminta_oleh' => 'nullable|integer',
+        ]);
+
+        $token = session('api_token');
+
+        $response = Http::withToken($token)->post("$this->apiBaseUrl/permintaan-lab", [
+            'id_laboratorium' => $request->id_laboratorium,
+            'id_jenis_pemeriksaan' => $request->id_jenis_pemeriksaan,
+            'id_kunjungan' => $request->id_kunjungan,
+            'diminta_oleh' => $request->diminta_oleh,
+            'status_permintaan' => 'selesai',
+        ]);
+
+        // dd($response);
+
+        if (!$response->successful()) {
+            return back()->withErrors(['message' => 'Gagal memperbarui catatan medis']);
+        }
+
+        $tindakan = Http::withToken($token)->put("$this->apiBaseUrl/kunjungan/{$request->id_kunjungan}", [
+            'status_kunjungan' => 'selesai',
+        ]);
+
+        if (!$tindakan->successful()) {
+            return back()->withErrors(['message' => 'Gagal memperbarui data kunjungan']);
+        }
+
+        return redirect()->route('tindakan-complete', ['id' => $id]);
     }
 
     public function resep_obat_dokter(Request $request)

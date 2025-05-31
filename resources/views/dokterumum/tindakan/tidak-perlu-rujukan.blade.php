@@ -151,9 +151,9 @@
 
                                         <div class="row">
                                             <div class="d-flex col-6 justify-content-start mt-4">
-                                                <button class="btn btn-secondary" onclick="window.history.back()">
+                                                <a class="btn btn-secondary" href="{{ url('perlu-tindakan/' . $tindakan['id_catatan']) }}">
                                                     <i class=""></i> Kembali
-                                                </button>
+                                                </a>
                                             </div>
                                             <div class="d-flex col-6 justify-content-end mt-4">
                                                 <button type="submit" class="btn btn-primary">Lanjut</button>

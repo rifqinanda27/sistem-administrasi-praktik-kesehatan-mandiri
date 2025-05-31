@@ -164,7 +164,7 @@
                                     <!-- Tombol Navigasi -->
                                     <div class="row">
                                         <div class="col-6 d-flex justify-content-start mt-4">
-                                            <button class="btn btn-secondary" onclick="window.history.back()">Kembali</button>
+                                            <a class="btn btn-secondary" href="{{ route('tindakan.index') }}">Kembali</a>
                                         </div>
                                         <div class="col-6 d-flex justify-content-end mt-4">
                                             <button type="button" id="btnLanjut" class="btn btn-primary" data-toggle="modal" data-target="#modalRujukan">Lanjut</button>

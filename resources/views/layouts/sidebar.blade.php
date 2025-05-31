@@ -68,6 +68,10 @@
             <p>Kunjungan</p>
         </a>
     </li>
+    <li class="nav-item">
+        <a href="{{ url('lab-pasien') }}" class="nav-link {{ Request::segment(1) == 'lab-pasien' ? 'active' : '' }}">
+            <i class="nav-icon fas fa-flask"></i>
+            <p>Laboratorium</p>
     @elseif(isset($user['role']['name']) && $user['role']['name'] === 'apoteker')
     <!-- Menu dengan submenu -->
     <li class="nav-item">

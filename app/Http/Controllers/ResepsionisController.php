@@ -290,4 +290,19 @@ class ResepsionisController extends Controller
 
         return redirect()->route('kunjungan.index');
     }
+
+    public function lab_resepsionis()
+    {
+        $token = session('api_token');
+
+        // Ambil data user dari token
+        $response = Http::withToken($token)->get(config('services.api.base_url') . '/permintaan-lab');
+
+        if (!$response->successful()) {
+            return back()->withErrors(['message' => 'Gagal mengambil data user']);
+        }
+
+        return view('resepsionis.lab.daftar_lab_pasien');
+    }
+
 }
