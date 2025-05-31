@@ -62,14 +62,14 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('detail-resep', [ApotekerController::class, 'detail_resep_index']);
     });
     
-    Route::middleware('role:dokterumum')->group(function () {
+    Route::middleware('role:dokterumum,laboran,resepsionis')->group(function () {
         Route::apiResource('/tindakan', TindakanController::class);
+        Route::apiResource('jenis-pemeriksaan-lab', JenisPemeriksaanLabController::class);
+        Route::apiResource('laboratorium', LaboratoriumController::class);
+        Route::apiResource('permintaan-lab', PermintaanLabController::class);
     });
     
     Route::middleware('role:laboran')->group(function() {
-        Route::apiResource('laboratorium', LaboratoriumController::class);
-        Route::apiResource('jenis-pemeriksaan-lab', JenisPemeriksaanLabController::class);
-        Route::apiResource('permintaan-lab', PermintaanLabController::class);
         Route::apiResource('hasil-lab', HasilLabController::class);
     });
     

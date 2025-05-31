@@ -11,12 +11,16 @@ class JenisPemeriksaanLabController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:laboran');
+        $this->middleware('role:laboran,dokterumum');
     }
 
     public function index()
     {
-        return response()->json(JenisPemeriksaanLab::all());
+        $jenis = JenisPemeriksaanLab::all();
+        return response()->json([
+            'success' => true,
+            'data' => $jenis,
+        ]);
     }
 
     public function store(Request $request)
@@ -30,7 +34,10 @@ class JenisPemeriksaanLabController extends Controller
 
         $jenis = JenisPemeriksaanLab::create($data);
 
-        return response()->json($jenis, 201);
+        return response()->json([
+            'success' => true,
+            'data' => $jenis,
+        ]);
     }
 
     public function update(Request $request, $id)
@@ -46,7 +53,10 @@ class JenisPemeriksaanLabController extends Controller
 
         $jenis->update($data);
 
-        return response()->json($jenis);
+        return response()->json([
+            'success' => true,
+            'data' => $jenis,
+        ]);
     }
 
     public function destroy($id)

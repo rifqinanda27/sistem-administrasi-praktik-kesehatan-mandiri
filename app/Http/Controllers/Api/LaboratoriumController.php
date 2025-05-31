@@ -10,12 +10,16 @@ class LaboratoriumController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:laboran');
+        $this->middleware('role:laboran,dokterumum');
     }
 
     public function index()
     {
-        return response()->json(Laboratorium::all());
+        $laboratorium = Laboratorium::all();
+        return response()->json([
+            'success' => true,
+            'data' => $laboratorium,
+        ]);
     }
 
     public function store(Request $request)
@@ -32,7 +36,10 @@ class LaboratoriumController extends Controller
 
         $lab = Laboratorium::create($data);
 
-        return response()->json($lab, 201);
+        return response()->json([
+            'success' => true,
+            'data' => $lab,
+        ]);
     }
 
     public function update(Request $request, $id)
@@ -51,7 +58,10 @@ class LaboratoriumController extends Controller
 
         $lab->update($data);
 
-        return response()->json($lab);
+        return response()->json([
+            'success' => true,
+            'data' => $lab,
+        ]);
     }
 
     public function destroy($id)
