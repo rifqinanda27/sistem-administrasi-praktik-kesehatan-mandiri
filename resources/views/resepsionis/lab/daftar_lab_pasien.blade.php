@@ -53,42 +53,20 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach($permintaan_lab as $pl)
                             <tr>
-                                <td>1</td>
-                                <td>Budi Santoso</td>
-                                <td>01-01-1990</td>
-                                <td>Laki-Laki</td>
-                                <td>1234567890123456</td>
-                                <td>Jl. Mawar No. 1</td>
-                                <td>081234567890</td>
-                                <td>Pasien Aktif</span></td>
-                                <td class="text-center">
-                                    <button class="btn btn-sm custom-outline-btn" title="Cetak">
-                                        <i class="fas fa-print"></i>
-                                    </button>
-                                </td>
-                                <td>
-                                    <input type="file" class="form-control form-control-sm" style="height: 30px; font-size: 12px; padding: 3px;">
-                                </td>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $pl['kunjungan']['pasien']['nama_lengkap'] }}</td>
+                                <td>{{ $pl['kunjungan']['pasien']['tanggal_lahir'] }}</td>
+                                <td>{{ $pl['kunjungan']['pasien']['jenis_kelamin'] }}</td>
+                                <td>{{ $pl['kunjungan']['pasien']['no_ktp'] }}</td>
+                                <td>{{ $pl['kunjungan']['pasien']['alamat'] }}</td>
+                                <td>{{ $pl['kunjungan']['pasien']['telepon'] }}</td>
+                                <td>{{ $pl['status_permintaan'] }}</td>
+                                <td><a href="{{ route('cetak-permintaan' , ['id' => $pl['kunjungan']['catatan_medis']['id_catatan']])  }}" target="_blank" ><span class="fas fa-print text-success" style="font-size: 25px;"></span></a></td>
+                                <td>-</td>
                             </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Siti Aminah</td>
-                                <td>15-05-1985</td>
-                                <td>Perempuan</td>
-                                <td>9876543210987654</td>
-                                <td>Jl. Melati No. 2</td>
-                                <td>081298765432</td>
-                                <td>Tidak Aktif</span></td>
-                                <td class="text-center">
-                                    <button class="btn btn-sm custom-outline-btn" title="Cetak">
-                                        <i class="fas fa-print"></i>
-                                    </button>
-                                </td>
-                                <td>
-                                    <input type="file" class="form-control form-control-sm" style="height: 30px; font-size: 12px; padding: 3px;">
-                                </td>
-                            </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>

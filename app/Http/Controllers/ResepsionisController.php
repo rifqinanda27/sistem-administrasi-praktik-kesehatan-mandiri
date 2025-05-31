@@ -296,13 +296,29 @@ class ResepsionisController extends Controller
         $token = session('api_token');
 
         // Ambil data user dari token
-        $response = Http::withToken($token)->get(config('services.api.base_url') . '/permintaan-lab');
+        $permintaan_lab = Http::withToken($token)->get(config('services.api.base_url') . '/permintaan-lab');
 
-        if (!$response->successful()) {
+        if (!$permintaan_lab->successful()) {
             return back()->withErrors(['message' => 'Gagal mengambil data user']);
         }
 
-        return view('resepsionis.lab.daftar_lab_pasien');
+        $permintaan_lab = $permintaan_lab->json('data');
+
+        return view('resepsionis.lab.daftar_lab_pasien', compact('permintaan_lab'));
     }
 
+    public function getPermintaanLab($id)
+    {
+        $token = session('api_token');
+
+        // Ambil data PDF dari API
+        $response = Http::withToken($token)->get(config('services.api.base_url') . '/cetak-permintaan/' . $id);
+
+        if ($response->successful()) {
+            return response($response->body(), 200)
+                ->header('Content-Type', 'application/pdf');
+        }
+
+        return response()->json(['error' => 'Gagal mengambil data'], 500);
+    }
 }

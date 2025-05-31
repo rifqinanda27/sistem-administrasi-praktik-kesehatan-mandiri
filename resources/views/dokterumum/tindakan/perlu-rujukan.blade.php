@@ -88,18 +88,19 @@
                                         </div>
                                         
                                         <div class="d-flex mt-2">
-                                            <div style="width: 250px;">Diagnosa Sementara</div>
-                                            <div class="d-flex align-items-center">
-                                                <span class="mr-2">=</span>
-                                                <span>{{ $tindakan['diagnosa_sementara'] }}</span>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="d-flex mt-2">
                                             <div style="width: 250px;">Riwayat Penyakit</div>
                                             <div class="d-flex align-items-center">
                                                 <span class="mr-2">=</span>
                                                 <span>{{ $tindakan['riwayat_penyakit_pribadi'] }}</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex mt-2">
+                                            <div style="width: 250px;">Diagnosa Sementara</div>
+                                            <div class="d-flex align-items-center">
+                                                <span class="mr-2">=</span>
+                                                <!-- <span>{{ $tindakan['diagnosa_sementara'] }}</span> -->
+                                                 <input class="form-control" type="text" placeholder="diagnosa . . ." name="diagnosa_sementara">
                                             </div>
                                         </div>
                                         

@@ -44,7 +44,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
     
     Route::middleware('role:resepsionis,dokterumum')->group(function () {
-        Route::get('cetak-permintaan', [PermintaanLabController::class, 'cetak_permintaan']);
+        Route::get('cetak-permintaan/{id}', [PermintaanLabController::class, 'cetak_permintaan']);
         Route::apiResource('/pasien', PatientController::class);
         Route::apiResource('/kunjungan', VisitController::class);
         Route::get('/cari-dokter', [DokterController::class, 'index']);

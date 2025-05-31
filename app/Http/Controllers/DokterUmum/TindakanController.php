@@ -205,6 +205,7 @@ class TindakanController extends Controller
     public function perlu_rujukan_store(Request $request, $id)
     {
         $validated = $request->validate([
+            'diagnosa_sementara' => 'required|string',
             'id_laboratorium' => 'required|integer',
             'id_jenis_pemeriksaan' => 'required|integer',
             'id_kunjungan' => 'required|integer',
@@ -226,6 +227,10 @@ class TindakanController extends Controller
         if (!$response->successful()) {
             return back()->withErrors(['message' => 'Gagal memperbarui catatan medis']);
         }
+
+        $diagnosa = Http::withToken($token)->put("$this->apiBaseUrl/catatan-medis/{$id}", [
+            'diagnosa_sementara' => $request->diagnosa_sementara,
+        ]);
 
         $tindakan = Http::withToken($token)->put("$this->apiBaseUrl/kunjungan/{$request->id_kunjungan}", [
             'status_kunjungan' => 'selesai',

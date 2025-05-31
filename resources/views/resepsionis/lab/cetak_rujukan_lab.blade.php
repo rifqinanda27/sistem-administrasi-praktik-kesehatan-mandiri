@@ -4,26 +4,13 @@
     <meta charset="UTF-8">
     <title>Surat Rujukan Laboratorium</title>
     <style>
-        /* Atur tampilan untuk layar dan cetak */
-        @media print {
-            @page {
-                size: A4 portrait; /* Bisa juga "Folio" jika printer support F4 */
-                margin: 20mm;
-            }
-            body {
-                margin: 0;
-                font-family: Arial, sans-serif;
-                font-size: 12px;
-            }
-        }
-
         body {
             font-family: Arial, sans-serif;
-            font-size: 13px;
+            font-size: 12px;
             margin: 20mm;
         }
 
-        .header, .footer {
+        .header {
             text-align: center;
         }
 
@@ -41,19 +28,19 @@
 
         table {
             width: 100%;
-            margin-top: 15px;
+            margin-top: 10px;
             border-collapse: collapse;
         }
 
         .content td {
-            padding: 4px;
+            padding: 5px;
             vertical-align: top;
         }
 
         .checkbox {
             display: inline-block;
-            width: 13px;
-            height: 13px;
+            width: 12px;
+            height: 12px;
             border: 1px solid #000;
             margin-right: 5px;
         }
@@ -62,10 +49,6 @@
             margin-top: 60px;
             text-align: right;
         }
-        .main-content {
-            margin-left: 20px; /* Ubah ke 100px atau sesuai kebutuhan */
-        }
-
     </style>
 </head>
 <body>
@@ -73,7 +56,9 @@
     <div class="header">
         <table>
             <tr>
-                <td width="15%"><img src="{{ asset('dist/img/logo-polines.png') }}" alt="Polines Logo"></td>
+                <td width="15%">
+                    <img src="http://pbl-healthcare.test/dist/img/logo-polines.png" alt="Polines Logo">
+                </td>
                 <td style="text-align:center;">
                     <strong>
                         PEMERINTAH KOTA SEMARANG<br>
@@ -88,45 +73,29 @@
         </table>
     </div>
 
-    <div class="judul" style="margin-left: 105px;">
+    <div class="judul">
         SURAT RUJUKAN LABORATORIUM
     </div>
 
-<!-- Bagian yang ingin digeser ke kanan -->
-    <div class="main-content">
-        <table class="content">
-            <tr><td width="30%">Nama</td><td>: ..........................................................</td></tr>
-            <tr><td>Umur</td><td>: ..........................................................</td></tr>
-            <tr><td>Rekam Medik</td><td>: ..........................................................</td></tr>
-            <tr><td>Jenis Kelamin</td><td>: ..........................................................</td></tr>
-            <tr><td>Tempat/Tgl Lahir</td><td>: ..........................................................</td></tr>
-            <tr><td>Alamat</td><td>: ..........................................................</td></tr>
-            <tr><td>Diagnosa Medik</td><td>: ..........................................................</td></tr>
-            <tr><td>Keluhan Pasien</td><td>: ..........................................................</td></tr>
-        </table>
+    <table class="content">
+        <tr><td width="30%">Nama</td><td>: {{ $pasien->kunjungan->pasien->nama_lengkap }}</td></tr>
+        <tr><td>Umur</td><td>: {{ \Carbon\Carbon::parse($pasien->kunjungan->pasien->tanggal_lahir)->age }}</td></tr>
+        <tr><td>Rekam Medik</td><td>: {{ $pasien->no_rekam_medis }}</td></tr>
+        <tr><td>Jenis Kelamin</td><td>: {{ $pasien->kunjungan->pasien->jenis_kelamin }}</td></tr>
+        <tr><td>Tanggal Lahir</td><td>: {{ $pasien->kunjungan->pasien->tanggal_lahir }}</td></tr>
+        <tr><td>Alamat</td><td>: {{ $pasien->kunjungan->pasien->alamat }}</td></tr>
+        <tr><td>Diagnosa Medik</td><td>: {{ $pasien->diagnosa_sementara }}</td></tr>
+        <tr><td>Keluhan Pasien</td><td>: {{ $pasien->keluhan_utama }}</td></tr>
+    </table>
 
-        <br>
-        <strong>Jenis Pemeriksaan:</strong><br>
-        <table>
-            <tr>
-                <td><div class="checkbox"></div> Hematologi</td>
-                <td><div class="checkbox"></div> Kimia Darah</td>
-            </tr>
-            <tr>
-                <td><div class="checkbox"></div> Imunoserology</td>
-                <td><div class="checkbox"></div> Urinalisa</td>
-            </tr>
-            <tr>
-                <td><div class="checkbox"></div> Lain-lain</td>
-            </tr>
-        </table>
-    </div>
-
+    <br>
+    <strong>Jenis Pemeriksaan:</strong><br>
+    <p>{{ $permintaan_lab->jenis_pemeriksaan_lab->nama_pemeriksaan }}</p>
 
     <div class="signature">
-        KOTA SEMARANG, ....................<br>
+        KOTA SEMARANG, {{ now()->format('d-m-Y') }}<br>
         Rujukan Dokter<br><br><br>
-        <strong>Januar</strong><br>
+        <strong>{{ $pasien->kunjungan->dokter->name }}</strong><br>
         NIP. 19910624 201903 1 001
     </div>
 
