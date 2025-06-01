@@ -49,7 +49,9 @@
                             <td>{{ $ins['kunjungan']['pasien']['nama_lengkap'] }}</td>
                             <td>{{ 'Rp. ' . number_format($ins['total_biaya'], 2, ',', '.') ?? '-'}}</td>
                             <td>{{ $ins['metode_pembayaran'] }}</td>
-                            <td>-</td>
+                            <td>
+                                <a href="{{ route('pembayaran.show' , ['pembayaran' => $ins['id_pembayaran']]) }}" class="btn btn-primary">Detail</a>
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>

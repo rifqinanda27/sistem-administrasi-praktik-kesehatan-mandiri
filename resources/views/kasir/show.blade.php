@@ -3,18 +3,19 @@
 
 @push('css')
     <!-- DataTables -->
-    <link rel="stylesheet" href="{{ asset('') }}plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-    <link rel="stylesheet" href="{{ asset('') }}plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-    <link rel="stylesheet" href="{{ asset('') }}plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+    <link rel="stylesheet" href="{{ asset('plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
 @endpush
 
 @section('content')
 <div class="content-header">
     <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6 d-flex align-items-center">
-                <span class="fas fa-clipboard-list mr-2" style="font-size: 29px;"></span>
-                <h4 class="m-0">Detail Pembayaran</h4>
+        <div class="row mb-2 align-items-center">
+            <div class="col-sm-6">
+                <h4 class="m-0">
+                    <i class="fas fa-file-invoice-dollar me-2"></i> Detail Pembayaran
+                </h4>
             </div>
         </div>
     </div>
@@ -22,48 +23,81 @@
 
 <div class="content">
     <div class="container-fluid">
-        <div class="card card-outline card-primary shadow-sm">
-            <div class="card-header">
-                <div class="row">
-                    <div class="col-6">
-                        <h5 class="m-0 font-weight-bold">Detail</h5>
-                    </div>
-                </div>
+
+        <div class="card shadow-sm card-outline card-primary">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Rincian Pembayaran</h5>
             </div>
-            
             <div class="card-body">
-                <table id="datatable-main-instruksi" class="table table-bordered table-hover">
-                    <thead class="thead-light">
+                <table class="table table-borderless">
+                    <tr>
+                        <th style="width: 200px;">Nama Pasien</th>
+                        <td>{{ $pembayaran['kunjungan']['pasien']['nama_lengkap'] }}</td>
+                    </tr>
+                    <tr>
+                        <th>Tanggal Pembayaran</th>
+                        <td>{{ \Carbon\Carbon::parse($pembayaran['tanggal_pembayaran'])->format('d M Y') }}</td>
+                    </tr>
+                    <tr>
+                        <th>Metode Pembayaran</th>
+                        <td>{{ ucfirst($pembayaran['metode_pembayaran']) }}</td>
+                    </tr>
+                    <tr>
+                        <th>Status</th>
+                        <td>
+                            <span class="badge bg-{{ $pembayaran['status'] == 'belum_dibayar' ? 'warning' : 'success' }}">
+                                {{ ucwords(str_replace('_', ' ', $pembayaran['status'])) }}
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+
+                <hr>
+
+                <h6 class="mt-4">Detail Biaya</h6>
+                <table class="table table-striped table-bordered mt-2">
+                    <thead class="table-primary">
                         <tr>
-                            <th width="20px">#</th>
-                            <th>Nama Pasien</th>
-                            <th>Total Biaya</th>
-                            <th>Metode Pembayaran</th>
-                            <th>Status</th>
+                            <th>Jenis Biaya</th>
+                            <th>Keterangan</th>
+                            <th class="text-end">Jumlah (Rp)</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($pembayaran as $ins)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $ins['kunjungan']['pasien']['nama_lengkap'] }}</td>
-                            <td>{{ 'Rp. ' . number_format($ins['total_biaya'], 2, ',', '.') ?? '-'}}</td>
-                            <td>{{ $ins['metode_pembayaran'] }}</td>
-                            <td>-</td>
-                        </tr>
+                        @foreach ($pembayaran['detail_pembayaran'] as $detail)
+                            <tr>
+                                <td>{{ ucfirst($detail['jenis_biaya']) }}</td>
+                                <td>{{ $detail['keterangan'] }}</td>
+                                <td class="text-end">{{ number_format($detail['jumlah'], 0, ',', '.') }}</td>
+                            </tr>
                         @endforeach
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="2" class="text-end">Total</th>
+                            <th class="text-end text-success">
+                                Rp {{ number_format($pembayaran['total_biaya'], 0, ',', '.') }}
+                            </th>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
+            <div class="m-4">
+                <a href="{{ route('pembayaran.index') }}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left me-1"></i> Kembali
+                </a>
+            </div>
         </div>
+
     </div>
 </div>
 @endsection
+
 @push('js')
-    <script>
-        $('.toast').toast('show')
-        $(document).ready(function() {
-            $('#datatable-main-instruksi').DataTable();
-        });
-    </script>
+<script>
+    $(document).ready(function () {
+        $('.toast').toast('show');
+        $('#datatable-main-instruksi').DataTable();
+    });
+</script>
 @endpush

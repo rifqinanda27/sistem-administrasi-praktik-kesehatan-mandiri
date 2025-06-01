@@ -53,7 +53,18 @@ class KasirController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $token = session('api_token');
+
+        // Ambil data user login
+        $pembayaran = Http::withToken($token)->get("$this->apiBaseUrl/pembayaran/{$id}");
+        
+        if (!$pembayaran->successful()) {
+            return back()->withErrors(['message' => 'Gagal mengambil data pembayaran']);
+        }
+
+        $pembayaran = $pembayaran->json('data');
+
+        return view('kasir.show', compact('pembayaran'));
     }
 
     /**
