@@ -142,7 +142,18 @@ class ResepsionisController extends Controller
 
         $status_kunjungan = $response->json('data');
 
-        return view('resepsionis.kunjungan.create', compact('tipe_kunjungan', 'status_kunjungan'));
+        
+        $token = session('api_token');
+
+        $response = Http::withToken($token)->get("$this->apiBaseUrl/penjamin");
+
+        if (!$response->successful()) {
+            return back()->withErrors(['message' => 'Gagal mengambil data penjamin']);
+        }
+
+        $penjamin = $response->json('data');
+
+        return view('resepsionis.kunjungan.create', compact('tipe_kunjungan', 'status_kunjungan', 'penjamin'));
     }    
 
     public function cari_pasien(Request $request)
@@ -208,6 +219,7 @@ class ResepsionisController extends Controller
         $response = Http::withToken($token)->post("$this->apiBaseUrl/kunjungan", [
             'id_pasien' => $request->id_pasien,
             'id_dokter' => $request->id_dokter,
+            'id_penjamin' => $request->id_penjamin,
             'tanggal_kunjungan' => $request->tanggal_kunjungan,
             'tipe_kunjungan' => $request->tipe_kunjungan,
             'status_kunjungan' => $request->status_kunjungan,

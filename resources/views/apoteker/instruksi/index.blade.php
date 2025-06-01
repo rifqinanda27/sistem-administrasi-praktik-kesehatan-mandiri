@@ -24,8 +24,18 @@
     <div class="container-fluid">
         <div class="card card-outline card-primary shadow-sm">
             <div class="card-header">
-                <h5 class="m-0 font-weight-bold">Aturan Penggunaan</h5>
+                <div class="row">
+                    <div class="col-6">
+                        <h5 class="m-0 font-weight-bold">Aturan Penggunaan</h5>
+                    </div>
+                    <div class="col-6 d-flex justify-content-end">
+                        <div class="card-tools">
+                            <a href="{{ route('instruksi.create') }}" class="btn btn-primary"><span class="fas fa-user-plus"></span> Tambah Instruksi</a>
+                        </div>
+                    </div>
+                </div>
             </div>
+            
             <div class="card-body">
                 <table id="datatable-main-instruksi" class="table table-bordered table-hover">
                     <thead class="thead-light">
@@ -34,6 +44,7 @@
                             <th>Singkatan</th>
                             <th>Kepanjangan</th>
                             <th>Keterangan</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -43,6 +54,19 @@
                             <td>{{ $ins['nama_instruksi'] }}</td>
                             <td>{{ $ins['arti_latin'] }}</td>
                             <td>{{ $ins['keterangan'] }}</td>
+                            <td>
+                                <button type="button" class="btn btn-block btn-sm btn-outline-info" data-toggle="dropdown"><i class="fas fa-cog"></i>
+                                </button>
+                                <div class="dropdown-menu" role="menu">
+                                    <a class="dropdown-item" href="{{ route('instruksi.edit', $ins['id_instruksi']) }}">Edit</a>
+                                    <!-- <a class="dropdown-item" href="#">Hapus</a> -->
+                                    <form action="{{ route('instruksi.destroy', $ins['id_instruksi']) }}" method="POST" onsubmit="return confirm('Yakin mau hapus data ini?')" style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="dropdown-item text-danger" type="submit">Hapus</button>
+                                    </form>
+                                </div>
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>

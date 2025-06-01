@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
             // JenisPemeriksaanLabSeeder::class,
             // PermintaanLabSeeder::class,
             // HasilLabSeeder::class,
+            PenjaminSeeder::class,
         ]);
     }
 }

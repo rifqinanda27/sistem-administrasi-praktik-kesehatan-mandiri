@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\PermintaanLabController;
 use App\Http\Controllers\Api\HasilLabController;
 use App\Http\Controllers\Api\ApotekerController;
 use App\Http\Controllers\Api\DokterController;
+use App\Http\Controllers\Api\PenjaminController;
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
@@ -44,6 +45,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
     
     Route::middleware('role:resepsionis,dokterumum')->group(function () {
+        Route::apiResource('penjamin', PenjaminController::class);
         Route::get('cetak-permintaan/{id}', [PermintaanLabController::class, 'cetak_permintaan']);
         Route::apiResource('/pasien', PatientController::class);
         Route::apiResource('/kunjungan', VisitController::class);
@@ -57,6 +59,10 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('obat', ObatController::class);
         Route::apiResource('resep', ResepController::class);
         Route::get('instruksi', [ApotekerController::class, 'instruksi_index']);
+        Route::get('instruksi/{id}', [ApotekerController::class, 'instruksi_show']);
+        Route::put('instruksi/{id}', [ApotekerController::class, 'instruksi_update']);
+        Route::post('instruksi', [ApotekerController::class, 'instruksi_store']);
+        Route::delete('instruksi/{id}', [ApotekerController::class, 'instruksi_destroy']);
         Route::post('detail-resep', [ApotekerController::class, 'detail_resep_store']);
         // Route::get('dokter', [UserController::class, 'index']);
         Route::get('detail-resep', [ApotekerController::class, 'detail_resep_index']);
@@ -67,11 +73,14 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('jenis-pemeriksaan-lab', JenisPemeriksaanLabController::class);
         Route::apiResource('laboratorium', LaboratoriumController::class);
         Route::apiResource('permintaan-lab', PermintaanLabController::class);
+        Route::apiResource('pembayaran', \App\Http\Controllers\Api\PembayaranController::class);
+        Route::apiResource('detail-pembayaran', \App\Http\Controllers\Api\DetailPembayaranController::class);
     });
     
     Route::middleware('role:laboran')->group(function() {
         Route::apiResource('hasil-lab', HasilLabController::class);
     });
+    
     
     // Route::middleware('role:apoteker')->group(function() {
     // });

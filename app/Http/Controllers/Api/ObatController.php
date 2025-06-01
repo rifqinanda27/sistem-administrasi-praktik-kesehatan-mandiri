@@ -47,6 +47,11 @@ class ObatController extends Controller
                 'bentuk' => 'required|string|max:255',
                 'dosis' => 'required|string|max:255',
                 'jumlah_stok' => 'required|numeric|min:0',
+                'satuan' => 'required',
+                'golongan' => 'required',
+                'indikasi' => 'required',
+                'tanggal_kadaluarsa' => 'required',
+                'harga_satuan' => 'required',
             ]);
         } catch (ValidationException $e) {
             return response()->json([
@@ -69,6 +74,11 @@ class ObatController extends Controller
             'bentuk' => 'sometimes|required|string|max:255',
             'dosis' => 'sometimes|required|string|max:255',
             'jumlah_stok' => 'sometimes|required|numeric|min:0',
+            'satuan' => 'required',
+            'golongan' => 'required',
+            'indikasi' => 'required',
+            'tanggal_kadaluarsa' => 'required',
+            'harga_satuan' => 'required',
         ]);
 
         $obat->update($data);

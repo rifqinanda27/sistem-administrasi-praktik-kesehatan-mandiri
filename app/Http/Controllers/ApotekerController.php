@@ -37,7 +37,7 @@ class ApotekerController extends Controller
      */
     public function create()
     {
-        //
+        return view('apoteker.obat.create');
     }
 
     /**
@@ -45,7 +45,28 @@ class ApotekerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $token = session('api_token');
+
+        $response = Http::withToken($token)->post("$this->apiBaseUrl/obat", [
+            'nama_obat' => $request->nama_obat,
+            'bentuk' => $request->bentuk,
+            'dosis' => $request->dosis,
+            'jumlah_stok' => $request->jumlah_stok,
+            'satuan' => $request->satuan,
+            'golongan' => $request->golongan,
+            'indikasi' => $request->indikasi,
+            'tanggal_kadaluarsa' => $request->tanggal_kadaluarsa,
+            'harga_satuan' => $request->harga_satuan,
+        ]);
+
+        // dd($response);
+        
+        // Tambahkan pengecekan statusnya
+        if ($response->failed()) {
+            // toastr()->error('Gagal membuat user: ' . $response->json('message'));
+            return back()->withErrors(['message' => $response->json('message') ?? 'Gagal membuat Obat']);
+        }
+        return redirect()->route('obat.index');
     }
 
     /**
@@ -53,7 +74,7 @@ class ApotekerController extends Controller
      */
     public function show(string $id)
     {
-        //
+        
     }
 
     /**
@@ -61,7 +82,21 @@ class ApotekerController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $token = session('api_token');
+
+        $response = Http::withToken($token)->get("$this->apiBaseUrl/obat/$id");
+
+        // dd($response);
+        
+        // Tambahkan pengecekan statusnya
+        if ($response->failed()) {
+            // toastr()->error('Gagal membuat user: ' . $response->json('message'));
+            return back()->withErrors(['message' => $response->json('message') ?? 'Gagal membuat Obat']);
+        }
+
+        $obat = $response->json('data');
+
+        return view('apoteker.obat.edit', compact('obat'));
     }
 
     /**
@@ -69,7 +104,28 @@ class ApotekerController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $token = session('api_token');
+
+        $response = Http::withToken($token)->put("$this->apiBaseUrl/obat/$id", [
+            'nama_obat' => $request->nama_obat,
+            'bentuk' => $request->bentuk,
+            'dosis' => $request->dosis,
+            'jumlah_stok' => $request->jumlah_stok,
+            'satuan' => $request->satuan,
+            'golongan' => $request->golongan,
+            'indikasi' => $request->indikasi,
+            'tanggal_kadaluarsa' => $request->tanggal_kadaluarsa,
+            'harga_satuan' => $request->harga_satuan,
+        ]);
+
+        // dd($response);
+        
+        // Tambahkan pengecekan statusnya
+        if ($response->failed()) {
+            // toastr()->error('Gagal membuat user: ' . $response->json('message'));
+            return back()->withErrors(['message' => $response->json('message') ?? 'Gagal membuat Obat']);
+        }
+        return redirect()->route('obat.index');
     }
 
     /**
@@ -77,10 +133,18 @@ class ApotekerController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $token = session('api_token');
+
+        $response = Http::withToken($token)->delete("$this->apiBaseUrl/obat/{$id}");
+
+        if (!$response->successful()) {
+            return back()->withErrors(['message' => 'Gagal menghapus obat']);
+        }
+
+        return redirect()->route('obat.index');
     }
 
-    public function intruksi_apoteker()
+    public function intruksi_index()
     {
         $token = session('api_token');
 
@@ -93,7 +157,80 @@ class ApotekerController extends Controller
 
         $instruksi = $response->json('data');
 
-        return view('apoteker.instruksi.intruksi_resep', compact('instruksi'));
+        return view('apoteker.instruksi.index', compact('instruksi'));
+    }
+
+    public function intruksi_create()
+    {
+        return view('apoteker.instruksi.create');
+    }
+
+    public function intruksi_store(Request $request)
+    {
+        $token = session('api_token');
+
+        $response = Http::withToken($token)->post("$this->apiBaseUrl/instruksi", [
+            'nama_instruksi' => $request->nama_instruksi,
+            'keterangan' => $request->keterangan,
+            'arti_latin' => $request->arti_latin,
+        ]);
+
+        // dd($response);
+        
+        // Tambahkan pengecekan statusnya
+        if ($response->failed()) {
+            // toastr()->error('Gagal membuat user: ' . $response->json('message'));
+            return back()->withErrors(['message' => $response->json('message') ?? 'Gagal membuat Obat']);
+        }
+        return redirect()->route('instruksi.index');
+    }
+
+    public function intruksi_edit($id)
+    {
+        $token = session('api_token');
+
+        $response = Http::withToken($token)->get("$this->apiBaseUrl/instruksi/$id");
+
+        if ($response->failed()) {
+            return back()->withErrors(['message' => $response->json('message') ?? 'Gagal mengambil Instruksi']);
+        }
+
+        $instruksi = $response->json('data');
+
+        return view('apoteker.instruksi.edit', compact('instruksi'));
+    }
+
+    public function intruksi_update(Request $request, $id)
+    {
+        $token = session('api_token');
+
+        $response = Http::withToken($token)->put("$this->apiBaseUrl/instruksi/$id", [
+            'nama_instruksi' => $request->nama_instruksi,
+            'keterangan' => $request->keterangan,
+            'arti_latin' => $request->arti_latin,
+        ]);
+
+        // dd($response);
+        
+        // Tambahkan pengecekan statusnya
+        if ($response->failed()) {
+            // toastr()->error('Gagal membuat user: ' . $response->json('message'));
+            return back()->withErrors(['message' => $response->json('message') ?? 'Gagal membuat Obat']);
+        }
+        return redirect()->route('instruksi.index');
+    }
+
+    public function instruksi_destroy($id)
+    {
+        $token = session('api_token');
+
+        $response = Http::withToken($token)->delete("$this->apiBaseUrl/instruksi/{$id}");
+
+        if (!$response->successful()) {
+            return back()->withErrors(['message' => 'Gagal menghapus obat']);
+        }
+
+        return redirect()->route('instruksi.index');
     }
 
     public function resep_index()

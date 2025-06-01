@@ -32,6 +32,11 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="card card-primary card-outline">
+                        <div class="card-header">
+                            <div class="card-tools">
+                                <a href="{{ route('obat.create') }}" class="btn btn-primary"><span class="fas fa-user-plus"></span> Tambah Obat</a>
+                            </div>
+                        </div>
                         <div class="card-body">
                             <table id="datatable-main-pasien" class="table table-bordered table-hover">
                                 <thead class="thead-light">
@@ -44,6 +49,7 @@
                                     <th style="width: 100px">Indikasi</th> <!-- Tambahkan kolom Status -->
                                     <th>Kadaluarsa</th> <!-- Kolom Aksi dengan tombol -->
                                     <th>Harga</th>
+                                    <th>Aksi</th>
                                 </thead>
                                 <tbody>
                                     @foreach($obat as $key => $ob)
@@ -57,6 +63,19 @@
                                         <td>{{ $ob['indikasi'] ?? '-'}}</td>
                                         <td>{{ $ob['tanggal_kadaluarsa'] ?? '-'}}</td>
                                         <td>{{ 'Rp. ' . number_format($ob['harga_satuan'], 2, ',', '.') ?? '-'}}</td>
+                                        <td>
+                                            <button type="button" class="btn btn-block btn-sm btn-outline-info" data-toggle="dropdown"><i class="fas fa-cog"></i>
+                                            </button>
+                                            <div class="dropdown-menu" role="menu">
+                                                <a class="dropdown-item" href="{{ route('obat.edit', $ob['id_obat']) }}">Edit</a>
+                                                <!-- <a class="dropdown-item" href="#">Hapus</a> -->
+                                                <form action="{{ route('obat.destroy', $ob['id_obat']) }}" method="POST" onsubmit="return confirm('Yakin mau hapus data ini?')" style="display:inline;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button class="dropdown-item text-danger" type="submit">Hapus</button>
+                                                </form>
+                                            </div>
+                                        </td>
                                     </tr>
                                     @endforeach
                                 </tbody>

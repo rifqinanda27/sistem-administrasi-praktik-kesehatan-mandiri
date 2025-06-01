@@ -11,18 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('permintaan_lab', function (Blueprint $table) {
-            $table->Integer('id_jenis_pemeriksaan')->unique()->nullable();            
+        Schema::table('dokter', function (Blueprint $table) {
+            $table->decimal('tarif_konsultasi', 12, 2)->default(0.00)->after('status_praktik');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::table('permintaan_lab', function (Blueprint $table) {
-            //
+        Schema::table('dokter', function (Blueprint $table) {
+            $table->dropColumn('tarif_konsultasi');
         });
     }
 };

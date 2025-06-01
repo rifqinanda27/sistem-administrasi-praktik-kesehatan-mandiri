@@ -45,6 +45,15 @@
                                 </div>
 
                                 <div class="form-group">
+                                    <label>Pilih Penjamin</label>
+                                    <select name="id_penjamin" class="form-control">
+                                        @foreach($penjamin as $pj)
+                                        <option value="{{ $pj['id_penjamin'] }}">{{ $pj['nama'] }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
                                     <label for="tanggal_kunjungan">Tanggal Kunjungan</label>
                                     <input type="datetime-local" name="tanggal_kunjungan" id="tanggal_kunjungan" class="form-control" required>
                                 </div>

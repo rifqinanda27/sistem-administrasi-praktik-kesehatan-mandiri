@@ -13,7 +13,7 @@ class Visit extends Model
     protected $primaryKey = 'id_kunjungan';
     protected $fillable = [
         'id_pasien', 'id_dokter', 'tanggal_kunjungan', 'tipe_kunjungan', 
-        'status_kunjungan', 'catatan'
+        'status_kunjungan', 'catatan', 'id_penjamin'
     ];
 
     // Relasi ke pasien
@@ -41,5 +41,10 @@ class Visit extends Model
     public function catatan_medis()
     {
         return $this->belongsTo(CatatanMedis::class, 'id_kunjungan', 'id_kunjungan');
+    }
+
+    public function penjamin()
+    {
+        return $this->belongsTo(Penjamin::class, 'id_penjamin', 'id_penjamin');
     }
 }

@@ -65,4 +65,61 @@ class ApotekerController extends Controller
             'data' => $instruksi
         ]);
     }
+
+    public function instruksi_store(Request $request)
+    {
+        $validatedData = $request->validate([
+            'nama_instruksi' => 'required|string|max:255',
+            'arti_latin' => 'nullable|string|max:255',
+            'keterangan' => 'nullable|string'
+        ]);
+
+        $instruksi = Instruksi::create($validatedData);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Instruksi berhasil ditambahkan',
+            'data' => $instruksi
+        ]);
+    }
+
+    public function instruksi_update(Request $request, $id)
+    {
+        $instruksi = Instruksi::findOrFail($id);
+
+        $validatedData = $request->validate([
+            'nama_instruksi' => 'required|string|max:255',
+            'arti_latin' => 'nullable|string|max:255',
+            'keterangan' => 'nullable|string'
+        ]);
+
+        $instruksi->update($validatedData);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Instruksi berhasil diperbarui',
+            'data' => $instruksi
+        ]);
+    }
+
+    public function instruksi_show($id)
+    {
+        $instruksi = Instruksi::findOrFail($id);
+
+        return response()->json([
+            'success' => true,
+            'data' => $instruksi
+        ]);
+    }
+
+    public function instruksi_destroy($id)
+    {
+        $instruksi = Instruksi::findOrFail($id);
+        $instruksi->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Instruksi berhasil dihapus'
+        ]);
+    }
 }
