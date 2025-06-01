@@ -15,7 +15,8 @@ class detail_resep extends Model
     protected $fillable = [
         'id_dokter',
         'id_obat',
-        'id_instruksi'
+        'id_instruksi',
+        'id_kunjungan',
     ];
 
     public function obat()
@@ -31,5 +32,10 @@ class detail_resep extends Model
     public function dokter()
     {
         return $this->belongsTo(Dokter::class, 'id_dokter');
+    }
+
+    public function kunjungan()
+    {
+        return $this->belongsTo(Visit::class, 'id_kunjungan');
     }
 }

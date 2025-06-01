@@ -248,4 +248,83 @@ class ApotekerController extends Controller
 
         return view('apoteker.resep.index', compact('detail_resep'));
     }
+
+    public function resep_create($id)
+    {
+        $token = session('api_token');
+
+        $response = Http::withToken($token)->get("$this->apiBaseUrl/detail-resep/$id");
+
+        if ($response->failed()) {
+            return back()->withErrors(['message' => $response->json('message') ?? 'Gagal mengambil Detail Resep']);
+        }
+
+        $detail_resep = $response->json('data');
+
+        return view('apoteker.resep.create', compact('detail_resep'));
+    }
+
+    public function resep_store(Request $request, $id)
+    {
+        $token = session('api_token');
+
+        // Detail Resep
+        $desResep = Http::withToken($token)->get("$this->apiBaseUrl/detail-resep/$id");
+
+        if ($desResep->failed()) {
+            return back()->withErrors(['message' => $desResep->json('message') ?? 'Gagal mengambil Detail Resep']);
+        }
+        $detail_resep = $desResep->json('data');
+
+        $dosis = $request->dosis;
+        $frekuensi = $request->frekuensi;
+        // dd($dosis);
+        // Resep Store
+        $resep = Http::withToken($token)->post("$this->apiBaseUrl/resep", [
+            'id_detail_resep' => $detail_resep['id_detail_resep'],
+            'dosis' => $dosis,
+            'frekuensi' => $frekuensi,
+            'petunjuk' => $request->petunjuk,
+            'id_kunjungan' => $request->id_kunjungan,
+            'diresepkan_oleh' => $detail_resep['id_dokter'],
+            'status' => "diberikan",
+        ]);
+
+        // dd($resep);
+        
+        // Tambahkan pengecekan statusnya
+        if ($resep->failed()) {
+            // toastr()->error('Gagal membuat user: ' . $resep->json('message'));
+            return back()->withErrors(['message' => $resep->json('message') ?? 'Gagal membuat Obat']);
+        }
+
+        $id_pembayaran = $detail_resep['kunjungan']['pembayaran']['id_pembayaran'];
+        $total_biaya = $detail_resep['kunjungan']['pembayaran'];
+        $obat = $detail_resep['obat']['harga_satuan'];
+
+        $biaya_obat = $dosis * $frekuensi * $obat;
+        // dd($total_biaya);
+
+        $pembayaran = Http::withToken($token)->put("$this->apiBaseUrl/pembayaran/$id_pembayaran", [
+            'total_biaya' => $total_biaya['total_biaya'] + $biaya_obat,
+        ]);
+        // dd($pembayaran);
+        if ($pembayaran->failed()) {
+            return back()->withErrors(['message' => $pembayaran->json('message') ?? 'Gagal update detail pembayaran']);
+        }
+
+        $detailPembayaran = Http::withToken($token)->post("$this->apiBaseUrl/detail-pembayaran", [
+            'id_pembayaran' => $detail_resep['kunjungan']['pembayaran']['id_pembayaran'],
+            'jenis_biaya' => 'obat',
+            'jumlah' => $biaya_obat,
+            'keterangan' => 'Biaya Obat',
+        ]);
+
+        // dd($detailPembayaran);
+        if ($detailPembayaran->failed()) {
+            return back()->withErrors(['message' => $pembayaran->json('message') ?? 'Gagal tambah detail pembayaran']);
+        }
+
+        return redirect()->route('resep.index');
+    }
 }

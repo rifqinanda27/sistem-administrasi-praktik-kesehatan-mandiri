@@ -62,8 +62,20 @@
                                 <div class="form-group">
                                     <label>Pengalaman Tahun</label>
                                     <input type="text" name="pengalaman_tahun"
-                                        class="form-control @error('pengalaman_tahun') is-invalid @enderror" placeholder="Nama Lengkap"
+                                        class="form-control @error('pengalaman_tahun') is-invalid @enderror" placeholder="Pengalaman tahun . . ."
                                         value="{{ $dokter_edit['pengalaman_tahun'] }}">
+                                    @error('name')
+                                        <div class="invalid-feedback" role="alert">
+                                            <span>{{ $message }}</span>
+                                        </div>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Tarif Konsultasi</label>
+                                    <input type="text" name="tarif_konsultasi"
+                                        class="form-control @error('tarif_konsultasi') is-invalid @enderror" placeholder="Tarif Konsultasi . . ."
+                                        value="{{ $dokter_edit['tarif_konsultasi'] }}">
                                     @error('name')
                                         <div class="invalid-feedback" role="alert">
                                             <span>{{ $message }}</span>

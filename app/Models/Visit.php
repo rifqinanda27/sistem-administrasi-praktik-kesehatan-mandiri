@@ -47,4 +47,9 @@ class Visit extends Model
     {
         return $this->belongsTo(Penjamin::class, 'id_penjamin', 'id_penjamin');
     }
+
+    public function pembayaran()
+    {
+        return $this->hasOne(Pembayaran::class, 'id_kunjungan');
+    }
 }

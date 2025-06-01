@@ -23,13 +23,12 @@ class ResepController extends Controller
     {
         $data = $request->validate([
             'id_kunjungan' => 'required|exists:visits,id_kunjungan',
-            // 'id_obat' => 'required|exists:obat,id_obat',
-            // 'dosis' => 'required|string',
-            // 'frekuensi' => 'required|string',
-            // 'petunjuk' => 'nullable|string',
-            'diresepkan_oleh' => 'required|exists:users,id',
-            // 'status' => 'required|in:aktif,diberikan',
-            'resep_obat' => 'required',
+            'id_detail_resep' => 'required',
+            'dosis' => 'required|string',
+            'frekuensi' => 'required|string',
+            'petunjuk' => 'nullable|string',
+            'diresepkan_oleh' => 'required',
+            'status' => 'required|in:aktif,diberikan',
         ]);
 
         $resep = Resep::create($data);
@@ -49,7 +48,6 @@ class ResepController extends Controller
             // 'petunjuk' => 'nullable|string',
             'diresepkan_oleh' => 'sometimes|required|exists:users,id',
             // 'status' => 'sometimes|required|in:aktif,diberikan',
-            'resep_obat' => 'required',
         ]);
 
         $resep->update($data);

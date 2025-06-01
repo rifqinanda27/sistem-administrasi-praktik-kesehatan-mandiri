@@ -16,7 +16,7 @@ class VisitController extends Controller
     // Menampilkan semua kunjungan
     public function index()
     {
-        $kunjungan = Visit::with('pasien', 'dokter', 'dokter.dokter_detail', 'catatan_medis:id_catatan,id_kunjungan,no_rekam_medis')->get();
+        $kunjungan = Visit::with('penjamin', 'pasien', 'dokter', 'dokter.dokter_detail', 'catatan_medis:id_catatan,id_kunjungan,no_rekam_medis')->get();
         return response()->json([
             'success' => true,
             'data' => $kunjungan
@@ -43,7 +43,7 @@ class VisitController extends Controller
     // Menampilkan kunjungan berdasarkan ID
     public function show($id)
     {
-        $kunjungan = Visit::with(['pasien', 'dokter', 'dokter.dokter_detail', 'catatan_medis:id_catatan,id_kunjungan,no_rekam_medis'])->findOrFail($id);
+        $kunjungan = Visit::with(['penjamin', 'pasien', 'dokter', 'dokter.dokter_detail', 'catatan_medis:id_catatan,id_kunjungan,no_rekam_medis'])->findOrFail($id);
         return response()->json([
             'sucsess' => true,
             'data' => $kunjungan

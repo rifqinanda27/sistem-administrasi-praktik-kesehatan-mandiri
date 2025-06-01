@@ -13,7 +13,8 @@ class Dokter extends Model
         'nomor_sip',
         'spesialisasi',
         'pengalaman_tahun',
-        'status_praktik'
+        'status_praktik',
+        'tarif_konsultasi',
     ];
 
     public function user()

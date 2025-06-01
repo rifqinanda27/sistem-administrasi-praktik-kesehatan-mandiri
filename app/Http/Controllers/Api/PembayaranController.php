@@ -10,21 +10,21 @@ class PembayaranController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:laboran, resepsionis ,dokterumum');
+        $this->middleware('role:resepsionis,dokterumum,apoteker,kasir');
     }
 
     public function index()
     {
         return response()->json([
             'success' => true,
-            'data' => Pembayaran::with('detailPembayaran')->get(),
+            'data' => Pembayaran::with('detailPembayaran', 'kunjungan', 'kunjungan.pasien')->get(),
         ]);
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'id_kunjungan' => 'required|exists:kunjungan,id_kunjungan',
+            'id_kunjungan' => 'required|exists:visits,id_kunjungan',
             'total_biaya' => 'required|numeric',
             'metode_pembayaran' => 'required|in:tunai,kartu,transfer,bpjs',
             'status' => 'required|in:belum_dibayar,lunas,dibatalkan',
@@ -40,7 +40,7 @@ class PembayaranController extends Controller
 
     public function show($id)
     {
-        $pembayaran = Pembayaran::with('detailPembayaran')->findOrFail($id);
+        $pembayaran = Pembayaran::with('detailPembayaran', 'kunjungan', 'kunjungan.pasien')->findOrFail($id);
 
         return response()->json([
             'success' => true,

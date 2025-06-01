@@ -10,7 +10,7 @@ class DetailPembayaranController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('role:laboran, resepsionis ,dokterumum');
+        $this->middleware('role:resepsionis,dokterumum,apoteker,kasir');
     }
 
     public function index()

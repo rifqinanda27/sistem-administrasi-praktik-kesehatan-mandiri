@@ -85,6 +85,7 @@ class DokterController extends Controller
             'spesialisasi' => $request->spesialisasi,
             'pengalaman_tahun' => $request->pengalaman_tahun,
             'status_praktik' => $request->status_praktik,
+            'tarif_konsultasi' => $request->tarif_konsultasi,
         ]);
 
         if (!$response->successful()) {

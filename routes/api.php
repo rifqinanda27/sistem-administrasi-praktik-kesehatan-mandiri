@@ -18,6 +18,8 @@ use App\Http\Controllers\Api\HasilLabController;
 use App\Http\Controllers\Api\ApotekerController;
 use App\Http\Controllers\Api\DokterController;
 use App\Http\Controllers\Api\PenjaminController;
+use App\Http\Controllers\Api\PembayaranController;
+use App\Http\Controllers\Api\DetailPembayaranController;
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
@@ -66,6 +68,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('detail-resep', [ApotekerController::class, 'detail_resep_store']);
         // Route::get('dokter', [UserController::class, 'index']);
         Route::get('detail-resep', [ApotekerController::class, 'detail_resep_index']);
+        Route::get('detail-resep/{id}', [ApotekerController::class, 'detail_resep_show']);
     });
     
     Route::middleware('role:dokterumum,laboran,resepsionis')->group(function () {
@@ -73,8 +76,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('jenis-pemeriksaan-lab', JenisPemeriksaanLabController::class);
         Route::apiResource('laboratorium', LaboratoriumController::class);
         Route::apiResource('permintaan-lab', PermintaanLabController::class);
-        Route::apiResource('pembayaran', \App\Http\Controllers\Api\PembayaranController::class);
-        Route::apiResource('detail-pembayaran', \App\Http\Controllers\Api\DetailPembayaranController::class);
     });
     
     Route::middleware('role:laboran')->group(function() {
@@ -82,7 +83,9 @@ Route::middleware('auth:sanctum')->group(function () {
     });
     
     
-    // Route::middleware('role:apoteker')->group(function() {
-    // });
+    Route::middleware('role:apoteker,dokterumum,resepsionis,kasir')->group(function() {
+        Route::apiResource('pembayaran', PembayaranController::class);
+        Route::apiResource('detail-pembayaran', DetailPembayaranController::class);
+    });
 
 });

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\DokterUmum;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 
 class TindakanController extends Controller
 {
@@ -93,6 +94,7 @@ class TindakanController extends Controller
                 'id_dokter' => $request->id_dokter,
                 'id_instruksi' => $request->id_instruksi,
                 'id_obat' => $request->id_obat,
+                'id_kunjungan' => $request->id_kunjungan,
             ]);
         
         $tindakan = Http::withToken($token)->put("$this->apiBaseUrl/kunjungan/{$request->id_kunjungan}", [
@@ -103,6 +105,66 @@ class TindakanController extends Controller
             return back()->withErrors(['message' => 'Gagal memperbarui data kunjungan']);
         }
         // dd($request->all());
+
+        $penjamin = Http::withToken($token)->get("$this->apiBaseUrl/catatan-medis/{$id}");
+        // dd($pinjamin);
+        $penjamin = $penjamin->json('data');
+
+        if (Str::lower($penjamin['kunjungan']['penjamin']['nama']) === "umum")
+        {
+            $biayaAdmin  = 25000;
+            $biayaDokter = $penjamin['kunjungan']['dokter']['dokter_detail']['tarif_konsultasi'] ?? 0;
+            $totalBiaya  = $biayaAdmin + $biayaDokter;
+            // dd($penjamin['id_kunjungan']);
+
+            $resPembayaran = Http::withToken($token)->post("$this->apiBaseUrl/pembayaran", [
+                'id_kunjungan' => $penjamin['id_kunjungan'],
+                'total_biaya' => $totalBiaya,
+                'metode_pembayaran' => 'tunai',
+                'status' => 'belum_dibayar',
+            ]);
+
+            // dd($resPembayaran);
+
+            if ($resPembayaran->failed()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Gagal membuat pembayaran',
+                    'status' => $resPembayaran->status(),
+                    'error_body' => $resPembayaran->body(), // tampilkan isi respon
+                ], 500);
+            }
+
+
+            $pembayaran = $resPembayaran->json('data');
+
+            // 2. Kirim ke /detail-pembayaran (2x)
+            $detailPayload = [
+                [
+                    'id_pembayaran' => $pembayaran['id_pembayaran'],
+                    'jenis_biaya' => 'admin',
+                    'jumlah' => $biayaAdmin,
+                    'keterangan' => 'Biaya administrasi',
+                ],
+                [
+                    'id_pembayaran' => $pembayaran['id_pembayaran'],
+                    'jenis_biaya' => 'dokter',
+                    'jumlah' => $biayaDokter,
+                    'keterangan' => 'Biaya konsultasi dokter',
+                ]
+            ];
+
+            foreach ($detailPayload as $detail) {
+                $resDetail = Http::withToken($token)->post("$this->apiBaseUrl/detail-pembayaran", $detail);
+
+                if ($resDetail->failed()) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Gagal menambahkan detail pembayaran',
+                    ], 500);
+                }
+            }
+        }
 
         return redirect()->route('tindakan-complete', ['id' => $id]);
     }

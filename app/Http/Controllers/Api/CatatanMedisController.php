@@ -16,7 +16,7 @@ class CatatanMedisController extends Controller
 
     public function index()
     {
-        $catatan = CatatanMedis::with('kunjungan', 'kunjungan.pasien', 'kunjungan.dokter', 'kunjungan.dokter.dokter_detail', 'kunjungan.catatan_medis:id_catatan,id_kunjungan,no_rekam_medis')->get();
+        $catatan = CatatanMedis::with('kunjungan.penjamin', 'kunjungan', 'kunjungan.pasien', 'kunjungan.dokter', 'kunjungan.dokter.dokter_detail', 'kunjungan.catatan_medis:id_catatan,id_kunjungan,no_rekam_medis')->get();
         return response()->json($catatan);
     }
 
@@ -95,7 +95,7 @@ class CatatanMedisController extends Controller
 
     public function show($id)
     {
-        $catatan = CatatanMedis::with('kunjungan', 'kunjungan.pasien', 'kunjungan.dokter', 'kunjungan.dokter.dokter_detail', 'kunjungan.catatan_medis:id_catatan,id_kunjungan,no_rekam_medis')->findOrFail($id);
+        $catatan = CatatanMedis::with('kunjungan.penjamin', 'kunjungan', 'kunjungan.pasien', 'kunjungan.dokter', 'kunjungan.dokter.dokter_detail', 'kunjungan.catatan_medis:id_catatan,id_kunjungan,no_rekam_medis')->findOrFail($id);
 
         if (!$catatan) {
             return response()->json(['message' => 'Catatan medis tidak ditemukan.'], 404);

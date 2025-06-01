@@ -14,7 +14,7 @@ class Resep extends Model
 
     protected $fillable = [
         'id_kunjungan',
-        'id_obat',
+        'id_detail_resep',
         'dosis',
         'frekuensi',
         'resep_obat',
@@ -30,9 +30,9 @@ class Resep extends Model
     }
 
     // Relasi ke obat
-    public function obat()
+    public function detail_resep()
     {
-        return $this->belongsTo(Obat::class, 'id_obat');
+        return $this->belongsTo(detail_resep::class, 'id_detail_resep');
     }
 
     public function dokter()

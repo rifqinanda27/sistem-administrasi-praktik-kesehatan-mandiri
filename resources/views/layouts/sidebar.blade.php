@@ -73,6 +73,7 @@
             <i class="nav-icon fas fa-flask"></i>
             <p>Laboratorium</p>
         </a>
+    </li>
     @elseif(isset($user['role']['name']) && $user['role']['name'] === 'apoteker')
     <!-- Menu dengan submenu -->
     <li class="nav-item">
@@ -92,5 +93,13 @@
             <i class="nav-icon fas fa-calendar"></i>
             <p>Intruksi Resep</p>
         </a>
+    </li>
+    @elseif(isset($user['role']['name']) && $user['role']['name'] === 'kasir')
+    <li class="nav-item">
+        <a href="{{ url('pembayaran') }}" class="nav-link {{ Request::segment(1) == 'pembayaran' ? 'active' : '' }}">
+            <i class="nav-icon fas fa-receipt"></i>
+            <p>Pembayaran</p>
+        </a>
+    </li>
     @endif
 </ul>

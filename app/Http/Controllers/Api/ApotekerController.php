@@ -18,7 +18,17 @@ class ApotekerController extends Controller
 
     public function detail_resep_index()
     {
-        $detail_resep = detail_resep::with('obat', 'instruksi', 'dokter', 'dokter.user')->get();
+        $detail_resep = detail_resep::with('kunjungan', 'kunjungan.penjamin', 'kunjungan.pembayaran', 'obat', 'instruksi', 'dokter', 'dokter.user')->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $detail_resep,
+        ]);
+    }
+
+    public function detail_resep_show($id)
+    {
+        $detail_resep = detail_resep::with('kunjungan', 'kunjungan.penjamin', 'kunjungan.pembayaran', 'obat', 'instruksi', 'dokter', 'dokter.user')->findOrFail($id);
 
         return response()->json([
             'success' => true,
@@ -30,6 +40,7 @@ class ApotekerController extends Controller
     {
         $validated = $request->validate([
             'id_dokter' => 'required|integer',
+            'id_kunjungan' => 'required|integer',
             'id_obat' => 'required|array',
             'id_obat.*' => 'required|integer',
             'id_instruksi' => 'required|array',
@@ -45,6 +56,7 @@ class ApotekerController extends Controller
                 'id_dokter' => $validated['id_dokter'],
                 'id_obat' => $id_obat,
                 'id_instruksi' => $id_instruksi,
+                'id_kunjungan' => $validated['id_kunjungan'],
             ]);
 
             $results[] = $detail_resep;

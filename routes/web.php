@@ -9,6 +9,7 @@ use App\Http\Controllers\DokterUmum\PasienController;
 use App\Http\Controllers\DokterUmum\TindakanController;
 use App\Http\Controllers\ResepsionisController;
 use App\Http\Controllers\ApotekerController;
+use App\Http\Controllers\KasirController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -61,10 +62,6 @@ Route::middleware('check.api.token')->group(function () {
 
     // Apoteker
     Route::resource('obat', ApotekerController::class);
-    // Route::get('obat/create', [ApotekerController::class, 'create'])->name('obat.create');
-    // Route::post('obat', [ApotekerController::class, 'store'])->name('obat.store');
-    // Route::put('obat/{id}', [ApotekerController::class, 'update'])->name('obat.update');
-    // Route::put('obat/{id}', [ApotekerController::class, 'destroy'])->name('obat.destroy');
 
     Route::get('intruksi', [ApotekerController::class, 'intruksi_index'])->name('instruksi.index');
     Route::get('intruksi/create', [ApotekerController::class, 'intruksi_create'])->name('instruksi.create');
@@ -75,4 +72,10 @@ Route::middleware('check.api.token')->group(function () {
 
 
     Route::get('resep', [ApotekerController::class, 'resep_index'])->name('resep.index');
+    Route::get('resep/{id}/create', [ApotekerController::class, 'resep_create'])->name('resep.create');
+    Route::post('resep/{id}', [ApotekerController::class, 'resep_store'])->name('resep.store');
+
+
+    // Kasie
+    Route::resource('pembayaran', KasirController::class);
 });

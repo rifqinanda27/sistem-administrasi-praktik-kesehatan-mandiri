@@ -40,6 +40,7 @@
                                     <th>Diresepkan oleh</th>
                                     <th>Instruksi</th>
                                     <th>Keterangan</th>
+                                    <th>Aksi</th>
                                 </thead>
                                 <tbody>
                                     @foreach($detail_resep as $key => $ob)
@@ -49,6 +50,9 @@
                                         <td>{{ $ob['dokter']['user']['name'] ?? '-'}}</td>
                                         <td>{{ $ob['instruksi']['nama_instruksi'] ?? '-'}}</td>
                                         <td>{{ $ob['instruksi']['keterangan'] ?? '-'}}</td>
+                                        <td>
+                                            <a href="{{ route('resep.create' , ['id' => $ob['id_detail_resep']]) }}" class="btn btn-primary">Racik Obat</a>
+                                        </td>
                                     </tr>
                                     @endforeach
                                 </tbody>
