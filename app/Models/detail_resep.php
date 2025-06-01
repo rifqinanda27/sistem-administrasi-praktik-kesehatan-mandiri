@@ -38,4 +38,9 @@ class detail_resep extends Model
     {
         return $this->belongsTo(Visit::class, 'id_kunjungan');
     }
+
+    public function resep()
+    {
+        return $this->hasOne(Resep::class, 'id_detail_resep', 'id_detail_resep');
+    }
 }

@@ -49,4 +49,5 @@ class Resep extends Model
     // {
     //     return $this->belongsTo(Visit::class, 'id_kunjungan');
     // }
+    
 }

@@ -51,7 +51,11 @@
                                         <td>{{ $ob['instruksi']['nama_instruksi'] ?? '-'}}</td>
                                         <td>{{ $ob['instruksi']['keterangan'] ?? '-'}}</td>
                                         <td>
-                                            <a href="{{ route('resep.create' , ['id' => $ob['id_detail_resep']]) }}" class="btn btn-primary">Racik Obat</a>
+                                            @if($ob['resep'] == null)
+                                                <a href="{{ route('resep.create' , ['id' => $ob['id_detail_resep']]) }}" class="btn btn-primary">Racik Obat</a>
+                                            @else
+                                                <p class="btn btn-success">Selesai</p>
+                                            @endif
                                         </td>
                                     </tr>
                                     @endforeach
