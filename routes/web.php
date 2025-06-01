@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\DokterController;
 use App\Http\Controllers\DokterUmum\PasienController;
 use App\Http\Controllers\DokterUmum\TindakanController;
 use App\Http\Controllers\ResepsionisController;
+use App\Http\Controllers\ApotekerController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -59,6 +60,6 @@ Route::middleware('check.api.token')->group(function () {
     Route::get('cetak-permintaan/{id}', [ResepsionisController::class, 'getPermintaanLab'])->name('cetak-permintaan');
 
     // Apoteker
-    Route::get('obat', [ApotekerController::class, 'index']);
-    Route::get('intruksi', [ApotekerController::class, 'intruksi_apoteker']);
+    Route::get('obat', [ApotekerController::class, 'index'])->name('obat.index');
+    Route::get('intruksi', [ApotekerController::class, 'intruksi_apoteker'])->name('instruksi.index');
 });

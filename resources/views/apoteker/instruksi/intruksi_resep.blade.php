@@ -1,7 +1,10 @@
 @extends('layouts.app')
 
 @push('css')
-    <!-- DataTables (tidak perlu jika tidak butuh fitur filter/sort) -->
+    <!-- DataTables -->
+    <link rel="stylesheet" href="{{ asset('') }}plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="{{ asset('') }}plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="{{ asset('') }}plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 @endpush
 
 @section('content')
@@ -23,27 +26,24 @@
                 <h5 class="m-0 font-weight-bold">Aturan Penggunaan</h5>
             </div>
             <div class="card-body">
-                <table class="table table-bordered table-hover">
+                <table id="datatable-main-instruksi" class="table table-bordered table-hover">
                     <thead class="thead-light">
                         <tr>
+                            <th width="20px">#</th>
                             <th>Singkatan</th>
                             <th>Kepanjangan</th>
-                            <th>Arti</th>
                             <th>Keterangan</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td>s</td><td>signa</td><td>tandai</td><td>Singkatan untuk aturan pakai terlihat pada bagian signatura atau yang diawali dengan signa</td></tr>
-                        <tr><td>a.c.</td><td>ante coenam</td><td>sebelum makan</td><td>-</td></tr>
-                        <tr><td>a.c.</td><td>Durante coenam</td><td>pada waktu makan</td><td>-</td></tr>
-                        <tr><td>p.c.</td><td>post coenam</td><td>setelah makan</td><td>-</td></tr>
-                        <tr><td>a.m.</td><td>ante paradigm</td><td>sebelum sarapan pagi</td><td>-</td></tr>
-                        <tr><td>a.h.</td><td>alternis horis</td><td>selang satu jam</td><td>-</td></tr>
-                        <tr><td>abs.febr.</td><td>absente febre</td><td>bila tidak demam</td><td>-</td></tr>
-                        <tr><td>h.v.</td><td>hora vespertina</td><td>malam hari</td><td>-</td></tr>
-                        <tr><td>n.</td><td>nocte</td><td>malam hari</td><td>-</td></tr>
-                        <tr><td>h.s.</td><td>hora somni</td><td>waktu tidur</td><td>-</td></tr>
-                        <tr><td>h.m.</td><td>hora matutina</td><td>pagi hari</td><td>-</td></tr>
+                        @foreach($instruksi as $ins)
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $ins['nama_instruksi'] }}</td>
+                            <td>{{ $ins['arti_latin'] }}</td>
+                            <td>{{ $ins['keterangan'] }}</td>
+                        </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -51,3 +51,11 @@
     </div>
 </div>
 @endsection
+@push('js')
+    <script>
+        $('.toast').toast('show')
+        $(document).ready(function() {
+            $('#datatable-main-instruksi').DataTable();
+        });
+    </script>
+@endpush

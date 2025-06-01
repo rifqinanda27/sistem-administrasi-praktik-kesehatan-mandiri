@@ -19,6 +19,26 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
+    // public function login(Request $request)
+    // {
+    //     $response = Http::post("$this->apiBaseUrl/login", [
+    //         'email' => $request->email,
+    //         'password' => $request->password,
+    //     ]);
+
+    //     if (!$response->successful()) {
+    //         return back()->withErrors(['email' => 'Email atau password salah']);
+    //     }
+
+    //     $data = $response->json();
+        
+    //     // Simpan token ke session
+    //     session(['api_token' => $data['token']]);
+    //     session()->save(); // <<< Tambahan penting agar session tersimpan sebelum redirect
+
+    //     return redirect()->route('home');
+    // }
+
     public function login(Request $request)
     {
         $response = Http::post("$this->apiBaseUrl/login", [
@@ -31,13 +51,31 @@ class AuthController extends Controller
         }
 
         $data = $response->json();
-        
-        // Simpan token ke session
-        session(['api_token' => $data['token']]);
-        session()->save(); // <<< Tambahan penting agar session tersimpan sebelum redirect
 
-        return redirect()->route('home');
+        // Simpan token dan user ke session
+        session([
+            'api_token' => $data['token'],
+            'user' => $data['user'],
+            'user_role' => strtolower($data['role']), // simpan role juga
+        ]);
+
+        session()->save();
+
+        // Redirect sesuai role
+        switch (strtolower($data['role'])) {
+            case 'admin':
+                return redirect()->route('users.index'); // atau dashboard admin
+            case 'dokterumum':
+                return redirect()->route('pasien.index');
+            case 'resepsionis':
+                return redirect()->route('pasien-resepsionis.index');
+            case 'apoteker':
+                return redirect('/obat');
+            default:
+                return redirect()->route('home'); // fallback
+        }
     }
+
 
 
     public function logout()

@@ -2,6 +2,7 @@
     <!-- Header -->
     <li class="nav-header">MAIN MENU</li>
 
+    @if(isset($user['role']['name']) && $user['role']['name'] === 'admin')
     <!-- Menu tanpa submenu -->
     <li class="nav-item">
         <a href="{{ url('home') }}" class="nav-link {{ Request::segment(1) == 'home' ? 'active' : '' }}">
@@ -9,7 +10,6 @@
             <p>Dashboard</p>
         </a>
     </li>
-    @if(isset($user['role']['name']) && $user['role']['name'] === 'admin')
     <!-- Menu dengan submenu -->
     <li class="nav-item {{ in_array(Request::segment(1), ['users', 'roles', 'dokter']) ? 'menu-open' : '' }}">
         <a href="#" class="nav-link {{ in_array(Request::segment(1), ['users', 'roles', 'dokter']) ? 'active' : '' }}">
@@ -72,6 +72,7 @@
         <a href="{{ url('lab-pasien') }}" class="nav-link {{ Request::segment(1) == 'lab-pasien' ? 'active' : '' }}">
             <i class="nav-icon fas fa-flask"></i>
             <p>Laboratorium</p>
+        </a>
     @elseif(isset($user['role']['name']) && $user['role']['name'] === 'apoteker')
     <!-- Menu dengan submenu -->
     <li class="nav-item">
@@ -87,8 +88,9 @@
         </a>
     </li>
     <li class="nav-item">
-        <a href="{{ url('intruksi') }}" class="nav-link {{ Request::segment(1) == 'instruksi' ? 'active' : '' }}">
+        <a href="{{ url('intruksi') }}" class="nav-link {{ Request::segment(1) == 'intruksi' ? 'active' : '' }}">
             <i class="nav-icon fas fa-calendar"></i>
             <p>Intruksi Resep</p>
+        </a>
     @endif
 </ul>

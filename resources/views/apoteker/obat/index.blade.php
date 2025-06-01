@@ -35,17 +35,30 @@
                             <table id="datatable-main-pasien" class="table table-bordered table-striped">
                                 <thead>
                                     <th style="width: 10px">#</th>
-                                    <th>ID Obat</th>
-                                    <th>Nama Obat</th>
+                                    <th style="width: 50px">Nama Obat</th>
                                     <th>Bentuk</th>
                                     <th>Dosis</th>
-                                    <th>Jumlah Stok</th>
-                                    <th>Golongan</th>
-                                    <th>Indikasi</th> <!-- Tambahkan kolom Status -->
+                                    <th style="width: 10px">Jumlah Stok</th>
+                                    <th style="width: 50px">Golongan</th>
+                                    <th style="width: 100px">Indikasi</th> <!-- Tambahkan kolom Status -->
                                     <th>Kadaluarsa</th> <!-- Kolom Aksi dengan tombol -->
                                     <th>Harga</th>
                                 </thead>
-                                
+                                <tbody>
+                                    @foreach($obat as $key => $ob)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $ob['nama_obat'] ?? '-'}}</td>
+                                        <td>{{ $ob['bentuk'] ?? '-'}}</td>
+                                        <td>{{ $ob['dosis'] ?? '-'}}</td>
+                                        <td>{{ $ob['jumlah_stok'] ?? '-'}}</td>
+                                        <td>{{ $ob['golongan'] ?? '-'}}</td>
+                                        <td>{{ $ob['indikasi'] ?? '-'}}</td>
+                                        <td>{{ $ob['tanggal_kadaluarsa'] ?? '-'}}</td>
+                                        <td>{{ 'Rp. ' . number_format($ob['harga_satuan'], 2, ',', '.') ?? '-'}}</td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
                             </table>
                         </div>
                     </div>
