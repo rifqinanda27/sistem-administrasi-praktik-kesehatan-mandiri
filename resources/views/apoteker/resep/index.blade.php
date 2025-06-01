@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Daftar Obat')
+@section('title', 'Daftar Resep Obat')
 @push('css')
     <!-- DataTables -->
     <link rel="stylesheet" href="{{ asset('') }}plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
@@ -15,7 +15,7 @@
                         <!-- Ikon User -->
                         <span class="fas fa-user-injured mr-1" style="font-size: 29px;"></span>
                         <!-- Judul -->
-                        <h4 class="m-3">Obat</h4>
+                        <h4 class="m-3">Resep</h4>
                     </div>
                 </div>
                 <div class="col-sm-6">
@@ -37,26 +37,18 @@
                                 <thead class="thead-light">
                                     <th style="width: 10px">#</th>
                                     <th style="width: 50px">Nama Obat</th>
-                                    <th>Bentuk</th>
-                                    <th>Dosis</th>
-                                    <th style="width: 10px">Jumlah Stok</th>
-                                    <th style="width: 50px">Golongan</th>
-                                    <th style="width: 100px">Indikasi</th> <!-- Tambahkan kolom Status -->
-                                    <th>Kadaluarsa</th> <!-- Kolom Aksi dengan tombol -->
-                                    <th>Harga</th>
+                                    <th>Diresepkan oleh</th>
+                                    <th>Instruksi</th>
+                                    <th>Keterangan</th>
                                 </thead>
                                 <tbody>
-                                    @foreach($obat as $key => $ob)
+                                    @foreach($detail_resep as $key => $ob)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $ob['nama_obat'] ?? '-'}}</td>
-                                        <td>{{ $ob['bentuk'] ?? '-'}}</td>
-                                        <td>{{ $ob['dosis'] ?? '-'}}</td>
-                                        <td>{{ $ob['jumlah_stok'] ?? '-'}}</td>
-                                        <td>{{ $ob['golongan'] ?? '-'}}</td>
-                                        <td>{{ $ob['indikasi'] ?? '-'}}</td>
-                                        <td>{{ $ob['tanggal_kadaluarsa'] ?? '-'}}</td>
-                                        <td>{{ 'Rp. ' . number_format($ob['harga_satuan'], 2, ',', '.') ?? '-'}}</td>
+                                        <td>{{ $ob['obat']['nama_obat'] ?? '-'}}</td>
+                                        <td>{{ $ob['dokter']['user']['name'] ?? '-'}}</td>
+                                        <td>{{ $ob['instruksi']['nama_instruksi'] ?? '-'}}</td>
+                                        <td>{{ $ob['instruksi']['keterangan'] ?? '-'}}</td>
                                     </tr>
                                     @endforeach
                                 </tbody>

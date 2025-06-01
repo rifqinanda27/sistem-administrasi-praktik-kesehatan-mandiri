@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Complete')
+
 @section('content')
 <div class="content" style="padding-top: 60px">
     <!-- Navigation Steps 2 -->

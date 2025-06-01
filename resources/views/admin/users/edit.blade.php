@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title', 'Edit Pengguna')
 @push('css')
 @endpush
 @section('content')

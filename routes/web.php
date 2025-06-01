@@ -62,4 +62,5 @@ Route::middleware('check.api.token')->group(function () {
     // Apoteker
     Route::get('obat', [ApotekerController::class, 'index'])->name('obat.index');
     Route::get('intruksi', [ApotekerController::class, 'intruksi_apoteker'])->name('instruksi.index');
+    Route::get('resep', [ApotekerController::class, 'resep_index'])->name('resep.index');
 });

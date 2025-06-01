@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title', 'Tambah Role')
 @push('css')
 @endpush
 @section('content')

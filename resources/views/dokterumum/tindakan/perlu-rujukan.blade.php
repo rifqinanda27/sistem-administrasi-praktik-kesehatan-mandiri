@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Pasien Perlu Rujukan')
+
 @section('content')
 
 <div class="content" style="padding-top: 60px">

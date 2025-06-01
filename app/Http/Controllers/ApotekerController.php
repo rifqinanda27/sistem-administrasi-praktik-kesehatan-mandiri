@@ -95,4 +95,20 @@ class ApotekerController extends Controller
 
         return view('apoteker.instruksi.intruksi_resep', compact('instruksi'));
     }
+
+    public function resep_index()
+    {
+        $token = session('api_token');
+
+        // Ambil data user login
+        $detail_resep = Http::withToken($token)->get("$this->apiBaseUrl/detail-resep");
+        
+        if (!$detail_resep->successful()) {
+            return back()->withErrors(['message' => 'Gagal mengambil data detail resep']);
+        }
+
+        $detail_resep = $detail_resep->json('data');
+
+        return view('apoteker.resep.index', compact('detail_resep'));
+    }
 }

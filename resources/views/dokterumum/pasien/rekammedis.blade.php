@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'Rekam Medis Pasien')
 @section('content')
 <div class="container-fluid p-0">
 

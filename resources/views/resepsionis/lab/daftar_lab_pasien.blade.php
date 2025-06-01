@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Daftar Permintaan Laboratorium')
+
 @push('css')
 <!-- DataTables -->
 <link rel="stylesheet" href="{{ asset('') }}plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
@@ -37,8 +39,8 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table id="datatable-main-pasien" class="table table-bordered table-striped align-middle">
-                        <thead>
+                    <table id="datatable-main-pasien" class="table table-bordered table-hover align-middle">
+                        <thead class="thead-light">
                             <tr>
                                 <th>#</th>
                                 <th>Nama</th>

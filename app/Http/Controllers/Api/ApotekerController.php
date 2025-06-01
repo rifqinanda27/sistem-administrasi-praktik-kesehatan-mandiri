@@ -18,7 +18,7 @@ class ApotekerController extends Controller
 
     public function detail_resep_index()
     {
-        $detail_resep = detail_resep::all();
+        $detail_resep = detail_resep::with('obat', 'instruksi', 'dokter', 'dokter.user')->get();
 
         return response()->json([
             'success' => true,

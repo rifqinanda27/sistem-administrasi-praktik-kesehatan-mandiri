@@ -1,4 +1,7 @@
 @extends('layouts.app')
+
+@section('title', 'Daftar Tindakan')
+
 @push('css')
     <!-- DataTables -->
     <link rel="stylesheet" href="{{ asset('') }}plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
@@ -35,8 +38,8 @@
                             <h3 class="card-title">Tindakan & Pemeriksaan Mendatang</h3>
                         </div>
                         <div class="card-body">
-                            <table id="datatable-main-upcoming" class="table table-bordered">
-                                <thead>
+                            <table id="datatable-main-upcoming" class="table table-bordered table-hover">
+                                <thead class="thead-light">
                                     <th>#</th>
                                     <th>Nomor Rekam Medis</th>
                                     <th>Nama</th>

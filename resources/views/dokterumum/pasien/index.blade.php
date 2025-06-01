@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title', 'Daftar Pasien')
 @push('css')
     <!-- DataTables -->
     <link rel="stylesheet" href="{{ asset('') }}plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
@@ -75,8 +76,8 @@
                             <h3 class="card-title">Data Pasien</h3>
                         </div>
                         <div class="card-body">
-                            <table id="datatable-main-pasien" class="table table-bordered table-striped">
-                                <thead>
+                            <table id="datatable-main-pasien" class="table table-bordered table-hover">
+                                <thead class="thead-light">
                                     <th style="width: 10px">#</th>
                                     <th>Nama</th>
                                     <th>Tanggal Lahir</th>

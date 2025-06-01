@@ -17,4 +17,19 @@ class detail_resep extends Model
         'id_obat',
         'id_instruksi'
     ];
+
+    public function obat()
+    {
+        return $this->belongsTo(Obat::class, 'id_obat');
+    }
+
+    public function instruksi()
+    {
+        return $this->belongsTo(Instruksi::class, 'id_instruksi');
+    }
+
+    public function dokter()
+    {
+        return $this->belongsTo(Dokter::class, 'id_dokter');
+    }
 }

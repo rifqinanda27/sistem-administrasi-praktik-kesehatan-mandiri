@@ -1,4 +1,7 @@
 @extends('layouts.app')
+
+@section('title', 'Daftar Kunjungan')
+
 @push('css')
     <!-- DataTables -->
     <link rel="stylesheet" href="{{ asset('') }}plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
@@ -38,8 +41,8 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <table id="datatable-main-kunjungan" class="table table-bordered table-striped">
-                                <thead>
+                            <table id="datatable-main-kunjungan" class="table table-bordered table-hover">
+                                <thead class="thead-light">
                                     <th style="width: 10px">#</th>
                                     <th>Nama</th>
                                     <th>Tanggal Kunjungan</th>
@@ -56,7 +59,7 @@
                                             <td>{{ $kunjungan['tipe_kunjungan'] }}</td>
                                             <td>{{ $kunjungan['status_kunjungan'] }}</td>
                                             <td>
-                                                <button class="btn btn-primary">Lihat</button>
+                                                <button class="btn btn-danger">Hapus</button>
                                             </td>
                                         </tr>
                                     @endforeach

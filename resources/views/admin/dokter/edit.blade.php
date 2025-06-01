@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title', 'Edit Dokter')
 @push('css')
 @endpush
 @section('content')

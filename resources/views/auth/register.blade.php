@@ -16,7 +16,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link href="{{ asset('') }}assets/css/app.css" rel="stylesheet">
     <link href="{{ asset('') }}assets/css/icons.css" rel="stylesheet">
-    <title>{{ env('APP_NAME', 'PBL IK-TI') }}</title>
+    <title>Register</title>
 </head>
 
 <body class="">
