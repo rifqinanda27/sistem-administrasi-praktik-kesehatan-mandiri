@@ -68,7 +68,7 @@ class AuthController extends Controller
             case 'dokterumum':
                 return redirect()->route('pasien.index');
             case 'kasir':
-                return redirect()->route('home');
+                return redirect()->route('pembayaran.index');
             case 'resepsionis':
                 return redirect()->route('pasien-resepsionis.index');
             case 'apoteker':
