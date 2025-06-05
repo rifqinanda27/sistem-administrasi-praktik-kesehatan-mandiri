@@ -18,10 +18,7 @@ class PatientController extends Controller
     {
         // Ambil semua pasien beserta kunjungan dan resep terkait
         $pasien = Patients::with([
-            'kunjungan',  // Relasi ke kunjungan
-            'resep' => function ($query) {  // Relasi ke resep melalui kunjungan
-                $query->with('obat');  // Dapatkan obat yang terkait dengan resep
-            }
+            'kunjungan', 'kunjungan.dokter', 'kunjungan.penjamin'
         ])->get();  // Mengambil semua pasien
 
         return response()->json([
@@ -52,15 +49,8 @@ class PatientController extends Controller
     public function show($id)
     {
         $pasien = Patients::with([
-            'kunjungan' => function ($query) use ($id) {
-                $query->where('id_pasien', $id);
-            },
-            'resep' => function ($query) use ($id) {
-                $query->whereHas('kunjungan', function ($query) use ($id) {
-                    $query->where('id_pasien', $id);
-                });
-            },
-            'resep.obat' // Obat terkait dengan resep
+            'kunjungan', 'kunjungan.dokter', 'kunjungan.penjamin', 'kunjungan.resep', 'kunjungan.resep.detail_resep', 'kunjungan.resep.detail_resep.obat', 'kunjungan.catatan_medis'
+            // 'resep.obat' // Obat terkait dengan resep
         ])->findOrFail($id);
 
         return response()->json([

@@ -13,10 +13,13 @@ class detail_resep extends Model
     protected $primaryKey = 'id_detail_resep';
 
     protected $fillable = [
-        'id_dokter',
+        // 'id_dokter',
         'id_obat',
         'id_instruksi',
-        'id_kunjungan',
+        // 'id_kunjungan',
+        'id_resep',
+        'dosis',
+        'frekuensi',
     ];
 
     public function obat()
@@ -29,18 +32,18 @@ class detail_resep extends Model
         return $this->belongsTo(Instruksi::class, 'id_instruksi');
     }
 
-    public function dokter()
-    {
-        return $this->belongsTo(Dokter::class, 'id_dokter');
-    }
+    // public function dokter()
+    // {
+    //     return $this->belongsTo(Dokter::class, 'id_dokter');
+    // }
 
-    public function kunjungan()
-    {
-        return $this->belongsTo(Visit::class, 'id_kunjungan');
-    }
+    // public function kunjungan()
+    // {
+    //     return $this->belongsTo(Visit::class, 'id_kunjungan');
+    // }
 
     public function resep()
     {
-        return $this->hasOne(Resep::class, 'id_detail_resep', 'id_detail_resep');
+        return $this->belongsTo(Resep::class, 'id_detail_resep', 'id_detail_resep');
     }
 }

@@ -19,74 +19,65 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
-    // public function login(Request $request)
-    // {
-    //     $response = Http::post("$this->apiBaseUrl/login", [
-    //         'email' => $request->email,
-    //         'password' => $request->password,
-    //     ]);
-
-    //     if (!$response->successful()) {
-    //         return back()->withErrors(['email' => 'Email atau password salah']);
-    //     }
-
-    //     $data = $response->json();
-        
-    //     // Simpan token ke session
-    //     session(['api_token' => $data['token']]);
-    //     session()->save(); // <<< Tambahan penting agar session tersimpan sebelum redirect
-
-    //     return redirect()->route('home');
-    // }
-
     public function login(Request $request)
     {
+        // ✅ Validasi input
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        // 🔐 Kirim request login ke API
         $response = Http::post("$this->apiBaseUrl/login", [
             'email' => $request->email,
             'password' => $request->password,
         ]);
 
+        // ❌ Jika login gagal, tampilkan pesan error dari API jika tersedia
         if (!$response->successful()) {
-            return back()->withErrors(['email' => 'Email atau password salah']);
+            $errorMessage = 'Login gagal. Silakan coba lagi.';
+
+            $responseData = $response->json();
+            if (isset($responseData['message'])) {
+                $errorMessage = $responseData['message'];
+            }
+
+            return back()->withErrors(['email' => $errorMessage])->withInput();
         }
 
+        // ✅ Jika login berhasil
         $data = $response->json();
 
-        // Simpan token dan user ke session
+        // Simpan token, user info, dan role ke session
         session([
             'api_token' => $data['token'],
             'user' => $data['user'],
-            'user_role' => strtolower($data['role']), // simpan role juga
+            'user_role' => $data['role'],
         ]);
-
         session()->save();
 
-        // Redirect sesuai role
-        switch (strtolower($data['role'])) {
+        // 🔁 Arahkan user berdasarkan role
+        switch ($data['role']) {
             case 'admin':
-                return redirect()->route('users.index'); // atau dashboard admin
+                return redirect()->route('users.index');
             case 'dokterumum':
-                return redirect()->route('pasien.index');
-            case 'kasir':
-                return redirect()->route('pembayaran.index');
+                return redirect()->route('tindakan.index');
             case 'resepsionis':
                 return redirect()->route('pasien-resepsionis.index');
             case 'apoteker':
-                return redirect('/obat');
+                return redirect()->route('resep.index');
+            case 'kasir':
+                return redirect()->route('pembayaran.index');
             default:
-                return redirect()->route('home'); // fallback
+                return redirect()->route('home');
         }
     }
-
-
 
     public function logout()
     {
         $token = session('api_token');
-
         Http::withToken($token)->post("$this->apiBaseUrl/logout");
-        session()->forget('api_token');
-
+        session()->forget(['api_token', 'user', 'user_role']);
         return redirect()->route('login');
     }
 }

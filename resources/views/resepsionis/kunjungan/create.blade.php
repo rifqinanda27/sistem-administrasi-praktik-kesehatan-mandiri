@@ -37,11 +37,17 @@
                                 <div class="form-group">
                                     <label>Pilih Pasien</label>
                                     <select id="pasien" name="id_pasien" class="form-control"></select>
+                                    @error('id_pasien')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
                                 </div>
 
                                 <div class="form-group">
                                     <label>Pilih Dokter</label>
                                     <select id="dokter" name="id_dokter" class="form-control"></select>
+                                    @error('id_dokter')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
                                 </div>
 
                                 <div class="form-group">
@@ -51,11 +57,17 @@
                                         <option value="{{ $pj['id_penjamin'] }}">{{ $pj['nama'] }}</option>
                                         @endforeach
                                     </select>
+                                    @error('id_penjamin')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
                                 </div>
 
                                 <div class="form-group">
                                     <label for="tanggal_kunjungan">Tanggal Kunjungan</label>
                                     <input type="datetime-local" name="tanggal_kunjungan" id="tanggal_kunjungan" class="form-control" required>
+                                    @error('tanggal_kunjungan')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
                                 </div>
 
                                 <div class="form-group">
@@ -65,6 +77,9 @@
                                             <option value="{{ $option }}">{{ ucfirst($option) }}</option>
                                         @endforeach
                                     </select>
+                                    @error('tipe_kunjungan')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
                                 </div>
 
                                 <div class="form-group">
@@ -74,6 +89,9 @@
                                             <option value="{{ $option }}">{{ ucfirst($option) }}</option>
                                         @endforeach
                                     </select>
+                                    @error('status_kunjungan')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="card-footer">

@@ -102,7 +102,10 @@
                                             <div class="d-flex align-items-center">
                                                 <span class="mr-2">=</span>
                                                 <!-- <span>{{ $tindakan['diagnosa_sementara'] }}</span> -->
-                                                 <input class="form-control" type="text" placeholder="diagnosa . . ." name="diagnosa_sementara">
+                                                 <input class="form-control" type="text" placeholder="Diagnosa . . ." name="diagnosa_sementara">
+                                                @error('diagnosa_sementara')
+                                                    <small class="text-danger">{{ $message }}</small>
+                                                @enderror
                                             </div>
                                         </div>
                                         

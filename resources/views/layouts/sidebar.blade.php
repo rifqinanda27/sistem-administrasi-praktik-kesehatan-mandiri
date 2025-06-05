@@ -43,15 +43,15 @@
     @elseif(isset($user['role']['name']) && $user['role']['name'] === 'dokterumum')
     <!-- Menu dengan submenu -->
     <li class="nav-item">
-        <a href="{{ url('pasien') }}" class="nav-link {{ Request::segment(1) == 'pasien' ? 'active' : '' }}">
-            <i class="nav-icon fas fa-users"></i>
-            <p>Pasien</p>
-        </a>
-    </li>
-    <li class="nav-item">
         <a href="{{ url('tindakan') }}" class="nav-link {{ Request::segment(1) == 'tindakan' ? 'active' : '' }}">
             <i class="nav-icon fas fa-stethoscope"></i>
             <p>Tindakan & Pemeriksaan</p>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a href="{{ url('pasien') }}" class="nav-link {{ Request::segment(1) == 'pasien' ? 'active' : '' }}">
+            <i class="nav-icon fas fa-users"></i>
+            <p>Pasien</p>
         </a>
     </li>
     @elseif(isset($user['role']['name']) && $user['role']['name'] === 'resepsionis')
@@ -89,7 +89,7 @@
         </a>
     </li>
     <li class="nav-item">
-        <a href="{{ url('intruksi') }}" class="nav-link {{ Request::segment(1) == 'intruksi' ? 'active' : '' }}">
+        <a href="{{ url('instruksi') }}" class="nav-link {{ Request::segment(1) == 'instruksi' ? 'active' : '' }}">
             <i class="nav-icon fas fa-calendar"></i>
             <p>Intruksi Resep</p>
         </a>

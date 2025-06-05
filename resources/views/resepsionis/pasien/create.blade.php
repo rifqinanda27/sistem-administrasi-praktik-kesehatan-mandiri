@@ -37,10 +37,8 @@
                                     <label>Nama Lengkap</label>
                                     <input type="text" name="nama_lengkap"
                                         class="form-control @error('name')is-invalid @enderror" placeholder="Nama Lengkap">
-                                    @error('name')
-                                        <div class="invalid-feedback" role="alert">
-                                            <span>{{ $message }}</span>
-                                        </div>
+                                    @error('nama_lengkap')
+                                        <small class="text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>
                                 <div class="form-group">
@@ -50,22 +48,37 @@
                                         <option value="laki-laki">Laki - Laki</option>
                                         <option value="perempuan">Perempuan</option>
                                     </select>
+                                    @error('jenis_kelamin')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
                                 </div>
                                 <div class="form-group">
                                     <label>Tanggal Lahir</label>
                                     <input type="date" name="tanggal_lahir" class="form-control" >
+                                    @error('tanggal_lahir')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
                                 </div>
                                 <div class="form-group">
                                     <label>Alamat</label>
                                     <textarea name="alamat" id="" cols="10" rows="3" class="form-control"></textarea>
+                                    @error('alamat')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
                                 </div>
                                 <div class="form-group">
                                     <label>No KTP</label>
                                     <input type="text" name="no_ktp" class="form-control" placeholder="No KTP">
+                                    @error('no_ktp')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
                                 </div>
                                 <div class="form-group">
                                     <label>No Telepon</label>
                                     <input type="text" name="telepon" class="form-control" placeholder="No Telepon">
+                                    @error('telepon')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="card-footer">

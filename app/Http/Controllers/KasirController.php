@@ -19,6 +19,7 @@ class KasirController extends Controller
     public function index()
     {
         $token = session('api_token');
+        // dd($token);
 
         // Ambil data user login
         $pembayaran = Http::withToken($token)->get("$this->apiBaseUrl/pembayaran");

@@ -88,9 +88,10 @@
                                                 <div class="d-flex mt-2">
                                                     <div style="width: 250px;" class="my-auto">Diagnosa Sementara</div>
                                                     <div class="d-flex align-items-center">
-                                                        <input type="text" class="form-control bg-light" name="diagnosa_sementara">
-                                                        @error('keluhan_utama')
-                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                        <span class="mr-2">=</span>
+                                                        <input type="text" class="form-control" name="diagnosa_sementara">
+                                                        @error('diagnosa_sementara')
+                                                            <small class="text-danger">{{ $message }}</small>
                                                         @enderror
                                                     </div>
                                                 </div>
@@ -98,9 +99,10 @@
                                                 <div class="d-flex mt-2">
                                                     <div style="width: 250px;" class="my-auto">Diagnosa Tambahan</div>
                                                     <div class="d-flex align-items-center">
-                                                        <input type="text" class="form-control bg-light" name="diagnosa_tambahan">
-                                                        @error('keluhan_utama')
-                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                        <span class="mr-2">=</span>
+                                                        <input type="text" class="form-control" name="diagnosa_tambahan">
+                                                        @error('diagnosa_tambahan')
+                                                            <small class="text-danger">{{ $message }}</small>
                                                         @enderror
                                                     </div>
                                                 </div>
@@ -111,38 +113,87 @@
                                         <h5 class="font-weight-bold mt-4">III. Resep Obat</h5>
                                         <input type="hidden" value="{{ $tindakan['kunjungan']['id_kunjungan'] }}" name="id_kunjungan">
                                         <input type="hidden" value="{{ $tindakan['kunjungan']['dokter']['dokter_detail']['id_dokter'] }}" name="id_dokter">
-                                        <!-- <div class="mt-3">
-                                            <textarea class="form-control" rows="5" placeholder="Masukkan resep obat di sini..." name="resep_obat"></textarea>
-                                        </div> -->
+                                        
                                         <!-- Tempat baris-baris dinamis akan ditambahkan -->
                                         <div id="obat-instruksi-wrapper">
                                             <div class="row obat-instruksi-group">
-                                                <div class="col-md-5">
+                                                <div class="col-md-3">
                                                     <label for="">Pilih Obat</label>
                                                     <select class="form-control select-obat" name="id_obat[]" style="width: 100%"></select>
+                                                    @error('id_obat')
+                                                        <small class="text-danger">{{ $message }}</small>
+                                                    @enderror
                                                 </div>
-                                                <div class="col-md-5">
+                                                <div class="col-md-3">
                                                     <label for="">Pilih Instruksi</label>
                                                     <select class="form-control select-instruksi" name="id_instruksi[]" style="width: 100%"></select>
+                                                    @error('id_instruksi')
+                                                        <small class="text-danger">{{ $message }}</small>
+                                                    @enderror
                                                 </div>
+  
+                                                <div class="col-md-2">
+                                                    <label for="">Dosis</label>
+                                                    <select class="form-control" name="dosis[]" style="width: 100%">
+                                                        <option value="1">Satu kali</option>
+                                                        <option value="2">Dua kali</option>
+                                                        <option value="3">Tiga kali</option>
+                                                        <option value="4">Empat kali</option>
+                                                    </select>
+                                                    @error('dosis')
+                                                        <small class="text-danger">{{ $message }}</small>
+                                                    @enderror
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label for="">Berapa Hari</label>
+                                                    <select class="form-control" name="frekuensi[]" style="width: 100%">
+                                                        <option value="1">Sehari</option>
+                                                        <option value="2">Dua Hari</option>
+                                                        <option value="3">Tiga Hari</option>
+                                                        <option value="4">Empat Hari</option>
+                                                    </select>
+                                                    @error('frekuensi')
+                                                        <small class="text-danger">{{ $message }}</small>
+                                                    @enderror
+                                                </div>
+                                                
                                                 <div class="col-md-2">
                                                     <label>&nbsp;</label><br>
                                                     <button type="button" class="btn btn-success add-row">+</button>
                                                 </div>
                                             </div>
                                         </div>
-
+                                        
                                         <!-- Template disembunyikan -->
                                         <div id="template-obat-instruksi" style="display: none;">
                                             <div class="row obat-instruksi-group mt-3">
-                                                <div class="col-md-5">
+                                                <div class="col-md-3">
                                                     <label for="">Pilih Obat</label>
                                                     <select class="form-control plain-obat" name="id_obat[]" style="width: 100%"></select>
                                                 </div>
-                                                <div class="col-md-5">
+                                                <div class="col-md-3">
                                                     <label for="">Pilih Instruksi</label>
                                                     <select class="form-control plain-instruksi" name="id_instruksi[]" style="width: 100%"></select>
                                                 </div>
+                                                <div class="col-md-2">
+                                                    <label for="">Dosis</label>
+                                                    <select class="form-control" name="dosis[]" style="width: 100%">
+                                                        <option value="1">Satu kali</option>
+                                                        <option value="2">Dua kali</option>
+                                                        <option value="3">Tiga kali</option>
+                                                        <option value="4">Empat kali</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label for="">Berapa Hari</label>
+                                                    <select class="form-control" name="frekuensi[]" style="width: 100%">
+                                                        <option value="1">Sehari</option>
+                                                        <option value="2">Dua Hari</option>
+                                                        <option value="3">Tiga Hari</option>
+                                                        <option value="4">Empat Hari</option>
+                                                    </select>
+                                                </div>
+        
                                                 <div class="col-md-2">
                                                     <label>&nbsp;</label><br>
                                                     <button type="button" class="btn btn-danger remove-row">-</button>

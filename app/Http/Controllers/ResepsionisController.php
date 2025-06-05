@@ -57,22 +57,36 @@ class ResepsionisController extends Controller
     {
         $token = session('api_token');
 
-        $response = Http::withToken($token)->post("$this->apiBaseUrl/pasien", [
-            'nama_lengkap' => $request->nama_lengkap,
-            'jenis_kelamin' => $request->jenis_kelamin,
-            'tanggal_lahir' => $request->tanggal_lahir,
-            'alamat' => $request->alamat,
-            'no_ktp' => $request->no_ktp,
-            'telepon' => $request->telepon,
+        // ✅ Validasi input sebelum kirim ke API
+        $request->validate([
+            'nama_lengkap'   => 'required|string|max:255',
+            'jenis_kelamin'  => 'required|in:laki-laki,perempuan',
+            'tanggal_lahir'  => 'required|date',
+            'alamat'         => 'required|string',
+            'no_ktp'         => 'required|string|max:20',
+            'telepon'        => 'required|string|max:20',
         ]);
-        
-        // Tambahkan pengecekan statusnya
+
+        // 🔐 Kirim data ke API
+        $response = Http::withToken($token)->post("$this->apiBaseUrl/pasien", [
+            'nama_lengkap'   => $request->nama_lengkap,
+            'jenis_kelamin'  => $request->jenis_kelamin,
+            'tanggal_lahir'  => $request->tanggal_lahir,
+            'alamat'         => $request->alamat,
+            'no_ktp'         => $request->no_ktp,
+            'telepon'        => $request->telepon,
+        ]);
+
+        // ❌ Jika gagal, tampilkan error dari API
         if ($response->failed()) {
-            // toastr()->error('Gagal membuat user: ' . $response->json('message'));
-            return back()->withErrors(['message' => $response->json('message') ?? 'Gagal membuat pasien']);
+            $errorMessage = $response->json('message') ?? 'Gagal membuat pasien. Silakan coba lagi.';
+            return back()->withErrors(['message' => $errorMessage])->withInput();
         }
-        return redirect()->route('pasien-resepsionis.index');
+
+        // ✅ Jika sukses, redirect ke halaman index
+        return redirect()->route('pasien-resepsionis.index')->with('success', 'Pasien berhasil ditambahkan.');
     }
+
 
     /**
      * Display the specified resource.
@@ -216,28 +230,43 @@ class ResepsionisController extends Controller
     {
         $token = session('api_token');
 
-        $response = Http::withToken($token)->post("$this->apiBaseUrl/kunjungan", [
-            'id_pasien' => $request->id_pasien,
-            'id_dokter' => $request->id_dokter,
-            'id_penjamin' => $request->id_penjamin,
-            'tanggal_kunjungan' => $request->tanggal_kunjungan,
-            'tipe_kunjungan' => $request->tipe_kunjungan,
-            'status_kunjungan' => $request->status_kunjungan,
-            'catatan' => $request->catatan,
+        // ✅ Validasi input dulu
+        $request->validate([
+            'id_pasien'         => 'required|integer',
+            'id_dokter'         => 'required|integer',
+            'id_penjamin'       => 'required|integer',
+            'tanggal_kunjungan' => 'required|date',
+            'tipe_kunjungan'    => 'required|string',
+            'status_kunjungan'  => 'required|string',
         ]);
-        
-        // Tambahkan pengecekan statusnya
-        if ($response->failed()) {
-            // toastr()->error('Gagal membuat user: ' . $response->json('message'));
-            return back()->withErrors(['message' => $response->json('message') ?? 'Gagal membuat pasien']);
-        }
-        // Ambil ID kunjungan dari response
-        $id_kunjungan = $response->json('id_kunjungan'); // pastikan struktur ini sesuai response aslinya
-        // dd($id_kunjungan);
 
-        // Redirect ke halaman anamnesa sambil membawa id_kunjungan
+        // 🔐 Kirim data ke API
+        $response = Http::withToken($token)->post("$this->apiBaseUrl/kunjungan", [
+            'id_pasien'         => $request->id_pasien,
+            'id_dokter'         => $request->id_dokter,
+            'id_penjamin'       => $request->id_penjamin,
+            'tanggal_kunjungan' => $request->tanggal_kunjungan,
+            'tipe_kunjungan'    => $request->tipe_kunjungan,
+            'status_kunjungan'  => $request->status_kunjungan,
+        ]);
+
+        // ❌ Cek kalau API gagal merespons
+        if ($response->failed()) {
+            $message = $response->json('message') ?? 'Gagal membuat kunjungan.';
+            return back()->withErrors(['message' => $message])->withInput();
+        }
+
+        // ✅ Ambil ID kunjungan dari response yang benar
+        $id_kunjungan = $response->json('id_kunjungan');
+
+        if (!$id_kunjungan) {
+            return back()->withErrors(['message' => 'ID kunjungan tidak ditemukan dalam response API.'])->withInput();
+        }
+
+        // ✅ Redirect ke form anamnesa dengan ID kunjungan
         return redirect()->route('anamnesa', ['id_kunjungan' => $id_kunjungan]);
     }
+
 
     public function anamnesa_create($id_kunjungan)
     {

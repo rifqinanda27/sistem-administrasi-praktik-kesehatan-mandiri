@@ -13,14 +13,50 @@ class ObatController extends Controller
         $this->middleware('role:apoteker,dokterumum');
     }
 
-    public function index()
+    // public function index()
+    // {
+    //     $obat = Obat::all();
+    //     return response()->json([
+    //         'success' => true,
+    //         'data' => $obat
+    //     ]);
+    // }
+
+    public function index(Request $request)
     {
-        $obat = Obat::all();
+        // Misal model Obat langsung dari database
+        $perPage = $request->input('per_page', 10); // default 10 item per halaman
+
+        $query = Obat::query();
+
+        // Optional: cari berdasarkan nama
+        if ($request->has('search')) {
+            $search = $request->input('search');
+
+            $query->where(function ($q) use ($search) {
+                $q->where('nama_obat', 'like', "%{$search}%")
+                ->orWhere('bentuk', 'like', "%{$search}%")
+                ->orWhere('dosis', 'like', "%{$search}%")
+                ->orWhere('golongan', 'like', "%{$search}%")
+                ->orWhere('indikasi', 'like', "%{$search}%");
+            });
+        }
+
+        // Pagination
+        $obat = $query->paginate($perPage);
+
         return response()->json([
             'success' => true,
-            'data' => $obat
+            'data' => $obat->items(),
+            'meta' => [
+                'current_page' => $obat->currentPage(),
+                'last_page' => $obat->lastPage(),
+                'per_page' => $obat->perPage(),
+                'total' => $obat->total(),
+            ],
         ]);
     }
+
 
     public function show($id)
     {

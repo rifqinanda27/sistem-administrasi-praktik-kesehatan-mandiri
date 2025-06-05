@@ -47,6 +47,7 @@
                                     <th>Nama</th>
                                     <th>Tanggal Kunjungan</th>
                                     <th>Tipe Kunjungan</th>
+                                    <th>Tipe Penjamin</th>
                                     <th>Status</th> <!-- Tambahkan kolom Status -->
                                     <th>Aksi</th> <!-- Kolom Aksi dengan tombol -->
                                 </thead>
@@ -57,6 +58,7 @@
                                             <td>{{ $kunjungan['pasien']['nama_lengkap'] }}</td>
                                             <td>{{ \Carbon\Carbon::parse($kunjungan['tanggal_kunjungan'])->format('d-m-Y') }}</td>
                                             <td>{{ $kunjungan['tipe_kunjungan'] }}</td>
+                                            <td>{{ $kunjungan['penjamin']['nama'] }}</td>
                                             <td>{{ $kunjungan['status_kunjungan'] }}</td>
                                             <td>
                                                 <button class="btn btn-danger">Hapus</button>

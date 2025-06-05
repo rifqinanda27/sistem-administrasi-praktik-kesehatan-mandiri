@@ -28,38 +28,45 @@
                                         class="fas fa-arrow-alt-circle-left"></i></a>
                             </div>
                         </div>
-                        <form action="{{ route('resep.store', ['id' => $detail_resep['id_detail_resep']]) }}" method="post">
+                        <form action="{{ route('resep.store', ['id' => $resep['id_resep']]) }}" method="post">
                             @csrf
-                            <input type="hidden" name="id_kunjungan" value="{{ $detail_resep['id_kunjungan'] }}">
+                            <input type="hidden" name="id_kunjungan" value="{{ $resep['id_kunjungan'] }}">
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label>Berapa Kali Sehari</label>
-                                    <input type="text" name="dosis"
-                                        class="form-control @error('name')is-invalid @enderror" placeholder="Berapa kali sehari . . .">
-                                    @error('name')
-                                        <div class="invalid-feedback" role="alert">
-                                            <span>{{ $message }}</span>
-                                        </div>
-                                    @enderror
+                                    <label for="">Nama Pasien : </label>
+                                    <p>{{ $resep['kunjungan']['pasien']['nama_lengkap'] }}</p>
                                 </div>
                                 <div class="form-group">
-                                    <label>Berapa Hari</label>
-                                    <input type="text" name="frekuensi"
-                                        class="form-control @error('name')is-invalid @enderror" placeholder="Berapa Hari . . .">
-                                    @error('name')
-                                        <div class="invalid-feedback" role="alert">
-                                            <span>{{ $message }}</span>
-                                        </div>
-                                    @enderror
+                                    <label for="">Nama Dokter :</label>
+                                    <p>{{ $resep['kunjungan']['dokter']['name'] }}</p>
                                 </div>
-                                <div class="form-group">
-                                    <label>Petunjuk untuk pasien</label>
-                                    <textarea class="form-control" name="petunjuk" id="" rows="5" placeholder="Petunjuk . . ."></textarea>
+                                <div class="table-responsive">
+                                    <table id="datatable-main-pasien" class="table table-bordered table-hover">
+                                        <thead class="thead-light">
+                                            <th style="width: 10px">#</th>
+                                            <th>Obat</th>
+                                            <th>Instruksi</th>
+                                            <th>Dosis per hari</th>
+                                            <th>Frekuensi Hari</th>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($resep['detail_resep'] as $ob)
+                                            <tr>
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $ob['obat']['nama_obat'] ?? '-'}}</td>
+                                                <td>{{ $ob['instruksi']['keterangan'] ?? '-'}}</td>
+                                                <td>{{ $ob['dosis'] ?? '-'}}</td>
+                                                <td>{{ $ob['frekuensi'] ?? '-'}}</td>
+                                            </tr>
+                                            <input type="hidden" name="total[]" value="{{ $ob['dosis'] * $ob['frekuensi'] * $ob['obat']['harga_satuan'] }}">
+                                            @endforeach
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                             <div class="card-footer">
-                                <button type="submit" class="btn btn-info btn-block btn-primary"><i class="fa fa-save"></i>
-                                    Simpan</button>
+                                <button type="submit" class="btn btn-info btn-block btn-primary">
+                                    Berikan Obat</button>
                             </div>
                         </form>
                     </div>

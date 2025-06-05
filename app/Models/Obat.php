@@ -26,6 +26,11 @@ class Obat extends Model
 
     public function resep()
     {
-        return $this->hasMany(Resep::class, 'id_obat', 'id_obat');
+        return $this->hasMany(Resep::class, 'id_resep');
+    }
+
+    public function detail_resep()
+    {
+        return $this->belongsTo(detail_resep::class, 'id_obat');
     }
 }

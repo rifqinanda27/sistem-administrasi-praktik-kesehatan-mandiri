@@ -39,24 +39,33 @@ class ApotekerController extends Controller
     public function detail_resep_store(Request $request)
     {
         $validated = $request->validate([
-            'id_dokter' => 'required|integer',
-            'id_kunjungan' => 'required|integer',
+            'dosis' => 'required|array',
+            'dosis.*' => 'required|integer',
+            'frekuensi' => 'required|array',
+            'frekuensi.*' => 'required|integer',
+            // 'id_kunjungan' => 'required|integer',
             'id_obat' => 'required|array',
             'id_obat.*' => 'required|integer',
             'id_instruksi' => 'required|array',
             'id_instruksi.*' => 'required|integer',
+            'id_resep' => 'required|integer'
         ]);
 
         $results = [];
 
         foreach ($validated['id_obat'] as $index => $id_obat) {
             $id_instruksi = $validated['id_instruksi'][$index] ?? null;
+            $dosis = $validated['dosis'][$index] ?? null;
+            $frekuensi = $validated['frekuensi'][$index] ?? null;
 
             $detail_resep = detail_resep::create([
-                'id_dokter' => $validated['id_dokter'],
+                // 'id_dokter' => $validated['id_dokter'],
                 'id_obat' => $id_obat,
                 'id_instruksi' => $id_instruksi,
-                'id_kunjungan' => $validated['id_kunjungan'],
+                // 'id_kunjungan' => $validated['id_kunjungan'],
+                'dosis' => $dosis,
+                'frekuensi' => $frekuensi,
+                'id_resep' => $validated['id_resep'],
             ]);
 
             $results[] = $detail_resep;
@@ -69,12 +78,45 @@ class ApotekerController extends Controller
     }
 
 
-    public function instruksi_index()
+    // public function instruksi_index()
+    // {
+    //     $instruksi = Instruksi::all();
+    //     return response()->json([
+    //         'success' => true,
+    //         'data' => $instruksi
+    //     ]);
+    // }
+
+    public function instruksi_index(Request $request)
     {
-        $instruksi = Instruksi::all();
+        // Misal model Obat langsung dari database
+        $perPage = $request->input('per_page', 10); // default 10 item per halaman
+
+        $query = Instruksi::query();
+
+        // Optional: cari berdasarkan nama
+        if ($request->has('search')) {
+            $search = $request->input('search');
+
+            $query->where(function ($q) use ($search) {
+                $q->where('nama_instruksi', 'like', "%{$search}%")
+                ->orWhere('keterangan', 'like', "%{$search}%")
+                ->orWhere('arti_latin', 'like', "%{$search}%");
+            });
+        }
+
+        // Pagination
+        $instruksi = $query->paginate($perPage);
+
         return response()->json([
             'success' => true,
-            'data' => $instruksi
+            'data' => $instruksi->items(),
+            'meta' => [
+                'current_page' => $instruksi->currentPage(),
+                'last_page' => $instruksi->lastPage(),
+                'per_page' => $instruksi->perPage(),
+                'total' => $instruksi->total(),
+            ],
         ]);
     }
 

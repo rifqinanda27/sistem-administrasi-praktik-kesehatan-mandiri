@@ -63,12 +63,12 @@ Route::middleware('check.api.token')->group(function () {
     // Apoteker
     Route::resource('obat', ApotekerController::class);
 
-    Route::get('intruksi', [ApotekerController::class, 'intruksi_index'])->name('instruksi.index');
-    Route::get('intruksi/create', [ApotekerController::class, 'intruksi_create'])->name('instruksi.create');
-    Route::get('intruksi/{id}/edit', [ApotekerController::class, 'intruksi_edit'])->name('instruksi.edit');
-    Route::post('intruksi', [ApotekerController::class, 'intruksi_store'])->name('instruksi.store');
-    Route::put('intruksi/{id}', [ApotekerController::class, 'intruksi_update'])->name('instruksi.update');
-    Route::delete('intruksi/{id}', [ApotekerController::class, 'instruksi_destroy'])->name('instruksi.destroy');
+    Route::get('instruksi', [ApotekerController::class, 'instruksi_index'])->name('instruksi.index');
+    Route::get('instruksi/create', [ApotekerController::class, 'instruksi_create'])->name('instruksi.create');
+    Route::get('instruksi/{id}/edit', [ApotekerController::class, 'instruksi_edit'])->name('instruksi.edit');
+    Route::post('instruksi', [ApotekerController::class, 'instruksi_store'])->name('instruksi.store');
+    Route::put('instruksi/{id}', [ApotekerController::class, 'instruksi_update'])->name('instruksi.update');
+    Route::delete('instruksi/{id}', [ApotekerController::class, 'instruksi_destroy'])->name('instruksi.destroy');
 
 
     Route::get('resep', [ApotekerController::class, 'resep_index'])->name('resep.index');

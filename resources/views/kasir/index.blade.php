@@ -32,30 +32,32 @@
             </div>
             
             <div class="card-body">
-                <table id="datatable-main-instruksi" class="table table-bordered table-hover">
-                    <thead class="thead-light">
-                        <tr>
-                            <th width="20px">#</th>
-                            <th>Nama Pasien</th>
-                            <th>Total Biaya</th>
-                            <th>Metode Pembayaran</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($pembayaran as $ins)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $ins['kunjungan']['pasien']['nama_lengkap'] }}</td>
-                            <td>{{ 'Rp. ' . number_format($ins['total_biaya'], 2, ',', '.') ?? '-'}}</td>
-                            <td>{{ $ins['metode_pembayaran'] }}</td>
-                            <td>
-                                <a href="{{ route('pembayaran.show' , ['pembayaran' => $ins['id_pembayaran']]) }}" class="btn btn-primary">Detail</a>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table id="datatable-main-instruksi" class="table table-bordered table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th width="20px">#</th>
+                                <th>Nama Pasien</th>
+                                <th>Total Biaya</th>
+                                <th>Metode Pembayaran</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($pembayaran as $ins)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $ins['kunjungan']['pasien']['nama_lengkap'] }}</td>
+                                <td>{{ 'Rp. ' . number_format($ins['total_biaya'], 2, ',', '.') ?? '-'}}</td>
+                                <td>{{ $ins['metode_pembayaran'] }}</td>
+                                <td>
+                                    <a href="{{ route('pembayaran.show' , ['pembayaran' => $ins['id_pembayaran']]) }}" class="btn btn-primary">Detail</a>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

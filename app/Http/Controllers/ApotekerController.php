@@ -13,23 +13,56 @@ class ApotekerController extends Controller
     {
         $this->apiBaseUrl = config('services.api.base_url');
     }
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {  
+
+    public function index(Request $request)
+    {
         $token = session('api_token');
 
-        // Ambil data user login
-        $obat = Http::withToken($token)->get("$this->apiBaseUrl/obat");
-        
-        if (!$obat->successful()) {
+        // Ambil parameter dari request
+        $page = $request->input('page', 1);
+        $perPage = 10;
+        $search = $request->input('search');
+
+        // Kirim permintaan ke API eksternal
+        $response = Http::withToken($token)->get("{$this->apiBaseUrl}/obat", [
+            'page' => $page,
+            'per_page' => $perPage,
+            'search' => $search,
+        ]);
+
+        // Tangani error dari API
+        if (!$response->successful()) {
             return back()->withErrors(['message' => 'Gagal mengambil data obat']);
         }
 
-        $obat = $obat->json('data');
+        // Ambil dan siapkan data JSON dari API
+        $json = $response->json();
+        $data = $json['data'] ?? [];
+        $meta = $json['meta'] ?? [];
 
-        return view('apoteker.obat.index', compact('obat'));
+        // Buat paginator agar bisa digunakan di Blade
+        $paginator = new \Illuminate\Pagination\LengthAwarePaginator(
+            $data,
+            $meta['total'] ?? count($data),
+            $meta['per_page'] ?? $perPage,
+            $meta['current_page'] ?? $page,
+            ['path' => url()->current(), 'query' => $request->query()]
+        );
+
+        // Cek apakah request dari AJAX
+        if ($request->ajax()) {
+            // Kirim hanya bagian tabel jika AJAX (optional, kalau pakai AJAX)
+            return view('apoteker.obat.index', [
+                'obat' => $paginator,
+                'search' => $search
+            ])->renderSections()['table'];
+        }
+
+        // Kirim ke view utama
+        return view('apoteker.obat.index', [
+            'obat' => $paginator,
+            'search' => $search
+        ]);
     }
 
     /**
@@ -144,28 +177,79 @@ class ApotekerController extends Controller
         return redirect()->route('obat.index');
     }
 
-    public function intruksi_index()
+    public function instruksi_index(Request $request)
     {
         $token = session('api_token');
 
-        // Ambil data user login
-        $response = Http::withToken($token)->get("$this->apiBaseUrl/instruksi");
-        
+        // Ambil parameter dari request
+        $page = $request->input('page', 1);
+        $perPage = 10;
+        $search = $request->input('search');
+
+        // Kirim permintaan ke API eksternal
+        $response = Http::withToken($token)->get("{$this->apiBaseUrl}/instruksi", [
+            'page' => $page,
+            'per_page' => $perPage,
+            'search' => $search,
+        ]);
+
+        // Tangani error dari API
         if (!$response->successful()) {
             return back()->withErrors(['message' => 'Gagal mengambil data instruksi']);
         }
 
-        $instruksi = $response->json('data');
+        // Ambil dan siapkan data JSON dari API
+        $json = $response->json();
+        $data = $json['data'] ?? [];
+        $meta = $json['meta'] ?? [];
 
-        return view('apoteker.instruksi.index', compact('instruksi'));
+        // Buat paginator agar bisa digunakan di Blade
+        $paginator = new \Illuminate\Pagination\LengthAwarePaginator(
+            $data,
+            $meta['total'] ?? count($data),
+            $meta['per_page'] ?? $perPage,
+            $meta['current_page'] ?? $page,
+            ['path' => url()->current(), 'query' => $request->query()]
+        );
+
+        // Cek apakah request dari AJAX
+        if ($request->ajax()) {
+            // Kirim hanya bagian tabel jika AJAX (optional, kalau pakai AJAX)
+            return view('apoteker.instruksi.index', [
+                'instruksi' => $paginator,
+                'search' => $search
+            ])->renderSections()['table'];
+        }
+
+        // Kirim ke view utama
+        return view('apoteker.instruksi.index', [
+            'instruksi' => $paginator,
+            'search' => $search
+        ]);
     }
+
+    // public function intruksi_index()
+    // {
+    //     $token = session('api_token');
+
+    //     // Ambil data user login
+    //     $response = Http::withToken($token)->get("$this->apiBaseUrl/instruksi");
+        
+    //     if (!$response->successful()) {
+    //         return back()->withErrors(['message' => 'Gagal mengambil data instruksi']);
+    //     }
+
+    //     $instruksi = $response->json('data');
+
+    //     return view('apoteker.instruksi.index', compact('instruksi'));
+    // }
 
     public function intruksi_create()
     {
         return view('apoteker.instruksi.create');
     }
 
-    public function intruksi_store(Request $request)
+    public function instruksi_store(Request $request)
     {
         $token = session('api_token');
 
@@ -185,7 +269,7 @@ class ApotekerController extends Controller
         return redirect()->route('instruksi.index');
     }
 
-    public function intruksi_edit($id)
+    public function instruksi_edit($id)
     {
         $token = session('api_token');
 
@@ -200,7 +284,7 @@ class ApotekerController extends Controller
         return view('apoteker.instruksi.edit', compact('instruksi'));
     }
 
-    public function intruksi_update(Request $request, $id)
+    public function instruksi_update(Request $request, $id)
     {
         $token = session('api_token');
 
@@ -236,94 +320,91 @@ class ApotekerController extends Controller
     public function resep_index()
     {
         $token = session('api_token');
+        // dd($token);
 
         // Ambil data user login
-        $detail_resep = Http::withToken($token)->get("$this->apiBaseUrl/detail-resep");
-        
-        if (!$detail_resep->successful()) {
+        $resep = Http::withToken($token)->get("$this->apiBaseUrl/resep");
+        // dd($resep);
+        if (!$resep->successful()) {
             return back()->withErrors(['message' => 'Gagal mengambil data detail resep']);
         }
 
-        $detail_resep = $detail_resep->json('data');
+        $resep = $resep->json('data');
+        // dd($resep);
 
-        return view('apoteker.resep.index', compact('detail_resep'));
+        return view('apoteker.resep.index', compact('resep'));
     }
 
     public function resep_create($id)
     {
         $token = session('api_token');
 
-        $response = Http::withToken($token)->get("$this->apiBaseUrl/detail-resep/$id");
+        $response = Http::withToken($token)->get("$this->apiBaseUrl/resep/$id");
 
         if ($response->failed()) {
             return back()->withErrors(['message' => $response->json('message') ?? 'Gagal mengambil Detail Resep']);
         }
 
-        $detail_resep = $response->json('data');
+        $resep = $response->json('data');
+        // dd($resep);
 
-        return view('apoteker.resep.create', compact('detail_resep'));
+        return view('apoteker.resep.create', compact('resep'));
     }
 
     public function resep_store(Request $request, $id)
     {
         $token = session('api_token');
-
-        // Detail Resep
-        $desResep = Http::withToken($token)->get("$this->apiBaseUrl/detail-resep/$id");
-
-        if ($desResep->failed()) {
-            return back()->withErrors(['message' => $desResep->json('message') ?? 'Gagal mengambil Detail Resep']);
-        }
-        $detail_resep = $desResep->json('data');
-
-        $dosis = $request->dosis;
-        $frekuensi = $request->frekuensi;
-        // dd($dosis);
+        
         // Resep Store
-        $resep = Http::withToken($token)->post("$this->apiBaseUrl/resep", [
-            'id_detail_resep' => $detail_resep['id_detail_resep'],
-            'dosis' => $dosis,
-            'frekuensi' => $frekuensi,
-            'petunjuk' => $request->petunjuk,
-            'id_kunjungan' => $request->id_kunjungan,
-            'diresepkan_oleh' => $detail_resep['id_dokter'],
+        $resep = Http::withToken($token)->put("$this->apiBaseUrl/resep/{$id}", [
             'status' => "diberikan",
         ]);
 
-        // dd($resep);
-        
         // Tambahkan pengecekan statusnya
         if ($resep->failed()) {
             // toastr()->error('Gagal membuat user: ' . $resep->json('message'));
             return back()->withErrors(['message' => $resep->json('message') ?? 'Gagal membuat Obat']);
         }
 
-        $id_pembayaran = $detail_resep['kunjungan']['pembayaran']['id_pembayaran'];
-        $total_biaya = $detail_resep['kunjungan']['pembayaran'];
-        $obat = $detail_resep['obat']['harga_satuan'];
+        $response = Http::withToken($token)->get("$this->apiBaseUrl/resep/$id");
 
-        $biaya_obat = $dosis * $frekuensi * $obat;
-        // dd($total_biaya);
-
-        $pembayaran = Http::withToken($token)->put("$this->apiBaseUrl/pembayaran/$id_pembayaran", [
-            'total_biaya' => $total_biaya['total_biaya'] + $biaya_obat,
-        ]);
-        // dd($pembayaran);
-        if ($pembayaran->failed()) {
-            return back()->withErrors(['message' => $pembayaran->json('message') ?? 'Gagal update detail pembayaran']);
+        if ($response->failed()) {
+            return back()->withErrors(['message' => $response->json('message') ?? 'Gagal mengambil Detail Resep']);
         }
 
-        $detailPembayaran = Http::withToken($token)->post("$this->apiBaseUrl/detail-pembayaran", [
-            'id_pembayaran' => $detail_resep['kunjungan']['pembayaran']['id_pembayaran'],
-            'jenis_biaya' => 'obat',
-            'jumlah' => $biaya_obat,
-            'keterangan' => 'Biaya Obat',
-        ]);
+        
+        $resep = $response->json('data');
+        if($resep['kunjungan']['pembayaran'] != null)
+        {
+            $totals = $request->input('total', []); // total[] dalam bentuk array
+            $grandTotal = array_sum($totals);
+    
+            $id_pembayaran = $resep['kunjungan']['pembayaran']['id_pembayaran'];
+            $total_biaya = $resep['kunjungan']['pembayaran'];
+    
+    
+            $pembayaran = Http::withToken($token)->put("$this->apiBaseUrl/pembayaran/$id_pembayaran", [
+                'total_biaya' => $total_biaya['total_biaya'] + $grandTotal,
+            ]);
+    
+            // dd($pembayaran);
+            if ($pembayaran->failed()) {
+                return back()->withErrors(['message' => $pembayaran->json('message') ?? 'Gagal update detail pembayaran']);
+            }
+    
+            $detailPembayaran = Http::withToken($token)->post("$this->apiBaseUrl/detail-pembayaran", [
+                'id_pembayaran' => $id_pembayaran,
+                'jenis_biaya' => 'obat',
+                'jumlah' => $grandTotal,
+                'keterangan' => 'Biaya Obat',
+            ]);
+    
+            // dd($detailPembayaran);
+            if ($detailPembayaran->failed()) {
+                return back()->withErrors(['message' => $pembayaran->json('message') ?? 'Gagal tambah detail pembayaran']);
+            }
+        }   
 
-        // dd($detailPembayaran);
-        if ($detailPembayaran->failed()) {
-            return back()->withErrors(['message' => $pembayaran->json('message') ?? 'Gagal tambah detail pembayaran']);
-        }
 
         return redirect()->route('resep.index');
     }

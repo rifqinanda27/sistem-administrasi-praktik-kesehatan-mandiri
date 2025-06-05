@@ -61,10 +61,6 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="d-flex mb-2">
-                                            <div style="width: 180px;">Nomor Rekam Medis</div>
-                                            <div>= {{ $pasien['no_rekam_medis'] }}</div>
-                                        </div>
-                                        <div class="d-flex mb-2">
                                             <div style="width: 180px;">Tanggal Pemeriksaan</div>
                                             @if (!empty($pasien['kunjungan']) && isset($pasien['kunjungan'][0]['tanggal_kunjungan']))
                                                 <div>= {{ \Carbon\Carbon::parse($pasien['kunjungan'][0]['tanggal_kunjungan'])->format('Y-m-d') }}</div>
@@ -128,8 +124,8 @@
                                             <tr>
                                                 <td class="py-3">{{ \Carbon\Carbon::parse($kunjungan['tanggal_kunjungan'])->format('Y-m-d') ?? '-' }}</td>
                                                 <td class="py-3">{{ $kunjungan['tipe_kunjungan'] ?? '-' }}</td>
-                                                <td class="py-3">BPJS</td>
-                                                <td class="py-3">{{ $kunjungan['id_dokter'] ?? '-' }}</td>
+                                                <td class="py-3">{{ $kunjungan['penjamin']['nama'] }}</td>
+                                                <td class="py-3">{{ $kunjungan['dokter']['name'] ?? '-' }}</td>
                                                 <td class="py-3 text-center">
                                                     <button class="btn btn-sm custom-outline-btn px-4"><span class="fas fa-eye" style="font-size: 20px;"></span></button>
                                                 </td>
@@ -152,15 +148,19 @@
                                                 <th class="py-3">Frekuensi</th>
                                             </tr>
                                         </thead>
-                                        @foreach($pasien['resep'] as $resep)
-                                        <tbody>
-                                            <tr>
-                                                <td class="py-3">{{ \Carbon\Carbon::parse($resep['created_at'])->format('Y-m-d') }}</td>
-                                                <td class="py-3">{{ $resep['obat']['nama_obat'] ?? '-'}}</td>
-                                                <td class="py-3">{{ $resep['obat']['dosis'] ?? '-'}}</td>
-                                                <td class="py-3">{{ $resep['frekuensi'] ?? '-'}}</td>
-                                            </tr>
-                                        </tbody>
+                                        @foreach ($pasien['kunjungan'] as $kunjungan)
+                                            @foreach ($kunjungan['resep'] as $resep)
+                                                @foreach ($resep['detail_resep'] as $detail)
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="py-3">{{ \Carbon\Carbon::parse($detail['created_at'])->format('Y-m-d') }}</td>
+                                                            <td class="py-3">{{ $detail['obat']['nama_obat'] ?? '-' }}</td>
+                                                            <td class="py-3">{{ $detail['dosis'] ?? '-' }}</td>
+                                                            <td class="py-3">{{ $detail['frekuensi'] ?? '-' }}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                @endforeach
+                                            @endforeach
                                         @endforeach
                                     </table>
                                 </div>

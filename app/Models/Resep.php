@@ -32,22 +32,17 @@ class Resep extends Model
     // Relasi ke obat
     public function detail_resep()
     {
-        return $this->belongsTo(detail_resep::class, 'id_detail_resep');
+        return $this->hasMany(detail_resep::class, 'id_resep');
     }
 
     public function dokter()
     {
         return $this->belongsTo(User::class, 'diresepkan_oleh', 'id');
     }
-    
-    // public function obat()
-    // {
-    //     return $this->belongsTo(Obat::class, 'id_obat');
-    // }
 
-    // public function kunjungan()
-    // {
-    //     return $this->belongsTo(Visit::class, 'id_kunjungan');
-    // }
+    public function obat()
+    {
+        return $this->hasMany(Obat::class, 'id_obat');
+    }
     
 }

@@ -19,8 +19,10 @@ class PasienController extends Controller
     {
         $token = session('api_token');
 
+        
         // Ambil data user dari token
         $userResponse = Http::withToken($token)->get(config('services.api.base_url') . '/user');
+        // dd($userResponse);
 
         if (!$userResponse->successful()) {
             return back()->withErrors(['message' => 'Gagal mengambil data user']);
@@ -37,6 +39,8 @@ class PasienController extends Controller
         }
 
         $semuaPasien = $response->json('data');
+
+        // dd($semuaPasien);
 
         // Filter pasien yang memiliki kunjungan dengan id_dokter yang sesuai
         $filteredPasien = collect($semuaPasien)->filter(function ($pasien) use ($idDokterLogin) {

@@ -33,34 +33,34 @@
                 <div class="col-md-12">
                     <div class="card card-primary card-outline">
                         <div class="card-body">
-                            <table id="datatable-main-pasien" class="table table-bordered table-hover">
-                                <thead class="thead-light">
-                                    <th style="width: 10px">#</th>
-                                    <th style="width: 50px">Nama Obat</th>
-                                    <th>Diresepkan oleh</th>
-                                    <th>Instruksi</th>
-                                    <th>Keterangan</th>
-                                    <th>Aksi</th>
-                                </thead>
-                                <tbody>
-                                    @foreach($detail_resep as $key => $ob)
-                                    <tr>
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $ob['obat']['nama_obat'] ?? '-'}}</td>
-                                        <td>{{ $ob['dokter']['user']['name'] ?? '-'}}</td>
-                                        <td>{{ $ob['instruksi']['nama_instruksi'] ?? '-'}}</td>
-                                        <td>{{ $ob['instruksi']['keterangan'] ?? '-'}}</td>
-                                        <td>
-                                            @if($ob['resep'] == null)
-                                                <a href="{{ route('resep.create' , ['id' => $ob['id_detail_resep']]) }}" class="btn btn-primary">Racik Obat</a>
-                                            @else
-                                                <p class="btn btn-success">Selesai</p>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                            <div class="table-responsive">
+                                <table id="datatable-main-pasien" class="table table-bordered table-hover">
+                                    <thead class="thead-light">
+                                        <th style="width: 10px">#</th>
+                                        <th>Nama Pasien</th>
+                                        <th>Diresepkan oleh</th>
+                                        <th>Tanggal Diresepkan</th>
+                                        <th>Aksi</th>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($resep as $key => $ob)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $ob['kunjungan']['pasien']['nama_lengkap'] ?? '-'}}</td>
+                                            <td>{{ $ob['kunjungan']['dokter']['name'] ?? '-'}}</td>
+                                            <td>{{ \Carbon\Carbon::parse($ob['created_at'])->format('d-m-Y') ?? '-'}}</td>
+                                            <td>
+                                                @if($ob['status'] == 'aktif')
+                                                    <a href="{{ route('resep.create' , ['id' => $ob['id_resep']]) }}" class="btn btn-primary">Racik Obat</a>
+                                                @else
+                                                    <p class="btn btn-success">Telah Diberikan</p>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

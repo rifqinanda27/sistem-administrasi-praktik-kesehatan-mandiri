@@ -48,7 +48,7 @@
                                                 <span class="mr-2">=</span>
                                                 <input type="text" class="form-control" name="keluhan_utama">
                                                 @error('keluhan_utama')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                    <small class="text-danger">{{ $message }}</small>
                                                 @enderror
                                             </div>
                                         </div>
@@ -58,8 +58,8 @@
                                             <div class="d-flex align-items-center">
                                                 <span class="mr-2">=</span>
                                                 <input type="text" class="form-control" name="keluhan_tambahan">
-                                                @error('keluhan_utama')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @error('keluhan_tambahan')
+                                                    <small class="text-danger">{{ $message }}</small>
                                                 @enderror
                                             </div>
                                         </div>
@@ -73,8 +73,8 @@
                                             <div class="d-flex align-items-center">
                                                 <span class="mr-2">=</span>
                                                 <input type="text" class="form-control" name="riwayat_penyakit_pribadi">
-                                                @error('keluhan_utama')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @error('riwayat_penyakit_pribadi')
+                                                    <small class="text-danger">{{ $message }}</small>
                                                 @enderror
                                             </div>
                                         </div>
@@ -84,8 +84,8 @@
                                             <div class="d-flex align-items-center">
                                                 <span class="mr-2">=</span>
                                                 <input type="text" class="form-control" name="riwayat_penyakit_keluarga">
-                                                @error('keluhan_utama')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @error('riwayat_penyakit_keluarga')
+                                                    <small class="text-danger">{{ $message }}</small>
                                                 @enderror
                                             </div>
                                         </div>
@@ -95,8 +95,8 @@
                                             <div class="d-flex align-items-center">
                                                 <span class="mr-2">=</span>
                                                 <input type="text" class="form-control" name="kebiasaan_pasien">
-                                                @error('keluhan_utama')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @error('kebiasaan_pasien')
+                                                    <small class="text-danger">{{ $message }}</small>
                                                 @enderror
                                             </div>
                                         </div>
@@ -115,8 +115,8 @@
                                                 <div class="d-flex align-items-center">
                                                     <span class="mx-1">=</span>
                                                     <input type="text" class="form-control" name="berat_badan" placeholder="Berat Badan">
-                                                    @error('keluhan_utama')
-                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @error('berat_badan')
+                                                        <small class="text-danger">{{ $message }}</small>
                                                     @enderror
                                                 </div>
                                             </div>
@@ -127,8 +127,8 @@
                                                 <div class="d-flex align-items-center">
                                                     <span class="mx-1">=</span>
                                                     <input type="text" class="form-control" name="tinggi_badan" placeholder="Tinggi Badan">
-                                                    @error('keluhan_utama')
-                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @error('tinggi_badan')
+                                                        <small class="text-danger">{{ $message }}</small>
                                                     @enderror
                                                 </div>
                                             </div>
@@ -139,8 +139,8 @@
                                                 <div class="d-flex align-items-center">
                                                     <span class="mx-1">=</span>
                                                     <input type="text" id="tekananDarah" class="form-control" name="tekanan_darah" placeholder="Tekanan Darah">
-                                                    @error('keluhan_utama')
-                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @error('tekanan_darah')
+                                                        <small class="text-danger">{{ $message }}</small>
                                                     @enderror
                                                 </div>
                                             </div>
@@ -151,8 +151,8 @@
                                                 <div class="d-flex align-items-center">
                                                     <span class="mx-1">=</span>
                                                     <input type="text" class="form-control" name="neurologi" placeholder="Nadi">
-                                                    @error('keluhan_utama')
-                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @error('neurologi')
+                                                        <small class="text-danger">{{ $message }}</small>
                                                     @enderror
                                                 </div>
                                             </div>
@@ -163,8 +163,8 @@
                                                 <div class="d-flex align-items-center">
                                                     <span class="mx-1">=</span>
                                                     <input type="text" class="form-control" name="frekuensi_nafas" placeholder="frekuensi Nafas">
-                                                    @error('keluhan_utama')
-                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @error('frekuensi_nafas')
+                                                        <small class="text-danger">{{ $message }}</small>
                                                     @enderror
                                                 </div>
                                             </div>
@@ -175,8 +175,8 @@
                                                 <div class="d-flex align-items-center">
                                                     <span class="mx-1">=</span>
                                                     <input type="text" class="form-control" name="suhu_tubuh" placeholder="Suhu Tubuh">
-                                                    @error('keluhan_utama')
-                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @error('suhu_tubuh')
+                                                        <small class="text-danger">{{ $message }}</small>
                                                     @enderror
                                                 </div>
                                             </div>
@@ -196,6 +196,9 @@
                                                         <option value="cukup">Cukup</option>
                                                         <option value="kurang">Kurang</option>
                                                     </select>
+                                                    @error('keadaan_umum')
+                                                        <small class="text-danger">{{ $message }}</small>
+                                                    @enderror
                                                 </div>
                                             </div>
                                         </div>

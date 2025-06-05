@@ -121,15 +121,20 @@
                 <form method="POST" action="{{ route('login') }}">
                     @csrf
                     <h4 class="mb-4">Login</h4>
-
                     <div class="mb-3">
-                        <label class="form-label">Username</label>
-                        <input type="text" name="email" class="form-control" placeholder="Masukkan username" required>
+                        <label class="form-label">Email</label>
+                        <input type="text" name="email" class="form-control" placeholder="Masukkan email" required>
+                        @error('email')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Password</label>
                         <input type="password" name="password" class="form-control" placeholder="Masukkan password" required>
+                        @error('password')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
 
 

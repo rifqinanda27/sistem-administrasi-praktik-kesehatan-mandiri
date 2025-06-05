@@ -26,7 +26,14 @@
             <div class="card-header">
                 <div class="row">
                     <div class="col-6">
-                        <h5 class="m-0 font-weight-bold">Aturan Penggunaan</h5>
+                        <form id="search-form" method="GET" action="{{ route('instruksi.index') }}">
+                            <div class="input-group mb-3">
+                                <input type="text" name="search" id="search-input" value="{{ $search }}" class="form-control" placeholder="Cari obat...">
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-primary">Cari</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                     <div class="col-6 d-flex justify-content-end">
                         <div class="card-tools">
@@ -37,50 +44,45 @@
             </div>
             
             <div class="card-body">
-                <table id="datatable-main-instruksi" class="table table-bordered table-hover">
-                    <thead class="thead-light">
-                        <tr>
-                            <th width="20px">#</th>
-                            <th>Singkatan</th>
-                            <th>Kepanjangan</th>
-                            <th>Keterangan</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($instruksi as $ins)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $ins['nama_instruksi'] }}</td>
-                            <td>{{ $ins['arti_latin'] }}</td>
-                            <td>{{ $ins['keterangan'] }}</td>
-                            <td>
-                                <button type="button" class="btn btn-block btn-sm btn-outline-info" data-toggle="dropdown"><i class="fas fa-cog"></i>
-                                </button>
-                                <div class="dropdown-menu" role="menu">
-                                    <a class="dropdown-item" href="{{ route('instruksi.edit', $ins['id_instruksi']) }}">Edit</a>
-                                    <!-- <a class="dropdown-item" href="#">Hapus</a> -->
-                                    <form action="{{ route('instruksi.destroy', $ins['id_instruksi']) }}" method="POST" onsubmit="return confirm('Yakin mau hapus data ini?')" style="display:inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="dropdown-item text-danger" type="submit">Hapus</button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th width="20px">#</th>
+                                <th>Singkatan</th>
+                                <th>Kepanjangan</th>
+                                <th>Keterangan</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($instruksi as $ins)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $ins['nama_instruksi'] }}</td>
+                                <td>{{ $ins['arti_latin'] }}</td>
+                                <td>{{ $ins['keterangan'] }}</td>
+                                <td>
+                                    <button type="button" class="btn btn-block btn-sm btn-outline-info" data-toggle="dropdown"><i class="fas fa-cog"></i>
+                                    </button>
+                                    <div class="dropdown-menu" role="menu">
+                                        <a class="dropdown-item" href="{{ route('instruksi.edit', $ins['id_instruksi']) }}">Edit</a>
+                                        <!-- <a class="dropdown-item" href="#">Hapus</a> -->
+                                        <form action="{{ route('instruksi.destroy', $ins['id_instruksi']) }}" method="POST" onsubmit="return confirm('Yakin mau hapus data ini?')" style="display:inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="dropdown-item text-danger" type="submit">Hapus</button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    {{ $instruksi->appends(['search' => $search])->links() }}
+                </div>
             </div>
         </div>
     </div>
 </div>
 @endsection
-@push('js')
-    <script>
-        $('.toast').toast('show')
-        $(document).ready(function() {
-            $('#datatable-main-instruksi').DataTable();
-        });
-    </script>
-@endpush

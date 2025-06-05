@@ -81,36 +81,38 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <table id="datatable-main-pasien" class="table table-bordered table-hover">
-                                <thead class="thead-light">
-                                    <th style="width: 10px">#</th>
-                                    <th>Nama</th>
-                                    <th>Tanggal Lahir</th>
-                                    <th>Jenis Kelamin</th>
-                                    <th>Nomor KTP</th>
-                                    <th>Alamat</th>
-                                    <th>No. Telp</th>
-                                    <th>Status</th> <!-- Tambahkan kolom Status -->
-                                    <th>Aksi</th> <!-- Kolom Aksi dengan tombol -->
-                                </thead>
-                                <tbody>
-                                    @foreach ($pasien as $index => $pasien)
-                                        <tr>
-                                            <td>{{ $index + 1 }}</td>
-                                            <td>{{ $pasien['nama_lengkap'] }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($pasien['tanggal_lahir'])->format('d-m-Y') }}</td>
-                                            <td>{{ ucfirst($pasien['jenis_kelamin']) }}</td>
-                                            <td>{{ $pasien['no_ktp'] }}</td>
-                                            <td>{{ $pasien['alamat'] }}</td>
-                                            <td>{{ $pasien['telepon'] }}</td>
-                                            <td>{{ $pasien['status_aktif'] ? 'Pasien Aktif' : 'Tidak Aktif' }}</td>
-                                            <td>
-                                                <button class="btn btn-primary" onclick="window.location.href='rekam-medis/{{ $pasien['id_pasien'] }}'">Lihat</button>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                            <div class="table-responsive">
+                                <table id="datatable-main-pasien" class="table table-bordered table-hover">
+                                    <thead class="thead-light">
+                                        <th style="width: 10px">#</th>
+                                        <th>Nama</th>
+                                        <th>Tanggal Lahir</th>
+                                        <th>Jenis Kelamin</th>
+                                        <th>Nomor KTP</th>
+                                        <th>Alamat</th>
+                                        <th>No. Telp</th>
+                                        <th>Status</th> <!-- Tambahkan kolom Status -->
+                                        <th>Aksi</th> <!-- Kolom Aksi dengan tombol -->
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($pasien as $index => $pasien)
+                                            <tr>
+                                                <td>{{ $index + 1 }}</td>
+                                                <td>{{ $pasien['nama_lengkap'] }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($pasien['tanggal_lahir'])->format('d-m-Y') }}</td>
+                                                <td>{{ ucfirst($pasien['jenis_kelamin']) }}</td>
+                                                <td>{{ $pasien['no_ktp'] }}</td>
+                                                <td>{{ $pasien['alamat'] }}</td>
+                                                <td>{{ $pasien['telepon'] }}</td>
+                                                <td>{{ $pasien['status_aktif'] ? 'Pasien Aktif' : 'Tidak Aktif' }}</td>
+                                                <td>
+                                                    <button class="btn btn-primary" onclick="window.location.href='rekam-medis/{{ $pasien['id_pasien'] }}'">Lihat</button>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
