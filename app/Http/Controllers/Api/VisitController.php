@@ -14,14 +14,50 @@ class VisitController extends Controller
     }
 
     // Menampilkan semua kunjungan
-    public function index()
+    public function index(Request $request)
     {
-        $kunjungan = Visit::with('penjamin', 'pasien', 'dokter', 'dokter.dokter_detail', 'catatan_medis:id_catatan,id_kunjungan,no_rekam_medis')->get();
+        $perPage = $request->input('per_page', 10);
+
+        $query = Visit::with(['penjamin', 'pasien', 'dokter', 'dokter.dokter_detail', 'catatan_medis:id_catatan,id_kunjungan,no_rekam_medis']);
+
+        // Optional: cari berdasarkan nama
+        if ($request->has('search')) {
+            $search = $request->input('search');
+
+            $query->where(function ($q) use ($search) {
+                $q->where('tanggal_kunjungan', 'like', "%{$search}%")
+                ->orWhere('status_kunjungan', 'like', "%{$search}%")
+                ->orWhereHas('pasien', function ($q) use ($search) {
+                    $q->where('nama_lengkap', 'like', "%{$search}%");
+                    })
+                ->orWhereHas('penjamin', function ($q) use ($search) {
+                    $q->where('nama', 'like', "%{$search}%");
+                    });
+                });
+        }
+
+        $kunjungan = $query->paginate($perPage);
+
         return response()->json([
             'success' => true,
-            'data' => $kunjungan
+            'data' => $kunjungan->items(),
+            'meta' => [
+                'current_page' => $kunjungan->currentPage(),
+                'last_page' => $kunjungan->lastPage(),
+                'per_page' => $kunjungan->perPage(),
+                'total' => $kunjungan->total(),
+            ],
         ]);
     }
+
+    // public function index()
+    // {
+    //     $kunjungan = Visit::with('penjamin', 'pasien', 'dokter', 'dokter.dokter_detail', 'catatan_medis:id_catatan,id_kunjungan,no_rekam_medis')->get();
+    //     return response()->json([
+    //         'success' => true,
+    //         'data' => $kunjungan
+    //     ]);
+    // }
 
     // Menambahkan kunjungan baru
     public function store(Request $request)

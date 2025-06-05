@@ -18,14 +18,52 @@ class DokterController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+
+    public function index(Request $request)
     {
-        $dokters = Dokter::with('user')->get();
+        $perPage = $request->input('per_page', 10);
+
+        $query = Dokter::with(['user']);
+
+        // Optional: cari berdasarkan nama
+        if ($request->has('search')) {
+            $search = $request->input('search');
+
+            $query->where(function ($q) use ($search) {
+                $q->where('spesialisasi', 'like', "%{$search}%")
+                ->where('status_praktik', 'like', "%{$search}%")
+                ->where('pengalaman_tahun', 'like', "%{$search}%")
+                ->where('nomor_sip', 'like', "%{$search}%")
+                ->where('tarif_konsultasi', 'like', "%{$search}%")
+                ->orWhereHas('user', function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%");
+                    });
+                });
+        }
+
+
+        $dokters = $query->paginate($perPage);
+
         return response()->json([
-            'success' => 'true',
-            'data' => $dokters,
+            'success' => true,
+            'data' => $dokters->items(),
+            'meta' => [
+                'current_page' => $dokters->currentPage(),
+                'last_page' => $dokters->lastPage(),
+                'per_page' => $dokters->perPage(),
+                'total' => $dokters->total(),
+            ],
         ]);
     }
+    
+    // public function index()
+    // {
+    //     $dokters = Dokter::with('user')->get();
+    //     return response()->json([
+    //         'success' => 'true',
+    //         'data' => $dokters,
+    //     ]);
+    // }
 
     /**
      * Show the form for creating a new resource.

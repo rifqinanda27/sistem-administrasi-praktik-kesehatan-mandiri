@@ -16,22 +16,74 @@ class KasirController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+
+    public function index(Request $request)
     {
         $token = session('api_token');
-        // dd($token);
 
-        // Ambil data user login
-        $pembayaran = Http::withToken($token)->get("$this->apiBaseUrl/pembayaran");
-        
-        if (!$pembayaran->successful()) {
+        // Ambil parameter dari request
+        $page = $request->input('page', 1);
+        $perPage = 10;
+        $search = $request->input('search');
+
+        // Kirim permintaan ke API eksternal
+        $response = Http::withToken($token)->get("{$this->apiBaseUrl}/pembayaran", [
+            'page' => $page,
+            'per_page' => $perPage,
+            'search' => $search,
+        ]);
+
+        // Tangani error dari API
+        if (!$response->successful()) {
             return back()->withErrors(['message' => 'Gagal mengambil data pembayaran']);
         }
 
-        $pembayaran = $pembayaran->json('data');
+        // Ambil dan siapkan data JSON dari API
+        $json = $response->json();
+        $data = $json['data'] ?? [];
+        $meta = $json['meta'] ?? [];
 
-        return view('kasir.index', compact('pembayaran'));
+        // Buat paginator agar bisa digunakan di Blade
+        $paginator = new \Illuminate\Pagination\LengthAwarePaginator(
+            $data,
+            $meta['total'] ?? count($data),
+            $meta['per_page'] ?? $perPage,
+            $meta['current_page'] ?? $page,
+            ['path' => url()->current(), 'query' => $request->query()]
+        );
+
+        // Cek apakah request dari AJAX
+        if ($request->ajax()) {
+            // Kirim hanya bagian tabel jika AJAX (optional, kalau pakai AJAX)
+            return view('kasir.index', [
+                'pembayaran' => $paginator,
+                'search' => $search
+            ])->renderSections()['table'];
+        }
+
+        // Kirim ke view utama
+        return view('kasir.index', [
+            'pembayaran' => $paginator,
+            'search' => $search
+        ]);
     }
+
+    // public function index()
+    // {
+    //     $token = session('api_token');
+    //     // dd($token);
+
+    //     // Ambil data user login
+    //     $pembayaran = Http::withToken($token)->get("$this->apiBaseUrl/pembayaran");
+        
+    //     if (!$pembayaran->successful()) {
+    //         return back()->withErrors(['message' => 'Gagal mengambil data pembayaran']);
+    //     }
+
+    //     $pembayaran = $pembayaran->json('data');
+
+    //     return view('kasir.index', compact('pembayaran'));
+    // }
 
     /**
      * Show the form for creating a new resource.

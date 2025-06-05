@@ -35,13 +35,26 @@
                 <div class="col-md-12">
                     <div class="card card-primary card-outline">
                         <div class="card-header">
-                            <h3 class="card-title">Data Pasien</h3>
-                            <div class="card-tools">
-                                <a href="{{ route('kunjungan.create') }}" class="btn btn-primary"><span class="fas fa-user-plus"></span> Tambah Kunjungan</a>
+                            <div class="row">
+                                <div class="col-6">
+                                    <form id="search-form" method="GET" action="{{ route('kunjungan.index') }}">
+                                        <div class="input-group mb-3">
+                                            <input type="text" name="search" id="search-input" value="{{ $search }}" class="form-control" placeholder="Cari kunjungan...">
+                                            <div class="input-group-append">
+                                                <button type="submit" class="btn btn-primary">Cari</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="col-6 d-flex justify-content-end">
+                                    <div class="card-tools">
+                                        <a href="{{ route('kunjungan.create') }}" class="btn btn-primary"><span class="fas fa-user-plus"></span> Tambah Kunjungan</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="card-body">
-                            <table id="datatable-main-kunjungan" class="table table-bordered table-hover">
+                            <table class="table table-bordered table-hover">
                                 <thead class="thead-light">
                                     <th style="width: 10px">#</th>
                                     <th>Nama</th>
@@ -52,21 +65,26 @@
                                     <th>Aksi</th> <!-- Kolom Aksi dengan tombol -->
                                 </thead>
                                 <tbody>
-                                    @foreach ($kunjungan as $index => $kunjungan)
+                                    @foreach ($kunjungan as $index => $item)
                                         <tr>
                                             <td>{{ $index + 1 }}</td>
-                                            <td>{{ $kunjungan['pasien']['nama_lengkap'] }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($kunjungan['tanggal_kunjungan'])->format('d-m-Y') }}</td>
-                                            <td>{{ $kunjungan['tipe_kunjungan'] }}</td>
-                                            <td>{{ $kunjungan['penjamin']['nama'] }}</td>
-                                            <td>{{ $kunjungan['status_kunjungan'] }}</td>
+                                            <td>{{ $item['pasien']['nama_lengkap'] }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($item['tanggal_kunjungan'])->format('d-m-Y') }}</td>
+                                            <td>{{ $item['tipe_kunjungan'] }}</td>
+                                            <td>{{ $item['penjamin']['nama'] }}</td>
+                                            <td>{{ $item['status_kunjungan'] }}</td>
                                             <td>
-                                                <button class="btn btn-danger">Hapus</button>
+                                                @if($item['status_kunjungan'] != 'selesai')
+                                                    <button class="btn btn-danger">Batal</button>
+                                                @else
+                                                    <p class="btn btn-success">Selesai</p>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
                             </table>
+                            {{ $kunjungan->appends(['search' => $search])->links() }}
                         </div>
                     </div>
                 </div>

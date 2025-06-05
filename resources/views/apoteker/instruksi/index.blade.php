@@ -28,7 +28,7 @@
                     <div class="col-6">
                         <form id="search-form" method="GET" action="{{ route('instruksi.index') }}">
                             <div class="input-group mb-3">
-                                <input type="text" name="search" id="search-input" value="{{ $search }}" class="form-control" placeholder="Cari obat...">
+                                <input type="text" name="search" id="search-input" value="{{ $search }}" class="form-control" placeholder="Cari instruksi...">
                                 <div class="input-group-append">
                                     <button type="submit" class="btn btn-primary">Cari</button>
                                 </div>

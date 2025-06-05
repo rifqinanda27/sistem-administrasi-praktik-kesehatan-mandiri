@@ -13,19 +13,54 @@ class PatientController extends Controller
         $this->middleware('role:resepsionis,dokterumum');
     }
 
-    // Menampilkan semua pasien
-    public function index()
+    public function index(Request $request)
     {
-        // Ambil semua pasien beserta kunjungan dan resep terkait
-        $pasien = Patients::with([
-            'kunjungan', 'kunjungan.dokter', 'kunjungan.penjamin'
-        ])->get();  // Mengambil semua pasien
+        $perPage = $request->input('per_page', 10);
+
+        $query = Patients::with(['kunjungan', 'kunjungan.dokter', 'kunjungan.penjamin']);
+
+        // Optional: cari berdasarkan nama
+        if ($request->has('search')) {
+            $search = $request->input('search');
+
+            $query->where(function ($q) use ($search) {
+                $q->where('nama_lengkap', 'like', "%{$search}%")
+                ->orWhere('tanggal_lahir', 'like', "%{$search}%")
+                ->orWhere('jenis_kelamin', 'like', "%{$search}%")
+                ->orWhere('no_ktp', 'like', "%{$search}%")
+                ->orWhere('telepon', 'like', "%{$search}%")
+                ->orWhere('alamat', 'like', "%{$search}%");
+                });
+        }
+
+
+        $pasien = $query->paginate($perPage);
 
         return response()->json([
             'success' => true,
-            'data' => $pasien,
+            'data' => $pasien->items(),
+            'meta' => [
+                'current_page' => $pasien->currentPage(),
+                'last_page' => $pasien->lastPage(),
+                'per_page' => $pasien->perPage(),
+                'total' => $pasien->total(),
+            ],
         ]);
     }
+
+    // // Menampilkan semua pasien
+    // public function index()
+    // {
+    //     // Ambil semua pasien beserta kunjungan dan resep terkait
+    //     $pasien = Patients::with([
+    //         'kunjungan', 'kunjungan.dokter', 'kunjungan.penjamin'
+    //     ])->get();  // Mengambil semua pasien
+
+    //     return response()->json([
+    //         'success' => true,
+    //         'data' => $pasien,
+    //     ]);
+    // }
 
     // Menambahkan pasien baru
     public function store(Request $request)

@@ -16,31 +16,83 @@ class ResepsionisController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    
+    public function index(Request $request)
     {
         $token = session('api_token');
 
-        // Ambil data user dari token
-        $userResponse = Http::withToken($token)->get(config('services.api.base_url') . '/user');
+        // Ambil parameter dari request
+        $page = $request->input('page', 1);
+        $perPage = 10;
+        $search = $request->input('search');
 
-        if (!$userResponse->successful()) {
-            return back()->withErrors(['message' => 'Gagal mengambil data user']);
-        }
+        // Kirim permintaan ke API eksternal
+        $response = Http::withToken($token)->get("{$this->apiBaseUrl}/pasien", [
+            'page' => $page,
+            'per_page' => $perPage,
+            'search' => $search,
+        ]);
 
-        $user = $userResponse->json();
-        $idDokterLogin = $user['id'];
-
-        // Ambil semua pasien
-        $response = Http::withToken($token)->get(config('services.api.base_url') . '/pasien');
-
+        // Tangani error dari API
         if (!$response->successful()) {
             return back()->withErrors(['message' => 'Gagal mengambil data pasien']);
         }
 
-        $pasien = $response->json('data');
+        // Ambil dan siapkan data JSON dari API
+        $json = $response->json();
+        $data = $json['data'] ?? [];
+        $meta = $json['meta'] ?? [];
 
-        return view('resepsionis.pasien.index', compact('pasien'));
+        // Buat paginator agar bisa digunakan di Blade
+        $paginator = new \Illuminate\Pagination\LengthAwarePaginator(
+            $data,
+            $meta['total'] ?? count($data),
+            $meta['per_page'] ?? $perPage,
+            $meta['current_page'] ?? $page,
+            ['path' => url()->current(), 'query' => $request->query()]
+        );
+
+        // Cek apakah request dari AJAX
+        if ($request->ajax()) {
+            // Kirim hanya bagian tabel jika AJAX (optional, kalau pakai AJAX)
+            return view('resepsionis.pasien.index', [
+                'pasien' => $paginator,
+                'search' => $search
+            ])->renderSections()['table'];
+        }
+
+        // Kirim ke view utama
+        return view('resepsionis.pasien.index', [
+            'pasien' => $paginator,
+            'search' => $search
+        ]);
     }
+
+    // public function index()
+    // {
+    //     $token = session('api_token');
+
+    //     // Ambil data user dari token
+    //     $userResponse = Http::withToken($token)->get(config('services.api.base_url') . '/user');
+
+    //     if (!$userResponse->successful()) {
+    //         return back()->withErrors(['message' => 'Gagal mengambil data user']);
+    //     }
+
+    //     $user = $userResponse->json();
+    //     $idDokterLogin = $user['id'];
+
+    //     // Ambil semua pasien
+    //     $response = Http::withToken($token)->get(config('services.api.base_url') . '/pasien');
+
+    //     if (!$response->successful()) {
+    //         return back()->withErrors(['message' => 'Gagal mengambil data pasien']);
+    //     }
+
+    //     $pasien = $response->json('data');
+
+    //     return view('resepsionis.pasien.index', compact('pasien'));
+    // }
 
     /**
      * Show the form for creating a new resource.
@@ -120,20 +172,71 @@ class ResepsionisController extends Controller
         //
     }
 
-    public function kunjungan_index()
+    // public function kunjungan_index()
+    // {
+    //     $token = session('api_token');
+
+    //     // Ambil semua pasien
+    //     $response = Http::withToken($token)->get(config('services.api.base_url') . '/kunjungan');
+
+    //     if (!$response->successful()) {
+    //         return back()->withErrors(['message' => 'Gagal mengambil data pasien']);
+    //     }
+
+    //     $kunjungan = $response->json('data');
+
+    //     return view('resepsionis.kunjungan.index', compact('kunjungan'));
+    // }
+
+    public function kunjungan_index(Request $request)
     {
         $token = session('api_token');
 
-        // Ambil semua pasien
-        $response = Http::withToken($token)->get(config('services.api.base_url') . '/kunjungan');
+        // Ambil parameter dari request
+        $page = $request->input('page', 1);
+        $perPage = 10;
+        $search = $request->input('search');
 
+        // Kirim permintaan ke API eksternal
+        $response = Http::withToken($token)->get("{$this->apiBaseUrl}/kunjungan", [
+            'page' => $page,
+            'per_page' => $perPage,
+            'search' => $search,
+        ]);
+
+        // Tangani error dari API
         if (!$response->successful()) {
-            return back()->withErrors(['message' => 'Gagal mengambil data pasien']);
+            return back()->withErrors(['message' => 'Gagal mengambil data kunjungan']);
         }
 
-        $kunjungan = $response->json('data');
+        // Ambil dan siapkan data JSON dari API
+        $json = $response->json();
+        $data = $json['data'] ?? [];
+        $meta = $json['meta'] ?? [];
 
-        return view('resepsionis.kunjungan.index', compact('kunjungan'));
+        // Buat paginator agar bisa digunakan di Blade
+        $paginator = new \Illuminate\Pagination\LengthAwarePaginator(
+            $data,
+            $meta['total'] ?? count($data),
+            $meta['per_page'] ?? $perPage,
+            $meta['current_page'] ?? $page,
+            ['path' => url()->current(), 'query' => $request->query()]
+        );
+
+        // Cek apakah request dari AJAX
+        if ($request->ajax()) {
+            // Kirim hanya bagian tabel jika AJAX (optional, kalau pakai AJAX)
+            return view('resepsionis.kunjungan.index', [
+                'kunjungan' => $paginator,
+                'search' => $search
+            ])->renderSections()['table'];
+        }
+
+        // Kirim ke view utama
+        return view('resepsionis.kunjungan.index', [
+            'kunjungan' => $paginator,
+            'search' => $search
+        ]);
     }
 
     public function kunjungan_create()
@@ -332,21 +435,72 @@ class ResepsionisController extends Controller
         return redirect()->route('kunjungan.index');
     }
 
-    public function lab_resepsionis()
+    public function lab_resepsionis(Request $request)
     {
         $token = session('api_token');
 
-        // Ambil data user dari token
-        $permintaan_lab = Http::withToken($token)->get(config('services.api.base_url') . '/permintaan-lab');
+        // Ambil parameter dari request
+        $page = $request->input('page', 1);
+        $perPage = 10;
+        $search = $request->input('search');
 
-        if (!$permintaan_lab->successful()) {
-            return back()->withErrors(['message' => 'Gagal mengambil data user']);
+        // Kirim permintaan ke API eksternal
+        $response = Http::withToken($token)->get("{$this->apiBaseUrl}/permintaan-lab", [
+            'page' => $page,
+            'per_page' => $perPage,
+            'search' => $search,
+        ]);
+
+        // Tangani error dari API
+        if (!$response->successful()) {
+            return back()->withErrors(['message' => 'Gagal mengambil data permintaan-lab']);
         }
 
-        $permintaan_lab = $permintaan_lab->json('data');
+        // Ambil dan siapkan data JSON dari API
+        $json = $response->json();
+        $data = $json['data'] ?? [];
+        $meta = $json['meta'] ?? [];
 
-        return view('resepsionis.lab.daftar_lab_pasien', compact('permintaan_lab'));
+        // Buat paginator agar bisa digunakan di Blade
+        $paginator = new \Illuminate\Pagination\LengthAwarePaginator(
+            $data,
+            $meta['total'] ?? count($data),
+            $meta['per_page'] ?? $perPage,
+            $meta['current_page'] ?? $page,
+            ['path' => url()->current(), 'query' => $request->query()]
+        );
+
+        // Cek apakah request dari AJAX
+        if ($request->ajax()) {
+            // Kirim hanya bagian tabel jika AJAX (optional, kalau pakai AJAX)
+            return view('resepsionis.lab.daftar_lab_pasien', [
+                'permintaan_lab' => $paginator,
+                'search' => $search
+            ])->renderSections()['table'];
+        }
+
+        // Kirim ke view utama
+        return view('resepsionis.lab.daftar_lab_pasien', [
+            'permintaan_lab' => $paginator,
+            'search' => $search
+        ]);
     }
+
+    // public function lab_resepsionis()
+    // {
+    //     $token = session('api_token');
+
+    //     // Ambil data user dari token
+    //     $permintaan_lab = Http::withToken($token)->get(config('services.api.base_url') . '/permintaan-lab');
+
+    //     if (!$permintaan_lab->successful()) {
+    //         return back()->withErrors(['message' => 'Gagal mengambil data user']);
+    //     }
+
+    //     $permintaan_lab = $permintaan_lab->json('data');
+
+    //     return view('resepsionis.lab.daftar_lab_pasien', compact('permintaan_lab'));
+    // }
 
     public function getPermintaanLab($id)
     {

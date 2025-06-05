@@ -228,22 +228,6 @@ class ApotekerController extends Controller
         ]);
     }
 
-    // public function intruksi_index()
-    // {
-    //     $token = session('api_token');
-
-    //     // Ambil data user login
-    //     $response = Http::withToken($token)->get("$this->apiBaseUrl/instruksi");
-        
-    //     if (!$response->successful()) {
-    //         return back()->withErrors(['message' => 'Gagal mengambil data instruksi']);
-    //     }
-
-    //     $instruksi = $response->json('data');
-
-    //     return view('apoteker.instruksi.index', compact('instruksi'));
-    // }
-
     public function intruksi_create()
     {
         return view('apoteker.instruksi.create');
@@ -317,23 +301,74 @@ class ApotekerController extends Controller
         return redirect()->route('instruksi.index');
     }
 
-    public function resep_index()
+    public function resep_index(Request $request)
     {
         $token = session('api_token');
-        // dd($token);
 
-        // Ambil data user login
-        $resep = Http::withToken($token)->get("$this->apiBaseUrl/resep");
-        // dd($resep);
-        if (!$resep->successful()) {
-            return back()->withErrors(['message' => 'Gagal mengambil data detail resep']);
+        // Ambil parameter dari request
+        $page = $request->input('page', 1);
+        $perPage = 10;
+        $search = $request->input('search');
+
+        // Kirim permintaan ke API eksternal
+        $response = Http::withToken($token)->get("{$this->apiBaseUrl}/resep", [
+            'page' => $page,
+            'per_page' => $perPage,
+            'search' => $search,
+        ]);
+
+        // Tangani error dari API
+        if (!$response->successful()) {
+            return back()->withErrors(['message' => 'Gagal mengambil data resep']);
         }
 
-        $resep = $resep->json('data');
-        // dd($resep);
+        // Ambil dan siapkan data JSON dari API
+        $json = $response->json();
+        $data = $json['data'] ?? [];
+        $meta = $json['meta'] ?? [];
 
-        return view('apoteker.resep.index', compact('resep'));
+        // Buat paginator agar bisa digunakan di Blade
+        $paginator = new \Illuminate\Pagination\LengthAwarePaginator(
+            $data,
+            $meta['total'] ?? count($data),
+            $meta['per_page'] ?? $perPage,
+            $meta['current_page'] ?? $page,
+            ['path' => url()->current(), 'query' => $request->query()]
+        );
+
+        // Cek apakah request dari AJAX
+        if ($request->ajax()) {
+            // Kirim hanya bagian tabel jika AJAX (optional, kalau pakai AJAX)
+            return view('apoteker.resep.index', [
+                'resep' => $paginator,
+                'search' => $search
+            ])->renderSections()['table'];
+        }
+
+        // Kirim ke view utama
+        return view('apoteker.resep.index', [
+            'resep' => $paginator,
+            'search' => $search
+        ]);
     }
+
+    // public function resep_index()
+    // {
+    //     $token = session('api_token');
+    //     // dd($token);
+
+    //     // Ambil data user login
+    //     $resep = Http::withToken($token)->get("$this->apiBaseUrl/resep");
+    //     // dd($resep);
+    //     if (!$resep->successful()) {
+    //         return back()->withErrors(['message' => 'Gagal mengambil data detail resep']);
+    //     }
+
+    //     $resep = $resep->json('data');
+    //     // dd($resep);
+
+    //     return view('apoteker.resep.index', compact('resep'));
+    // }
 
     public function resep_create($id)
     {

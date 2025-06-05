@@ -26,14 +26,26 @@
                 <div class="col-md-12">
                     <div class="card card-primary card-outline">
                         <div class="card-header">
-                            <h3 class="card-title">Data Role</h3>
-                            <div class="card-tools">
-                                <a href="{{ route('roles.create') }}" class="btn btn-tool"><i
-                                        class="fas fa-plus-circle"></i></a>
+                            <div class="row">
+                                <div class="col-6">
+                                    <form id="search-form" method="GET" action="{{ route('roles.index') }}">
+                                        <div class="input-group mb-3">
+                                            <input type="text" name="search" id="search-input" value="{{ $search }}" class="form-control" placeholder="Cari dokter...">
+                                            <div class="input-group-append">
+                                                <button type="submit" class="btn btn-primary">Cari</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="col-6 d-flex justify-content-end">
+                                    <div class="card-tools">
+                                        <a href="{{ route('roles.create') }}" class="btn btn-primary"><span class="fas fa-user-plus"></span> Tambah Role</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="card-body">
-                            <table id="datatable-main" class="table table-bordered table-hover">
+                            <table class="table table-bordered table-hover">
                                 <thead class="thead-light">
                                     <th style="width:10px;">No</th>
                                     <th>Nama Role</th>
@@ -61,6 +73,7 @@
                                 @endforeach
                                 </tbody>
                             </table>
+                            {{ $roles->appends(['search' => $search])->links() }}
                         </div>
                     </div>
                 </div>

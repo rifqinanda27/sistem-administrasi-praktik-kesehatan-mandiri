@@ -26,10 +26,21 @@
                 <div class="col-md-12">
                     <div class="card card-primary card-outline">
                         <div class="card-header">
-                            <h3 class="card-title">Data Dokter</h3>
+                            <div class="row">
+                                <div class="col-6">
+                                    <form id="search-form" method="GET" action="{{ route('dokter.index') }}">
+                                        <div class="input-group mb-3">
+                                            <input type="text" name="search" id="search-input" value="{{ $search }}" class="form-control" placeholder="Cari dokter...">
+                                            <div class="input-group-append">
+                                                <button type="submit" class="btn btn-primary">Cari</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-body">
-                            <table id="datatable-main" class="table table-bordered table-hover">
+                            <table class="table table-bordered table-hover">
                                 <thead class="thead-light">
                                     <th>No</th>
                                     <th>Nama Dokter</th>
@@ -59,6 +70,7 @@
                                     @endforeach
                                 </tbody>
                             </table>
+                            {{ $dokter->appends(['search' => $search])->links() }}
                         </div>
                     </div>
                 </div>

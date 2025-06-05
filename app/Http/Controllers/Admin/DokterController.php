@@ -15,20 +15,71 @@ class DokterController extends Controller
         $this->apiBaseUrl = config('services.api.base_url');
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $token = session('api_token');
 
-        $response = Http::withToken($token)->get("$this->apiBaseUrl/dokter");
+        // Ambil parameter dari request
+        $page = $request->input('page', 1);
+        $perPage = 10;
+        $search = $request->input('search');
 
+        // Kirim permintaan ke API eksternal
+        $response = Http::withToken($token)->get("{$this->apiBaseUrl}/dokter", [
+            'page' => $page,
+            'per_page' => $perPage,
+            'search' => $search,
+        ]);
+
+        // Tangani error dari API
         if (!$response->successful()) {
-            return back()->withErrors(['message' => 'Gagal mengambil data users']);
+            return back()->withErrors(['message' => 'Gagal mengambil data dokter']);
         }
 
-        $dokter = $response->json('data');
+        // Ambil dan siapkan data JSON dari API
+        $json = $response->json();
+        $data = $json['data'] ?? [];
+        $meta = $json['meta'] ?? [];
 
-        return view('admin.dokter.index', compact('dokter'));
+        // Buat paginator agar bisa digunakan di Blade
+        $paginator = new \Illuminate\Pagination\LengthAwarePaginator(
+            $data,
+            $meta['total'] ?? count($data),
+            $meta['per_page'] ?? $perPage,
+            $meta['current_page'] ?? $page,
+            ['path' => url()->current(), 'query' => $request->query()]
+        );
+
+        // Cek apakah request dari AJAX
+        if ($request->ajax()) {
+            // Kirim hanya bagian tabel jika AJAX (optional, kalau pakai AJAX)
+            return view('admin.dokter.index', [
+                'dokter' => $paginator,
+                'search' => $search
+            ])->renderSections()['table'];
+        }
+
+        // Kirim ke view utama
+        return view('admin.dokter.index', [
+            'dokter' => $paginator,
+            'search' => $search
+        ]);
     }
+
+    // public function index()
+    // {
+    //     $token = session('api_token');
+
+    //     $response = Http::withToken($token)->get("$this->apiBaseUrl/dokter");
+
+    //     if (!$response->successful()) {
+    //         return back()->withErrors(['message' => 'Gagal mengambil data users']);
+    //     }
+
+    //     $dokter = $response->json('data');
+
+    //     return view('admin.dokter.index', compact('dokter'));
+    // }
 
     /**
      * Show the form for creating a new resource.

@@ -33,8 +33,18 @@
                 <div class="col-md-12">
                     <div class="card card-primary card-outline">
                         <div class="card-body">
+                            <div class="col-6">
+                                <form id="search-form" method="GET" action="{{ route('resep.index') }}">
+                                    <div class="input-group mb-3">
+                                        <input type="text" name="search" id="search-input" value="{{ $search }}" class="form-control" placeholder="Cari resep...">
+                                        <div class="input-group-append">
+                                            <button type="submit" class="btn btn-primary">Cari</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
                             <div class="table-responsive">
-                                <table id="datatable-main-pasien" class="table table-bordered table-hover">
+                                <table class="table table-bordered table-hover">
                                     <thead class="thead-light">
                                         <th style="width: 10px">#</th>
                                         <th>Nama Pasien</th>
@@ -60,6 +70,7 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+                                {{ $resep->appends(['search' => $search])->links() }}
                             </div>
                         </div>
                     </div>

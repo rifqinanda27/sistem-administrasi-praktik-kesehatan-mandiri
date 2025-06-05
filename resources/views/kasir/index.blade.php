@@ -26,14 +26,21 @@
             <div class="card-header">
                 <div class="row">
                     <div class="col-6">
-                        <h5 class="m-0 font-weight-bold">Daftar</h5>
+                        <form id="search-form" method="GET" action="{{ route('pembayaran.index') }}">
+                            <div class="input-group mb-3">
+                                <input type="text" name="search" id="search-input" value="{{ $search }}" class="form-control" placeholder="Cari pembayaran...">
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-primary">Cari</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
             
             <div class="card-body">
                 <div class="table-responsive">
-                    <table id="datatable-main-instruksi" class="table table-bordered table-hover">
+                    <table class="table table-bordered table-hover">
                         <thead class="thead-light">
                             <tr>
                                 <th width="20px">#</th>
@@ -57,6 +64,7 @@
                             @endforeach
                         </tbody>
                     </table>
+                    {{ $pembayaran->appends(['search' => $search])->links() }}
                 </div>
             </div>
         </div>

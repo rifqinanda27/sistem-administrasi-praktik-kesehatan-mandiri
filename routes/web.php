@@ -57,7 +57,7 @@ Route::middleware('check.api.token')->group(function () {
     Route::get('/cari-dokter', [ResepsionisController::class, 'cari_dokter']);
     Route::post('kunjungan-pasien', [ResepsionisController::class, 'kunjungan_store'])->name('kunjungan.store');
     Route::post('anamnesa-pasien', [ResepsionisController::class, 'anamnesa_store'])->name('anamnesa.store');
-    Route::get('lab-pasien', [ResepsionisController::class, 'lab_resepsionis']);
+    Route::get('lab-pasien', [ResepsionisController::class, 'lab_resepsionis'])->name('lab-pasien.index');
     Route::get('cetak-permintaan/{id}', [ResepsionisController::class, 'getPermintaanLab'])->name('cetak-permintaan');
 
     // Apoteker
@@ -76,6 +76,6 @@ Route::middleware('check.api.token')->group(function () {
     Route::post('resep/{id}', [ApotekerController::class, 'resep_store'])->name('resep.store');
 
 
-    // Kasie
+    // Kasir
     Route::resource('pembayaran', KasirController::class);
 });

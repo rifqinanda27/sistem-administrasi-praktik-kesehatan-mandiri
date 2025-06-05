@@ -55,6 +55,11 @@
                                 <div class="form-group">
                                     <label>Password</label>
                                     <input type="password" name="password" class="form-control" placeholder="Password">
+                                    @error('password')
+                                        <div class="invalid-feedback" role="alert">
+                                            <span>{{ $message }}</span>
+                                        </div>
+                                    @enderror
                                 </div>
                                 <div class="form-group">
                                     <label>Role Pengguna</label>

@@ -13,13 +13,49 @@ class PembayaranController extends Controller
         $this->middleware('role:resepsionis,dokterumum,apoteker,kasir');
     }
 
-    public function index()
+    public function index(Request $request)
     {
+        $perPage = $request->input('per_page', 10);
+
+        $query = Pembayaran::with(['detailPembayaran', 'kunjungan', 'kunjungan.pasien']);
+
+        // Optional: cari berdasarkan nama
+        if ($request->has('search')) {
+            $search = $request->input('search');
+
+            $query->where(function ($q) use ($search) {
+                $q->where('total_biaya', 'like', "%{$search}%")
+                ->orWhere('metode_pembayaran', 'like', "%{$search}%")
+                ->orWhereHas('kunjungan', function ($q) use ($search) {
+                    $q->whereHas('pasien', function ($q) use ($search) {
+                        $q->where('nama_lengkap', 'like', "%{$search}%");
+                    });
+                });
+            });
+        }
+
+
+        $pembayaran = $query->paginate($perPage);
+
         return response()->json([
             'success' => true,
-            'data' => Pembayaran::with('detailPembayaran', 'kunjungan', 'kunjungan.pasien')->get(),
+            'data' => $pembayaran->items(),
+            'meta' => [
+                'current_page' => $pembayaran->currentPage(),
+                'last_page' => $pembayaran->lastPage(),
+                'per_page' => $pembayaran->perPage(),
+                'total' => $pembayaran->total(),
+            ],
         ]);
     }
+
+    // public function index()
+    // {
+    //     return response()->json([
+    //         'success' => true,
+    //         'data' => Pembayaran::with('detailPembayaran', 'kunjungan', 'kunjungan.pasien')->get(),
+    //     ]);
+    // }
 
     public function store(Request $request)
     {

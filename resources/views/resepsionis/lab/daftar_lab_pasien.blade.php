@@ -35,11 +35,22 @@
     <div class="container-fluid">
         <div class="card card-primary card-outline">
             <div class="card-header">
-                <h3 class="card-title">Data Pasien</h3>
+                <div class="row">
+                    <div class="col-6">
+                        <form id="search-form" method="GET" action="{{ route('lab-pasien.index') }}">
+                            <div class="input-group mb-3">
+                                <input type="text" name="search" id="search-input" value="{{ $search }}" class="form-control" placeholder="Cari kunjungan...">
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-primary">Cari</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table id="datatable-main-pasien" class="table table-bordered table-hover align-middle">
+                    <table class="table table-bordered table-hover align-middle">
                         <thead class="thead-light">
                             <tr>
                                 <th>#</th>
@@ -71,6 +82,7 @@
                             @endforeach
                         </tbody>
                     </table>
+                    {{ $permintaan_lab->appends(['search' => $search])->links() }}
                 </div>
             </div>
         </div>
@@ -87,10 +99,4 @@
 <script src="{{ asset('') }}plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
 <script src="{{ asset('') }}plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
 <script src="{{ asset('') }}plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
-
-<script>
-    $(document).ready(function() {
-        $('#datatable-main-pasien').DataTable();
-    });
-</script>
 @endpush

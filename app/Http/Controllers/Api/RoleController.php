@@ -16,14 +16,44 @@ class RoleController extends Controller
         $this->middleware('role:admin'); // Pastikan hanya admin yang bisa mengakses
     }
 
-    // Menampilkan semua role
-    public function index()
+    public function index(Request $request)
     {
-        $roles = Role::all();
+        $perPage = $request->input('per_page', 10);
+
+        $query = Role::query();
+
+        // Optional: cari berdasarkan nama
+        if ($request->has('search')) {
+            $search = $request->input('search');
+
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%");
+                });
+        }
+
+
+        $roles = $query->paginate($perPage);
+
         return response()->json([
-            'data' => $roles, // role name
+            'success' => true,
+            'data' => $roles->items(),
+            'meta' => [
+                'current_page' => $roles->currentPage(),
+                'last_page' => $roles->lastPage(),
+                'per_page' => $roles->perPage(),
+                'total' => $roles->total(),
+            ],
         ]);
     }
+
+    // // Menampilkan semua role
+    // public function index()
+    // {
+    //     $roles = Role::all();
+    //     return response()->json([
+    //         'data' => $roles, // role name
+    //     ]);
+    // }
 
     // Mengupdate role
     public function update(Request $request, $id)

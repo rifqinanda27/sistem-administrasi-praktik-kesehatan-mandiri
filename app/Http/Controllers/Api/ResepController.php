@@ -13,14 +13,52 @@ class ResepController extends Controller
         $this->middleware('role:apoteker,dokterumum');
     }
 
-    public function index()
+    // public function index()
+    // {
+    //     $resep = Resep::with(['obat', 'kunjungan', 'kunjungan.dokter', 'kunjungan.pasien'])->get();
+    //     return response()->json([
+    //         'success' => true,
+    //         'data' => $resep
+    //     ]);
+    // }
+
+    public function index(Request $request)
     {
-        $resep = Resep::with(['obat', 'kunjungan', 'kunjungan.dokter', 'kunjungan.pasien'])->get();
+        $perPage = $request->input('per_page', 10);
+
+        $query = Resep::with(['obat', 'kunjungan', 'kunjungan.dokter', 'kunjungan.pasien']);
+
+        if ($request->has('search')) {
+            $search = $request->input('search');
+
+            $query->where(function ($q) use ($search) {
+                $q->whereHas('kunjungan', function ($q) use ($search) {
+                    $q->whereHas('pasien', function ($q) use ($search) {
+                        $q->where('nama_lengkap', 'like', "%{$search}%");
+                    });
+                })
+                ->orWhereHas('kunjungan', function ($q) use ($search) {
+                    $q->whereHas('dokter', function ($q) use ($search) {
+                        $q->where('name', 'like', "%{$search}%");
+                    });
+                });
+            });
+        }
+
+        $resep = $query->paginate($perPage);
+
         return response()->json([
             'success' => true,
-            'data' => $resep
+            'data' => $resep->items(),
+            'meta' => [
+                'current_page' => $resep->currentPage(),
+                'last_page' => $resep->lastPage(),
+                'per_page' => $resep->perPage(),
+                'total' => $resep->total(),
+            ],
         ]);
     }
+
 
     public function store(Request $request)
     {

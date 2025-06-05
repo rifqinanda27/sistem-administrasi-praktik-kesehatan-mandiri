@@ -16,14 +16,52 @@ class PermintaanLabController extends Controller
         $this->middleware('role:laboran,resepsionis,dokterumum');
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $permintaan = PermintaanLab::with('kunjungan.catatan_medis', 'kunjungan', 'kunjungan.pasien', 'laboratorium', 'jenis_pemeriksaan_lab', 'dokter', 'dokter.dokter_detail')->get();
+        $perPage = $request->input('per_page', 10);
+
+        $query = PermintaanLab::with(['kunjungan.catatan_medis', 'kunjungan', 'kunjungan.pasien', 'laboratorium', 'jenis_pemeriksaan_lab', 'dokter', 'dokter.dokter_detail']);
+
+        // Optional: cari berdasarkan nama
+        if ($request->has('search')) {
+            $search = $request->input('search');
+
+            $query->where(function ($q) use ($search) {
+                $q->where('status_permintaan', 'like', "%{$search}%")
+                ->orWhereHas('kunjungan', function ($q) use ($search) {
+                    $q->orWhereHas('pasien', function ($q) use ($search) {
+                        $q->where('nama_lengkap', 'like', "%{$search}%")
+                        ->orWhere('tanggal_lahir', 'like', "%{$search}%")
+                        ->orWhere('jenis_kelamin', 'like', "%{$search}%")
+                        ->orWhere('alamat', 'like', "%{$search}%")
+                        ->orWhere('telepon', 'like', "%{$search}%");
+                    });
+                    });
+                });
+        }
+
+        $permintaan = $query->paginate($perPage);
+
         return response()->json([
             'success' => true,
-            'data' => $permintaan
+            'data' => $permintaan->items(),
+            'meta' => [
+                'current_page' => $permintaan->currentPage(),
+                'last_page' => $permintaan->lastPage(),
+                'per_page' => $permintaan->perPage(),
+                'total' => $permintaan->total(),
+            ],
         ]);
     }
+
+    // public function index()
+    // {
+    //     $permintaan = PermintaanLab::with('kunjungan.catatan_medis', 'kunjungan', 'kunjungan.pasien', 'laboratorium', 'jenis_pemeriksaan_lab', 'dokter', 'dokter.dokter_detail')->get();
+    //     return response()->json([
+    //         'success' => true,
+    //         'data' => $permintaan
+    //     ]);
+    // }
 
     public function store(Request $request)
     {

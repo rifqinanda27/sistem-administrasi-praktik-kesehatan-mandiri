@@ -18,48 +18,38 @@ class UserController extends Controller
         $this->middleware('role:admin'); // Pastikan hanya admin yang bisa mengakses
     }
 
-    // Menampilkan semua user
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::with('role')->get(); // Menampilkan user dengan role
+        $perPage = $request->input('per_page', 10);
+
+        $query = User::with(['role']);
+
+        // Optional: cari berdasarkan nama
+        if ($request->has('search')) {
+            $search = $request->input('search');
+
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                ->orWhereHas('role', function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%");
+                    });
+                });
+        }
+
+
+        $users = $query->paginate($perPage);
+
         return response()->json([
             'success' => true,
-            'data' => $users
+            'data' => $users->items(),
+            'meta' => [
+                'current_page' => $users->currentPage(),
+                'last_page' => $users->lastPage(),
+                'per_page' => $users->perPage(),
+                'total' => $users->total(),
+            ],
         ]);
     }
-
-    // Menambah user baru
-    // public function store(Request $request)
-    // {
-    //     $validator = Validator::make($request->all(), [
-    //         'name' => 'required|string|max:255',
-    //         'email' => 'required|string|email|max:255|unique:users',
-    //         'password' => 'required|string|min:8',
-    //         'role_id' => 'required|integer|exists:roles,id', // Validasi role_id harus integer dan ada di tabel roles
-    //     ]);
-
-    //     if ($validator->fails()) {
-    //         return response()->json($validator->errors(), 400);
-    //     }
-
-    //     // Cek role berdasarkan ID
-    //     $role = Role::find($request->role_id);
-
-    //     // Pastikan role ditemukan
-    //     if (!$role) {
-    //         return response()->json(['message' => 'Role not found'], 404);
-    //     }
-
-    //     // Membuat user baru dengan role_id yang sesuai
-    //     $user = User::create([
-    //         'name' => $request->name,
-    //         'email' => $request->email,
-    //         'password' => Hash::make($request->password),
-    //         'role_id' => $role->id, // menggunakan ID role yang ditemukan di database
-    //     ]);
-
-    //     return response()->json(['message' => 'User created successfully', 'user' => $user], 201);
-    // }
 
     public function store(Request $request)
     {
