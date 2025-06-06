@@ -86,22 +86,6 @@ class KasirController extends Controller
     // }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      */
     public function show(string $id)
@@ -120,27 +104,37 @@ class KasirController extends Controller
         return view('kasir.show', compact('pembayaran'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function tarif_index()
     {
-        //
+        $token = session('api_token');
+
+        $response = Http::withToken($token)->get("$this->apiBaseUrl/tarif");
+
+        $tarif = $response->json('data');
+
+        return view('kasir.tarif.index', compact('tarif'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function tarif_upsert(Request $request)
     {
-        //
-    }
+        $token = session('api_token');
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $validated = $request->validate([
+            'biaya_admin' => 'required',
+            'biaya_rujukan_lab' => 'required',
+        ]);
+        
+        $response = Http::withToken($token)->post("$this->apiBaseUrl/tarif", [
+            'biaya_admin' => $request->biaya_admin,
+            'biaya_rujukan_lab' => $request->biaya_rujukan_lab,
+        ]);
+
+        if ($response->failed()) {
+            return back()->withErrors([
+                'message' => $response->json('message') ?? 'Gagal memperbarui tarif.'
+            ])->withInput();
+        }
+
+        return redirect()->route('tarif.index');
     }
 }

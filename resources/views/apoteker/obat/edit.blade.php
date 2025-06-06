@@ -117,8 +117,14 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Harga Satuan</label>
-                                    <input type="text" name="harga_satuan"
-                                        class="form-control @error('name')is-invalid @enderror" value="{{ $obat['harga_satuan'] }}">
+                                    <input type="text"
+                                        class="form-control rupiah-format @error('harga_satuan') is-invalid @enderror"
+                                        id="harga_satuan_view"
+                                        data-hidden="harga_satuan"
+                                        placeholder="Harga Satuan . . ."
+                                        value="{{ 'Rp ' . number_format((float) $obat['harga_satuan'], 0, ',', '.') }}">
+
+                                    <input type="hidden" name="harga_satuan" id="harga_satuan" value="{{ (int) $obat['harga_satuan'] }}">
                                     @error('name')
                                         <div class="invalid-feedback" role="alert">
                                             <span>{{ $message }}</span>
@@ -149,4 +155,33 @@
             })
         })
     </script>
+    <script>
+    document.querySelectorAll('.rupiah-format').forEach(function (input) {
+        let raw = input.value.replace(/[^\d]/g, '');
+        if (raw) {
+            input.value = new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0
+            }).format(parseInt(raw));
+        }
+
+        input.addEventListener('input', function () {
+            let raw = this.value.replace(/[^\d]/g, '');
+            let numericValue = parseInt(raw || '0');
+
+            this.value = new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0
+            }).format(numericValue);
+
+            let hiddenInput = document.getElementById(this.dataset.hidden);
+            if (hiddenInput) {
+                hiddenInput.value = numericValue;
+            }
+        });
+    });
+    </script>
+
 @endpush

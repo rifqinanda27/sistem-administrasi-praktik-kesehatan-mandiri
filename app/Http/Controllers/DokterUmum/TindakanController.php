@@ -16,9 +16,12 @@ class TindakanController extends Controller
         $this->apiBaseUrl = config('services.api.base_url');
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $token = session('api_token');
+        $searchTerjadwal = $request->input('search_terjadwal');
+        $searchSelesai = $request->input('search_selesai');
+        $perPage = 10;
 
         // Ambil data user login
         $userResponse = Http::withToken($token)->get("$this->apiBaseUrl/user");
@@ -29,21 +32,78 @@ class TindakanController extends Controller
         $user = $userResponse->json();
         $idDokterLogin = $user['id'];
 
-        // Ambil data tindakan
+        // Ambil semua data kunjungan
         $response = Http::withToken($token)->get("$this->apiBaseUrl/kunjungan");
         if (!$response->successful()) {
-            return back()->withErrors(['message' => 'Gagal mengambil data tindakan']);
+            return back()->withErrors(['message' => 'Gagal mengambil data kunjungan']);
         }
 
-        $allTindakan = $response->json('data');
-
-        // Filter tindakan berdasarkan id_dokter yang sesuai
-        $pasien = collect($allTindakan)->filter(function ($item) use ($idDokterLogin) {
+        $data = collect($response->json('data'))->filter(function ($item) use ($idDokterLogin) {
             return isset($item['dokter']['id']) && $item['dokter']['id'] == $idDokterLogin;
         });
 
-        return view('dokterumum.tindakan.index', compact('pasien'));
+        // Filter dan paginasi
+        $terjadwalData = $data->filter(fn($d) => $d['status_kunjungan'] === 'terjadwal' &&
+            (!$searchTerjadwal || str_contains(strtolower($d['pasien']['nama_lengkap'] ?? ''), strtolower($searchTerjadwal)))
+        )->values();
+
+        $selesaiData = $data->filter(fn($d) => $d['status_kunjungan'] === 'selesai' &&
+            (!$searchSelesai || str_contains(strtolower($d['pasien']['nama_lengkap'] ?? ''), strtolower($searchSelesai)))
+        )->values();
+
+        // Buat paginator
+        $terjadwalPaginator = new \Illuminate\Pagination\LengthAwarePaginator(
+            $terjadwalData->forPage($request->input('page_terjadwal', 1), $perPage),
+            $terjadwalData->count(),
+            $perPage,
+            $request->input('page_terjadwal', 1),
+            ['pageName' => 'page_terjadwal']
+        );
+
+        $selesaiPaginator = new \Illuminate\Pagination\LengthAwarePaginator(
+            $selesaiData->forPage($request->input('page_selesai', 1), $perPage),
+            $selesaiData->count(),
+            $perPage,
+            $request->input('page_selesai', 1),
+            ['pageName' => 'page_selesai']
+        );
+
+        return view('dokterumum.tindakan.index', [
+            'terjadwal' => $terjadwalPaginator,
+            'selesai' => $selesaiPaginator,
+            'searchTerjadwal' => $searchTerjadwal,
+            'searchSelesai' => $searchSelesai,
+        ]);
     }
+
+    // public function index()
+    // {
+    //     $token = session('api_token');
+
+    //     // Ambil data user login
+    //     $userResponse = Http::withToken($token)->get("$this->apiBaseUrl/user");
+    //     if (!$userResponse->successful()) {
+    //         return back()->withErrors(['message' => 'Gagal mengambil data user']);
+    //     }
+
+    //     $user = $userResponse->json();
+    //     $idDokterLogin = $user['id'];
+
+    //     // Ambil data tindakan
+    //     $response = Http::withToken($token)->get("$this->apiBaseUrl/kunjungan");
+    //     if (!$response->successful()) {
+    //         return back()->withErrors(['message' => 'Gagal mengambil data tindakan']);
+    //     }
+
+    //     $allTindakan = $response->json('data');
+
+    //     // Filter tindakan berdasarkan id_dokter yang sesuai
+    //     $pasien = collect($allTindakan)->filter(function ($item) use ($idDokterLogin) {
+    //         return isset($item['dokter']['id']) && $item['dokter']['id'] == $idDokterLogin;
+    //     });
+
+    //     return view('dokterumum.tindakan.index', compact('pasien'));
+    // }
 
 
     public function perlu_tindakan($id)
@@ -141,7 +201,11 @@ class TindakanController extends Controller
 
         // Cek jika penjamin = umum
         if (Str::lower($penjamin['kunjungan']['penjamin']['nama']) === 'umum') {
-            $biayaAdmin  = 25000;
+            $biaya_admin = Http::withToken($token)->get("$this->apiBaseUrl/tarif");
+
+            $biaya_admin = $biaya_admin->json('data');
+
+            $biayaAdmin  = $biaya_admin['biaya_admin'];
             $biayaDokter = $penjamin['kunjungan']['dokter']['dokter_detail']['tarif_konsultasi'] ?? 0;
             $totalBiaya  = $biayaAdmin + $biayaDokter;
 
@@ -272,7 +336,12 @@ class TindakanController extends Controller
 
         if (Str::lower($penjamin['kunjungan']['penjamin']['nama']) === "umum")
         {
-            $biayaAdmin  = 25000;
+            $biaya_admin = Http::withToken($token)->get("$this->apiBaseUrl/tarif");
+
+            $biaya_admin = $biaya_admin->json('data');
+
+            $biayaAdmin  = $biaya_admin['biaya_admin'];
+            $biayaLab = $biaya_admin['biaya_rujukan_lab'];
             $biayaDokter = $penjamin['kunjungan']['dokter']['dokter_detail']['tarif_konsultasi'] ?? 0;
             $totalBiaya  = $biayaAdmin + $biayaDokter;
             // dd($penjamin['id_kunjungan']);
@@ -315,7 +384,7 @@ class TindakanController extends Controller
                 [
                     'id_pembayaran' => $pembayaran['id_pembayaran'],
                     'jenis_biaya' => 'lab',
-                    'jumlah' => 50000,
+                    'jumlah' => $biayaLab,
                     'keterangan' => 'Biaya surat rujukan laboratorium',
                 ]
             ];
@@ -366,7 +435,7 @@ class TindakanController extends Controller
         $token = session('api_token');
         $search = strtolower($request->input('term'));
 
-        $response = Http::withToken($token)->get(config('services.api.base_url') . '/obat');
+        $response = Http::withToken($token)->get(config('services.api.base_url') . '/obat-all');
 
         if (!$response->successful()) {
             return response()->json([]);
@@ -394,7 +463,7 @@ class TindakanController extends Controller
         $token = session('api_token');
         $search = strtolower($request->input('term'));
 
-        $response = Http::withToken($token)->get(config('services.api.base_url') . '/instruksi');
+        $response = Http::withToken($token)->get(config('services.api.base_url') . '/instruksi-all');
 
         if (!$response->successful()) {
             return response()->json([]);

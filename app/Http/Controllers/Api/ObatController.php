@@ -57,6 +57,15 @@ class ObatController extends Controller
         ]);
     }
 
+    public function obat_all(Request $request)
+    {
+        $obat = Obat::all();
+
+        return response()->json([
+            'success' => true,
+            'data' => $obat
+        ]);
+    }
 
     public function show($id)
     {

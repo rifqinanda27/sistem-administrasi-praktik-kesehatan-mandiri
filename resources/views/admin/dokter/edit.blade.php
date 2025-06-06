@@ -73,9 +73,15 @@
 
                                 <div class="form-group">
                                     <label>Tarif Konsultasi</label>
-                                    <input type="text" name="tarif_konsultasi"
-                                        class="form-control @error('tarif_konsultasi') is-invalid @enderror" placeholder="Tarif Konsultasi . . ."
-                                        value="{{ $dokter_edit['tarif_konsultasi'] }}">
+                                    <input type="text"
+                                        class="form-control rupiah-format @error('tarif_konsultasi') is-invalid @enderror"
+                                        id="tarif_konsultasi_view"
+                                        data-hidden="tarif_konsultasi"
+                                        placeholder="Tarif Konsultasi . . ."
+                                        value="{{ 'Rp ' . number_format((float) $dokter_edit['tarif_konsultasi'], 0, ',', '.') }}">
+
+                                    <input type="hidden" name="tarif_konsultasi" id="tarif_konsultasi" value="{{ (int) $dokter_edit['tarif_konsultasi'] }}">
+
                                     @error('name')
                                         <div class="invalid-feedback" role="alert">
                                             <span>{{ $message }}</span>
@@ -112,12 +118,44 @@
 @endsection
 
 @push('js')
-    <script src="{{ asset('') }}plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
-    <script>
-        $(function() {
-            $("input[data-bootstrap-switch]").each(function() {
-                $(this).bootstrapSwitch('state', $(this).prop('checked'));
-            })
+<script src="{{ asset('') }}plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+<script>
+    $(function() {
+        $("input[data-bootstrap-switch]").each(function() {
+            $(this).bootstrapSwitch('state', $(this).prop('checked'));
         })
-    </script>
+    })
+</script>
+<script>
+document.querySelectorAll('.rupiah-format').forEach(function (input) {
+    // Format ulang saat load pertama
+    let raw = input.value.replace(/[^\d]/g, '');
+    if (raw) {
+        let formatted = new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            minimumFractionDigits: 0
+        }).format(parseInt(raw));
+        input.value = formatted;
+    }
+
+    // Event input realtime
+    input.addEventListener('input', function () {
+        let raw = this.value.replace(/[^\d]/g, '');
+        let numericValue = parseInt(raw || '0');
+
+        this.value = new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            minimumFractionDigits: 0
+        }).format(numericValue);
+
+        let hiddenInput = document.getElementById(this.dataset.hidden);
+        if (hiddenInput) {
+            hiddenInput.value = numericValue;
+        }
+    });
+});
+</script>
+
 @endpush

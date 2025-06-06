@@ -78,4 +78,6 @@ Route::middleware('check.api.token')->group(function () {
 
     // Kasir
     Route::resource('pembayaran', KasirController::class);
+    Route::get('tarif', [KasirController::class, 'tarif_index'])->name('tarif.index');
+    Route::post('tarif', [KasirController::class, 'tarif_upsert'])->name('tarif.upsert');
 });

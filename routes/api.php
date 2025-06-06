@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\RoleController;
+use App\Http\Controllers\Api\TarifController;
 use App\Http\Controllers\Api\PatientController;
 use App\Http\Controllers\Api\VisitController;
 use App\Http\Controllers\Api\CatatanMedisController;
@@ -30,6 +31,10 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', [AuthController::class, 'user']);
+
+    Route::get('/tarif', [TarifController::class, 'index']);
+    Route::post('/tarif', [TarifController::class, 'upsert']);
+    Route::delete('/tarif', [TarifController::class, 'destroy']);
     
     Route::post('/logout', [AuthController::class, 'logout']);
 
@@ -59,8 +64,10 @@ Route::middleware('auth:sanctum')->group(function () {
     
     Route::middleware('role:dokterumum,apoteker')->group(function () {
         Route::apiResource('obat', ObatController::class);
+        Route::get('obat-all', [ObatController::class, 'obat_all']);
         Route::apiResource('resep', ResepController::class);
         Route::get('instruksi', [ApotekerController::class, 'instruksi_index']);
+        Route::get('instruksi-all', [ApotekerController::class, 'instruksi_all']);
         Route::get('instruksi/{id}', [ApotekerController::class, 'instruksi_show']);
         Route::put('instruksi/{id}', [ApotekerController::class, 'instruksi_update']);
         Route::post('instruksi', [ApotekerController::class, 'instruksi_store']);

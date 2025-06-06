@@ -31,6 +31,9 @@
                                 <input type="text" name="search" id="search-input" value="{{ $search }}" class="form-control" placeholder="Cari instruksi...">
                                 <div class="input-group-append">
                                     <button type="submit" class="btn btn-primary">Cari</button>
+                                    @if(request()->has('search') && request()->get('search') !== '')
+                                        <a href="{{ route('instruksi.index') }}" class="btn btn-secondary">Clear</a>
+                                    @endif
                                 </div>
                             </div>
                         </form>

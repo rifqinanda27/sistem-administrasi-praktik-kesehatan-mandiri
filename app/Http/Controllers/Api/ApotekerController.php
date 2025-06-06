@@ -120,6 +120,17 @@ class ApotekerController extends Controller
         ]);
     }
 
+    public function instruksi_all(Request $request)
+    {
+        $instruksi = Instruksi::all();
+
+        return response()->json([
+            'success' => true,
+            'data' => $instruksi
+        ]);
+    }
+
+
     public function instruksi_store(Request $request)
     {
         $validatedData = $request->validate([

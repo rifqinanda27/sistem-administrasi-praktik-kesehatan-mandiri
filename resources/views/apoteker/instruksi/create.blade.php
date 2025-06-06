@@ -34,8 +34,8 @@
                                 <div class="form-group">
                                     <label>Nama Instruksi</label>
                                     <input type="text" name="nama_instruksi"
-                                        class="form-control @error('name')is-invalid @enderror" placeholder="Nama Instruksi">
-                                    @error('name')
+                                        class="form-control @error('nama_instruksi')is-invalid @enderror" placeholder="Nama Instruksi">
+                                    @error('nama_instruksi')
                                         <div class="invalid-feedback" role="alert">
                                             <span>{{ $message }}</span>
                                         </div>
@@ -44,8 +44,8 @@
                                 <div class="form-group">
                                     <label>Arti Latin</label>
                                     <input type="text" name="arti_latin"
-                                        class="form-control @error('name')is-invalid @enderror" placeholder="Arti Latin">
-                                    @error('name')
+                                        class="form-control @error('arti_latin')is-invalid @enderror" placeholder="Arti Latin">
+                                    @error('arti_latin')
                                         <div class="invalid-feedback" role="alert">
                                             <span>{{ $message }}</span>
                                         </div>
@@ -54,8 +54,8 @@
                                 <div class="form-group">
                                     <label>Keterangan</label>
                                     <input type="text" name="keterangan"
-                                        class="form-control @error('name')is-invalid @enderror" placeholder="Keterangan">
-                                    @error('name')
+                                        class="form-control @error('keterangan')is-invalid @enderror" placeholder="Keterangan">
+                                    @error('keterangan')
                                         <div class="invalid-feedback" role="alert">
                                             <span>{{ $message }}</span>
                                         </div>

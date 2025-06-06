@@ -39,6 +39,9 @@
                                         <input type="text" name="search" id="search-input" value="{{ $search }}" class="form-control" placeholder="Cari resep...">
                                         <div class="input-group-append">
                                             <button type="submit" class="btn btn-primary">Cari</button>
+                                            @if(request()->has('search') && request()->get('search') !== '')
+                                                <a href="{{ route('resep.index') }}" class="btn btn-secondary">Clear</a>
+                                            @endif
                                         </div>
                                     </div>
                                 </form>

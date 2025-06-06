@@ -34,7 +34,7 @@
                     </span>
                     <div class="info-box-content">
                         <span class="info-box-text">Total Pasien</span>
-                        <span class="info-box-number">{{ count($pasien) }}</span>
+                        <span class="info-box-number">{{ count($pasien->items()) }}</span>
                     </div>
                 </div>
             </div>
@@ -47,7 +47,7 @@
                     </span>
                     <div class="info-box-content">
                         <span class="info-box-text">Laki-Laki</span>
-                        <span class="info-box-number">{{ collect($pasien)->where('jenis_kelamin', 'laki-laki')->count() }}</span>
+                        <span class="info-box-number">{{ collect($pasien->items())->where('jenis_kelamin', 'laki-laki')->count() }}</span>
                     </div>
                 </div>
             </div>
@@ -60,7 +60,7 @@
                     </span>
                     <div class="info-box-content">
                         <span class="info-box-text">Perempuan</span>
-                        <span class="info-box-number">{{ collect($pasien)->where('jenis_kelamin', 'perempuan')->count() }}</span>
+                        <span class="info-box-number">{{ collect($pasien->items())->where('jenis_kelamin', 'perempuan')->count() }}</span>
                     </div>
                 </div>
             </div>
@@ -73,11 +73,26 @@
                 <div class="col-md-12">
                     <div class="card card-primary card-outline">
                         <div class="card-header">
-                            <h3 class="card-title">Data Pasien</h3>
+                            <div class="row">
+                                <div class="col-6"></div>
+                                <div class="col-6">
+                                    <form id="search-form" method="GET" action="{{ route('pasien.index') }}">
+                                        <div class="input-group mb-3">
+                                            <input type="text" name="search" id="search-input" value="{{ $search }}" class="form-control" placeholder="Cari pasien...">
+                                            <div class="input-group-append">
+                                                <button type="submit" class="btn btn-primary">Cari</button>
+                                                @if(request()->has('search') && request()->get('search') !== '')
+                                                    <a href="{{ route('pasien.index') }}" class="btn btn-secondary">Clear</a>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table id="datatable-main-pasien" class="table table-bordered table-hover">
+                                <table class="table table-bordered table-hover">
                                     <thead class="thead-light">
                                         <th style="width: 10px">#</th>
                                         <th>Nama</th>
@@ -90,16 +105,16 @@
                                         <th>Aksi</th> <!-- Kolom Aksi dengan tombol -->
                                     </thead>
                                     <tbody>
-                                        @foreach ($pasien as $index => $pasien)
+                                        @foreach ($pasien as $index => $p)
                                             <tr>
                                                 <td>{{ $index + 1 }}</td>
-                                                <td>{{ $pasien['nama_lengkap'] }}</td>
-                                                <td>{{ \Carbon\Carbon::parse($pasien['tanggal_lahir'])->format('d-m-Y') }}</td>
-                                                <td>{{ ucfirst($pasien['jenis_kelamin']) }}</td>
-                                                <td>{{ $pasien['no_ktp'] }}</td>
-                                                <td>{{ $pasien['alamat'] }}</td>
-                                                <td>{{ $pasien['telepon'] }}</td>
-                                                <td>{{ $pasien['status_aktif'] ? 'Pasien Aktif' : 'Tidak Aktif' }}</td>
+                                                <td>{{ $p['nama_lengkap'] }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($p['tanggal_lahir'])->format('d-m-Y') }}</td>
+                                                <td>{{ ucfirst($p['jenis_kelamin']) }}</td>
+                                                <td>{{ $p['no_ktp'] }}</td>
+                                                <td>{{ $p['alamat'] }}</td>
+                                                <td>{{ $p['telepon'] }}</td>
+                                                <td>{{ $p['status_aktif'] ? 'Pasien Aktif' : 'Tidak Aktif' }}</td>
                                                 <td>
                                                     <!-- <button class="btn btn-sm btn-outline-primary px-4" onclick="window.location.href='rekam-medis/{{ $pasien['id_pasien'] }}'">
                                                         <span class="fas fa-eye" style="font-size: 20px;"></span>
@@ -116,6 +131,7 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+                                {{ $pasien->appends(['search' => $search])->links() }}
                             </div>
                         </div>
                     </div>
@@ -124,12 +140,4 @@
         </div>
     </div>
 @endsection
-@push('js')
-    <script>
-        $('.toast').toast('show')
-        $(document).ready(function() {
-            $('#datatable-main-pasien').DataTable();
-        });
-    </script>
-@endpush
 

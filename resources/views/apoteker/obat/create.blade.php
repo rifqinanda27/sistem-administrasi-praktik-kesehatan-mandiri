@@ -34,8 +34,8 @@
                                 <div class="form-group">
                                     <label>Nama Obat</label>
                                     <input type="text" name="nama_obat"
-                                        class="form-control @error('name')is-invalid @enderror" placeholder="Nama Obat">
-                                    @error('name')
+                                        class="form-control @error('nama_obat')is-invalid @enderror" placeholder="Nama Obat">
+                                    @error('nama_obat')
                                         <div class="invalid-feedback" role="alert">
                                             <span>{{ $message }}</span>
                                         </div>
@@ -44,8 +44,8 @@
                                 <div class="form-group">
                                     <label>Bentuk Obat</label>
                                     <input type="text" name="bentuk"
-                                        class="form-control @error('name')is-invalid @enderror" placeholder="Bentuk Obat">
-                                    @error('name')
+                                        class="form-control @error('bentuk')is-invalid @enderror" placeholder="Bentuk Obat">
+                                    @error('bentuk')
                                         <div class="invalid-feedback" role="alert">
                                             <span>{{ $message }}</span>
                                         </div>
@@ -54,8 +54,8 @@
                                 <div class="form-group">
                                     <label>Dosis</label>
                                     <input type="text" name="dosis"
-                                        class="form-control @error('name')is-invalid @enderror" placeholder="Dosis">
-                                    @error('name')
+                                        class="form-control @error('dosis')is-invalid @enderror" placeholder="Dosis">
+                                    @error('dosis')
                                         <div class="invalid-feedback" role="alert">
                                             <span>{{ $message }}</span>
                                         </div>
@@ -64,8 +64,8 @@
                                 <div class="form-group">
                                     <label>Jumlah Stok</label>
                                     <input type="text" name="jumlah_stok"
-                                        class="form-control @error('name')is-invalid @enderror" placeholder="Jumlah Stok">
-                                    @error('name')
+                                        class="form-control @error('jumlah_stok')is-invalid @enderror" placeholder="Jumlah Stok">
+                                    @error('jumlah_stok')
                                         <div class="invalid-feedback" role="alert">
                                             <span>{{ $message }}</span>
                                         </div>
@@ -74,8 +74,8 @@
                                 <div class="form-group">
                                     <label>Satuan</label>
                                     <input type="text" name="satuan"
-                                        class="form-control @error('name')is-invalid @enderror" placeholder="Satuan">
-                                    @error('name')
+                                        class="form-control @error('satuan')is-invalid @enderror" placeholder="Satuan">
+                                    @error('satuan')
                                         <div class="invalid-feedback" role="alert">
                                             <span>{{ $message }}</span>
                                         </div>
@@ -84,8 +84,8 @@
                                 <div class="form-group">
                                     <label>Golongan</label>
                                     <input type="text" name="golongan"
-                                        class="form-control @error('name')is-invalid @enderror" placeholder="Golongan">
-                                    @error('name')
+                                        class="form-control @error('golongan')is-invalid @enderror" placeholder="Golongan">
+                                    @error('golongan')
                                         <div class="invalid-feedback" role="alert">
                                             <span>{{ $message }}</span>
                                         </div>
@@ -94,8 +94,8 @@
                                 <div class="form-group">
                                     <label>Indikasi</label>
                                     <input type="text" name="indikasi"
-                                        class="form-control @error('name')is-invalid @enderror" placeholder="Indikasi">
-                                    @error('name')
+                                        class="form-control @error('indikasi')is-invalid @enderror" placeholder="Indikasi">
+                                    @error('indikasi')
                                         <div class="invalid-feedback" role="alert">
                                             <span>{{ $message }}</span>
                                         </div>
@@ -104,8 +104,8 @@
                                 <div class="form-group">
                                     <label>Tanggal Kadaluarsa</label>
                                     <input type="date" name="tanggal_kadaluarsa"
-                                        class="form-control @error('name')is-invalid @enderror" placeholder="Tanggal Kadaluarsa">
-                                    @error('name')
+                                        class="form-control @error('tanggal_kadaluarsa')is-invalid @enderror" placeholder="Tanggal Kadaluarsa">
+                                    @error('tanggal_kadaluarsa')
                                         <div class="invalid-feedback" role="alert">
                                             <span>{{ $message }}</span>
                                         </div>
@@ -113,9 +113,16 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Harga Satuan</label>
-                                    <input type="text" name="harga_satuan"
-                                        class="form-control @error('name')is-invalid @enderror" placeholder="Harga Satuan">
-                                    @error('name')
+                                    <input type="text"
+                                        class="form-control rupiah-format @error('harga_satuan') is-invalid @enderror"
+                                        id="harga_satuan_view"
+                                        data-hidden="harga_satuan"
+                                        placeholder="Harga Satuan"
+                                        value="{{ old('harga_satuan', isset($obat['harga_satuan']) ? 'Rp ' . number_format((float) $obat['harga_satuan'], 0, ',', '.') : '') }}">
+
+                                    <input type="hidden" name="harga_satuan" id="harga_satuan" value="{{ old('harga_satuan', isset($obat['harga_satuan']) ? (int) $obat['harga_satuan'] : '') }}">
+
+                                    @error('harga_satuan')
                                         <div class="invalid-feedback" role="alert">
                                             <span>{{ $message }}</span>
                                         </div>
@@ -142,4 +149,33 @@
             })
         })
     </script>
+    <script>
+    document.querySelectorAll('.rupiah-format').forEach(function (input) {
+        let raw = input.value.replace(/[^\d]/g, '');
+        if (raw) {
+            input.value = new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0
+            }).format(parseInt(raw));
+        }
+
+        input.addEventListener('input', function () {
+            let raw = this.value.replace(/[^\d]/g, '');
+            let numericValue = parseInt(raw || '0');
+
+            this.value = new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0
+            }).format(numericValue);
+
+            let hiddenInput = document.getElementById(this.dataset.hidden);
+            if (hiddenInput) {
+                hiddenInput.value = numericValue;
+            }
+        });
+    });
+    </script>
+
 @endpush

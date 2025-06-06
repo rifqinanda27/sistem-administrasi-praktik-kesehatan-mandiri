@@ -33,6 +33,9 @@
                                             <input type="text" name="search" id="search-input" value="{{ $search }}" class="form-control" placeholder="Cari dokter...">
                                             <div class="input-group-append">
                                                 <button type="submit" class="btn btn-primary">Cari</button>
+                                                @if(request()->has('search') && request()->get('search') !== '')
+                                                    <a href="{{ route('dokter.index') }}" class="btn btn-secondary">Clear</a>
+                                                @endif
                                             </div>
                                         </div>
                                     </form>
@@ -47,6 +50,7 @@
                                     <th>Nomor SIP</th>
                                     <th>Spesialisasi</th>
                                     <th>Pengalaman Tahun</th>
+                                    <th>Tarif Konsultasi</th>
                                     <th>Status Praktik</th>
                                     <th>Aksi</th>
                                 </thead>
@@ -58,6 +62,7 @@
                                         <td>{{ $item['nomor_sip'] }}</td>
                                         <td>{{ $item['spesialisasi'] }}</td>
                                         <td>{{ $item['pengalaman_tahun'] }}</td>
+                                        <td>{{ 'Rp. ' . number_format($item['tarif_konsultasi'], 2, ',', '.') ?? '-'}}</td>
                                         <td>{{ $item['status_praktik'] === 'aktif' ? 'Aktif' : 'Tidak Aktif' }}</td>
                                         <td>
                                             <button type="button" class="btn btn-block btn-sm btn-outline-info" data-toggle="dropdown"><i class="fas fa-cog"></i>

@@ -80,6 +80,18 @@ class ApotekerController extends Controller
     {
         $token = session('api_token');
 
+        $validated = $request->validate([
+            'nama_obat' => 'required',
+            'bentuk' => 'required',
+            'dosis' => 'required',
+            'jumlah_stok' => 'required|integer',
+            'satuan' => 'required',
+            'golongan' => 'required',
+            'indikasi' => 'required',
+            'tanggal_kadaluarsa' => 'required',
+            'harga_satuan' => 'required',
+        ]);
+
         $response = Http::withToken($token)->post("$this->apiBaseUrl/obat", [
             'nama_obat' => $request->nama_obat,
             'bentuk' => $request->bentuk,
@@ -138,6 +150,18 @@ class ApotekerController extends Controller
     public function update(Request $request, string $id)
     {
         $token = session('api_token');
+
+        $validated = $request->validate([
+            'nama_obat' => 'required',
+            'bentuk' => 'required',
+            'dosis' => 'required',
+            'jumlah_stok' => 'required|integer',
+            'satuan' => 'required',
+            'golongan' => 'required',
+            'indikasi' => 'required',
+            'tanggal_kadaluarsa' => 'required',
+            'harga_satuan' => 'required',
+        ]);
 
         $response = Http::withToken($token)->put("$this->apiBaseUrl/obat/$id", [
             'nama_obat' => $request->nama_obat,
@@ -228,7 +252,7 @@ class ApotekerController extends Controller
         ]);
     }
 
-    public function intruksi_create()
+    public function instruksi_create()
     {
         return view('apoteker.instruksi.create');
     }
@@ -236,6 +260,12 @@ class ApotekerController extends Controller
     public function instruksi_store(Request $request)
     {
         $token = session('api_token');
+
+        $validated = $request->validate([
+            'nama_instruksi' => 'required',
+            'keterangan' => 'required',
+            'arti_latin' => 'required',
+        ]);
 
         $response = Http::withToken($token)->post("$this->apiBaseUrl/instruksi", [
             'nama_instruksi' => $request->nama_instruksi,
@@ -271,6 +301,12 @@ class ApotekerController extends Controller
     public function instruksi_update(Request $request, $id)
     {
         $token = session('api_token');
+
+        $validated = $request->validate([
+            'nama_instruksi' => 'required',
+            'keterangan' => 'required',
+            'arti_latin' => 'required',
+        ]);
 
         $response = Http::withToken($token)->put("$this->apiBaseUrl/instruksi/$id", [
             'nama_instruksi' => $request->nama_instruksi,

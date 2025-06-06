@@ -101,5 +101,11 @@
             <p>Pembayaran</p>
         </a>
     </li>
+    <li class="nav-item">
+        <a href="{{ url('tarif') }}" class="nav-link {{ Request::segment(1) == 'tarif' ? 'active' : '' }}">
+            <i class="nav-icon fas fa-money-bill"></i>
+            <p>Pengaturan Tarif</p>
+        </a>
+    </li>
     @endif
 </ul>
