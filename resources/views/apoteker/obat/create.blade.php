@@ -43,8 +43,16 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Bentuk Obat</label>
-                                    <input type="text" name="bentuk"
-                                        class="form-control @error('bentuk')is-invalid @enderror" placeholder="Bentuk Obat">
+                                    <!-- <input type="text" name="bentuk"
+                                        class="form-control @error('bentuk')is-invalid @enderror" placeholder="Bentuk Obat"> -->
+                                    <select name="bentuk" class="form-control @error('bentuk')is-invalid @enderror">
+                                        <option value="" disabled selected>Pilih bentuk obat</option>
+                                        @foreach ($bentukOptions as $bentuk)
+                                            <option value="{{ $bentuk }}" {{ old('bentuk', $obat->bentuk ?? '') == $bentuk ? 'selected' : '' }}>
+                                                {{ ucfirst($bentuk) }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                     @error('bentuk')
                                         <div class="invalid-feedback" role="alert">
                                             <span>{{ $message }}</span>

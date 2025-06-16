@@ -70,7 +70,22 @@ class ApotekerController extends Controller
      */
     public function create()
     {
-        return view('apoteker.obat.create');
+        $bentukOptions = [
+            'tablet', 
+            'kaplet', 
+            'kapsul', 
+            'sirup', 
+            'suspensi', 
+            'tetes', 
+            'salep', 
+            'krim', 
+            'gel', 
+            'inhaler', 
+            'serbuk', 
+            'botol'
+        ];
+
+        return view('apoteker.obat.create', compact('bentukOptions'));
     }
 
     /**
@@ -141,7 +156,22 @@ class ApotekerController extends Controller
 
         $obat = $response->json('data');
 
-        return view('apoteker.obat.edit', compact('obat'));
+        $bentukOptions = [
+            'tablet', 
+            'kaplet', 
+            'kapsul', 
+            'sirup', 
+            'suspensi', 
+            'tetes', 
+            'salep', 
+            'krim', 
+            'gel', 
+            'inhaler', 
+            'serbuk', 
+            'botol'
+        ];
+
+        return view('apoteker.obat.edit', compact('obat', 'bentukOptions'));
     }
 
     /**
@@ -425,6 +455,40 @@ class ApotekerController extends Controller
     public function resep_store(Request $request, $id)
     {
         $token = session('api_token');
+
+        foreach ($request->detail as $item) {
+            $obatId = $item['obat_id'];
+            $dosis = $item['dosis'];
+            $frekuensi = $item['frekuensi'];
+
+            $jumlahDikonsumsi = $dosis * $frekuensi;
+
+            // Ambil data obat via API
+            $response = Http::withToken($token)->get("$this->apiBaseUrl/obat/{$obatId}");
+            $data = $response->json();
+            $obat = $data['data'] ?? null;
+
+            if (!$obat || !isset($obat['jumlah_stok'])) {
+                throw new \Exception("Obat ID $obatId tidak ditemukan.");
+            }
+
+            if ($obat['jumlah_stok'] < $jumlahDikonsumsi) {
+                return back()->withErrors([
+                    'message' => "Stok obat {$obat['nama_obat']} tidak mencukupi.",
+                ])->withInput();
+            }
+
+            $stokBaru = $obat['jumlah_stok'] - $jumlahDikonsumsi;
+
+            // Update stok via API
+            $updateResponse = Http::withToken($token)->put("$this->apiBaseUrl/obat/{$obatId}", [
+                'jumlah_stok' => $stokBaru,
+            ]);
+
+            if (!$updateResponse->successful()) {
+                throw new \Exception("Gagal mengupdate stok obat ID $obatId");
+            }
+        }
         
         // Resep Store
         $resep = Http::withToken($token)->put("$this->apiBaseUrl/resep/{$id}", [
@@ -453,7 +517,6 @@ class ApotekerController extends Controller
             $id_pembayaran = $resep['kunjungan']['pembayaran']['id_pembayaran'];
             $total_biaya = $resep['kunjungan']['pembayaran'];
     
-    
             $pembayaran = Http::withToken($token)->put("$this->apiBaseUrl/pembayaran/$id_pembayaran", [
                 'total_biaya' => $total_biaya['total_biaya'] + $grandTotal,
             ]);
@@ -475,7 +538,6 @@ class ApotekerController extends Controller
                 return back()->withErrors(['message' => $pembayaran->json('message') ?? 'Gagal tambah detail pembayaran']);
             }
         }   
-
 
         return redirect()->route('resep.index');
     }

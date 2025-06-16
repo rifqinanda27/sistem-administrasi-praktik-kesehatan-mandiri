@@ -24,7 +24,7 @@
 <div class="content">
     <div class="container-fluid">
 
-        <div class="card shadow-sm card-outline card-primary">
+        <div class="card shadow-sm card-outline">
             <div class="card-header bg-primary text-white">
                 <h5 class="mb-0">Rincian Pembayaran</h5>
             </div>
@@ -53,6 +53,24 @@
                 </table>
 
                 <hr>
+                
+                <div class="row mb-3">
+                    <!-- <div class="col-md-6">
+                        <form action="" method="POST" class="d-flex align-items-center gap-2">
+                            @csrf
+                            @method('PUT')
+                            <label for="metode_pembayaran" class="me-2 fw-bold">Metode Pembayaran:</label>
+                            <select name="metode_pembayaran" id="metode_pembayaran" class="form-control mx-2" style="width: auto;">
+                                <option value="tunai" {{ $pembayaran['metode_pembayaran'] == 'tunai' ? 'selected' : '' }}>Tunai</option>
+                                <option value="qris" {{ $pembayaran['metode_pembayaran'] == 'qris' ? 'selected' : '' }}>QRIS</option>
+                            </select>
+                            <button type="submit" class="btn btn-sm btn-primary">
+                                <i class="fas fa-save me-1"></i> Simpan
+                            </button>
+                        </form>
+                    </div> -->
+                </div>
+
 
                 <h6 class="mt-4">Detail Biaya</h6>
                 <table class="table table-striped table-bordered mt-2">
@@ -82,10 +100,17 @@
                     </tfoot>
                 </table>
             </div>
-            <div class="m-4">
-                <a href="{{ route('pembayaran.index') }}" class="btn btn-secondary">
-                    <i class="fas fa-arrow-left me-1"></i> Kembali
-                </a>
+            <div class="row m-2 mb-3">
+                <div class="col-md-6">
+                    <a href="{{ route('pembayaran.index') }}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left me-1"></i> Kembali
+                    </a>
+                </div>
+                <div class="col-md-6 d-flex justify-content-end">
+                    <a href="" target="_blank" class="btn btn-success">
+                        <i class="fas fa-print me-1"></i> Cetak Struk
+                    </a>
+                </div>
             </div>
         </div>
 

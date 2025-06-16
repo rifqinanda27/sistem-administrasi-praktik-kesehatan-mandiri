@@ -119,11 +119,11 @@ class ObatController extends Controller
             'bentuk' => 'sometimes|required|string|max:255',
             'dosis' => 'sometimes|required|string|max:255',
             'jumlah_stok' => 'sometimes|required|numeric|min:0',
-            'satuan' => 'required',
-            'golongan' => 'required',
-            'indikasi' => 'required',
-            'tanggal_kadaluarsa' => 'required',
-            'harga_satuan' => 'required',
+            'satuan' => 'sometimes',
+            'golongan' => 'sometimes',
+            'indikasi' => 'sometimes',
+            'tanggal_kadaluarsa' => 'sometimes',
+            'harga_satuan' => 'sometimes',
         ]);
 
         $obat->update($data);

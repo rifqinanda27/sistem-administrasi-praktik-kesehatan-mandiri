@@ -40,6 +40,12 @@
             </li>
         </ul>
     </li>
+    <li class="nav-item">
+        <a href="{{ url('tarif') }}" class="nav-link {{ Request::segment(1) == 'tarif' ? 'active' : '' }}">
+            <i class="nav-icon fas fa-money-bill"></i>
+            <p>Pengaturan Tarif</p>
+        </a>
+    </li>
     @elseif(isset($user['role']['name']) && $user['role']['name'] === 'dokterumum')
     <!-- Menu dengan submenu -->
     <li class="nav-item">

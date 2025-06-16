@@ -47,13 +47,28 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Bentuk Obat</label>
-                                    <input type="text" name="bentuk"
+                                    <!-- <input type="text" name="bentuk"
                                         class="form-control @error('name')is-invalid @enderror" value="{{ $obat['bentuk'] }}">
                                     @error('name')
                                         <div class="invalid-feedback" role="alert">
                                             <span>{{ $message }}</span>
                                         </div>
+                                    @enderror -->
+                                    <select name="bentuk" class="form-control @error('bentuk') is-invalid @enderror" required>
+                                        <option value="" disabled>Pilih bentuk obat</option>
+                                        @foreach ($bentukOptions as $option)
+                                            <option value="{{ $option }}" {{ old('bentuk', $obat['bentuk'] ?? '') == $option ? 'selected' : '' }}>
+                                                {{ ucfirst($option) }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+
+                                    @error('bentuk')
+                                        <div class="invalid-feedback" role="alert">
+                                            <span>{{ $message }}</span>
+                                        </div>
                                     @enderror
+
                                 </div>
                                 <div class="form-group">
                                     <label>Dosis</label>

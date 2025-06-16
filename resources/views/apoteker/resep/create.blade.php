@@ -27,6 +27,13 @@
                                 <a href="{{ route('resep.index') }}" class="btn btn-tool"><i
                                         class="fas fa-arrow-alt-circle-left"></i></a>
                             </div>
+                            <div class="col-8">
+                                @if ($errors->has('message'))
+                                    <div class="alert alert-danger">
+                                        {{ $errors->first('message') }}
+                                    </div>
+                                @endif
+                            </div>
                         </div>
                         <form action="{{ route('resep.store', ['id' => $resep['id_resep']]) }}" method="post">
                             @csrf
@@ -50,7 +57,7 @@
                                             <th>Frekuensi Hari</th>
                                         </thead>
                                         <tbody>
-                                            @foreach($resep['detail_resep'] as $ob)
+                                            @foreach($resep['detail_resep'] as $index => $ob)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $ob['obat']['nama_obat'] ?? '-'}}</td>
@@ -59,6 +66,9 @@
                                                 <td>{{ $ob['frekuensi'] ?? '-'}}</td>
                                             </tr>
                                             <input type="hidden" name="total[]" value="{{ $ob['dosis'] * $ob['frekuensi'] * $ob['obat']['harga_satuan'] }}">
+                                            <input type="hidden" name="detail[{{ $index }}][obat_id]" value="{{ $ob['id_obat'] }}">
+                                            <input type="hidden" name="detail[{{ $index }}][dosis]" value="{{ $ob['dosis'] }}">
+                                            <input type="hidden" name="detail[{{ $index }}][frekuensi]" value="{{ $ob['frekuensi'] }}">
                                             @endforeach
                                         </tbody>
                                     </table>
