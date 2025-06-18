@@ -78,7 +78,11 @@
                                             <td>{{ $item['status_kunjungan'] }}</td>
                                             <td>
                                                 @if($item['status_kunjungan'] != 'selesai')
-                                                    <button class="btn btn-danger">Batal</button>
+                                                    <form action="{{ route('kunjungan.destroy', $item['id_kunjungan']) }}" method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger">Batal</button>
+                                                    </form>
                                                 @else
                                                     <p class="btn btn-success">Selesai</p>
                                                 @endif

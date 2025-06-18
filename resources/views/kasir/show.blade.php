@@ -107,9 +107,13 @@
                     </a>
                 </div>
                 <div class="col-md-6 d-flex justify-content-end">
-                    <a href="" target="_blank" class="btn btn-success">
-                        Verifikasi Pembayaran
-                    </a>
+                <form action="{{ route('pembayaran.update', $pembayaran['id_pembayaran']) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                        <button type="submit" class="btn btn-success">
+                            Verifikasi Pembayaran
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>

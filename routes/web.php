@@ -52,6 +52,7 @@ Route::middleware('check.api.token')->group(function () {
     Route::resource('pasien-resepsionis', ResepsionisController::class);
     Route::get('kunjungan-pasien', [ResepsionisController::class, 'kunjungan_index'])->name('kunjungan.index');
     Route::get('kunjungan-pasien/create', [ResepsionisController::class, 'kunjungan_create'])->name('kunjungan.create');
+    Route::delete('kunjungan-pasien/{id}', [ResepsionisController::class, 'kunjungan_destroy'])->name('kunjungan.destroy');
     Route::get('kunjungan-pasien/{id_kunjungan}/anamnesa', [ResepsionisController::class, 'anamnesa_create'])->name('anamnesa');
     Route::get('/cari-pasien', [ResepsionisController::class, 'cari_pasien']);
     Route::get('/cari-dokter', [ResepsionisController::class, 'cari_dokter']);

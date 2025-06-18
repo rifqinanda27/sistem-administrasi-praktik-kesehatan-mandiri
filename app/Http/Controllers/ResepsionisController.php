@@ -435,6 +435,42 @@ class ResepsionisController extends Controller
         return redirect()->route('kunjungan.index');
     }
 
+    public function kunjungan_destroy($id)
+    {
+        $token = session('api_token');
+
+        // Ambil data kunjungan (opsional, kalau kamu butuh validasi)
+        $response = Http::withToken($token)->get("$this->apiBaseUrl/kunjungan/{$id}");
+
+        if (!$response->successful()) {
+            return back()->withErrors(['message' => 'Gagal mengambil data kunjungan']);
+        }
+
+        // Ambil semua catatan medis berdasarkan id_kunjungan
+        $catatanResponse = Http::withToken($token)->get("$this->apiBaseUrl/catatan-medis", [
+            'id_kunjungan' => $id
+        ]);
+
+        if ($catatanResponse->successful()) {
+            $catatan = $catatanResponse->json('data');
+
+            if ($catatan) {
+                $catatanId = $catatan['id_catatan_medis'];
+                Http::withToken($token)->delete("$this->apiBaseUrl/catatan-medis/{$catatanId}");
+            }
+        }
+
+        // Hapus kunjungan
+        $deleteKunjungan = Http::withToken($token)->delete("$this->apiBaseUrl/kunjungan/{$id}");
+
+        if (!$deleteKunjungan->successful()) {
+            return back()->withErrors(['message' => 'Gagal menghapus kunjungan']);
+        }
+
+        return redirect()->route('kunjungan.index')->with('success', 'Kunjungan dan catatan medis berhasil dihapus.');
+    }
+
+
     public function lab_resepsionis(Request $request)
     {
         $token = session('api_token');

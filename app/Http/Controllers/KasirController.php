@@ -104,6 +104,24 @@ class KasirController extends Controller
         return view('kasir.show', compact('pembayaran'));
     }
 
+    public function update($id)
+    {
+        $token = session('api_token');
+
+        // Ambil data user login
+        $pembayaran = Http::withToken($token)->put("$this->apiBaseUrl/pembayaran/{$id}", [
+            'status' => 'lunas',
+        ]);
+        
+        if (!$pembayaran->successful()) {
+            return back()->withErrors(['message' => 'Gagal mengambil data pembayaran']);
+        }
+
+        // $pembayaran = $pembayaran->json('data');
+
+        return redirect()->route('pembayaran.index');
+    }
+
     public function tarif_index()
     {
         $token = session('api_token');
