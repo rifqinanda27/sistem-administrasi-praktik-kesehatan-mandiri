@@ -188,7 +188,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-body text-center py-4">
-                    <h5 class="font-weight-bold mb-4">Buat Surat Rujukan?</h5>
+                    <h5 class="font-weight-bold mb-4">Buat Surat Rujukan Untuk Laboratorium?</h5>
                     <div class="d-flex justify-content-center">
                         <button type="button" class="btn btn-light mx-2" style="width: 80px; background-color: #e9ecef;" id="btnYaRujukan">Ya</button>
                         <button type="button" class="btn btn-light mx-2" style="width: 80px; background-color: #e9ecef;" id="btnTidakRujukan">Tidak</button>

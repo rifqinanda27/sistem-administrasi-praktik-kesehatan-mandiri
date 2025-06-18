@@ -14,12 +14,7 @@ class Resep extends Model
 
     protected $fillable = [
         'id_kunjungan',
-        'id_detail_resep',
-        'dosis',
-        'frekuensi',
-        'resep_obat',
-        'petunjuk',
-        'diresepkan_oleh',
+        'catatan',
         'status',
     ];
 

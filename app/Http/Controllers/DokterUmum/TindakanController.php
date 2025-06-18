@@ -128,14 +128,15 @@ class TindakanController extends Controller
         $validated = $request->validate([
             'diagnosa_sementara' => 'required|string',
             'diagnosa_tambahan' => 'required|string',
-            'id_obat' => 'required|array',
-            'id_instruksi' => 'required|array',
-            'id_obat.*' => 'required|integer',
-            'id_instruksi.*' => 'required|integer',
-            'dosis' => 'required|array',
-            'frekuensi' => 'required|array',
+            // 'id_obat' => 'required|array',
+            // 'id_instruksi' => 'required|array',
+            // 'id_obat.*' => 'required|integer',
+            // 'id_instruksi.*' => 'required|integer',
+            // 'dosis' => 'required|array',
+            // 'frekuensi' => 'required|array',
             'id_kunjungan' => 'required|integer',
-            'id_dokter' => 'nullable|integer',
+            // 'id_dokter' => 'nullable|integer',
+            'catatan' => 'required',
         ]);
 
         $token = session('api_token');
@@ -151,14 +152,16 @@ class TindakanController extends Controller
                 'message' => $response->json('message') ?? 'Gagal memperbarui catatan medis.'
             ])->withInput();
         }
-
+        // dd($response);
         // Buat resep
         $resep = Http::withToken($token)
             ->asForm()
             ->post("$this->apiBaseUrl/resep", [
                 'id_kunjungan' => $request->id_kunjungan,
+                'catatan' => $request->catatan,
                 'status' => 'aktif',
             ]);
+        // dd($resep);
 
         if ($resep->failed()) {
             return back()->withErrors([
@@ -167,24 +170,25 @@ class TindakanController extends Controller
         }
 
         $data = $resep->json();
+        // dd($data);
         $id_resep = $data['data']['id_resep'];
 
         // Simpan detail resep
-        $detailResep = Http::withToken($token)
-            ->asForm()
-            ->post("$this->apiBaseUrl/detail-resep", [
-                'id_instruksi' => $request->id_instruksi,
-                'id_obat' => $request->id_obat,
-                'dosis' => $request->dosis,
-                'frekuensi' => $request->frekuensi,
-                'id_resep' => $id_resep,
-            ]);
+        // $detailResep = Http::withToken($token)
+        //     ->asForm()
+        //     ->post("$this->apiBaseUrl/detail-resep", [
+        //         'id_instruksi' => $request->id_instruksi,
+        //         'id_obat' => $request->id_obat,
+        //         'dosis' => $request->dosis,
+        //         'frekuensi' => $request->frekuensi,
+        //         'id_resep' => $id_resep,
+        //     ]);
 
-        if ($detailResep->failed()) {
-            return back()->withErrors([
-                'message' => $detailResep->json('message') ?? 'Gagal menyimpan detail resep.'
-            ])->withInput();
-        }
+        // if ($detailResep->failed()) {
+        //     return back()->withErrors([
+        //         'message' => $detailResep->json('message') ?? 'Gagal menyimpan detail resep.'
+        //     ])->withInput();
+        // }
 
         // Update status kunjungan
         $tindakan = Http::withToken($token)->put("$this->apiBaseUrl/kunjungan/{$request->id_kunjungan}", [
@@ -430,59 +434,59 @@ class TindakanController extends Controller
         return view('dokterumum.tindakan.complete');
     }
 
-    public function cari_obat(Request $request)
-    {
-        $token = session('api_token');
-        $search = strtolower($request->input('term'));
+    // public function cari_obat(Request $request)
+    // {
+    //     $token = session('api_token');
+    //     $search = strtolower($request->input('term'));
 
-        $response = Http::withToken($token)->get(config('services.api.base_url') . '/obat-all');
+    //     $response = Http::withToken($token)->get(config('services.api.base_url') . '/obat-all');
 
-        if (!$response->successful()) {
-            return response()->json([]);
-        }
+    //     if (!$response->successful()) {
+    //         return response()->json([]);
+    //     }
 
-        $allObat = $response->json('data');
+    //     $allObat = $response->json('data');
 
-        // Filter manual berdasarkan nama_lengkap
-        $filtered = collect($allObat)->filter(function ($obat) use ($search) {
-            return str_contains(strtolower($obat['nama_obat']), $search);
-        });
+    //     // Filter manual berdasarkan nama_lengkap
+    //     $filtered = collect($allObat)->filter(function ($obat) use ($search) {
+    //         return str_contains(strtolower($obat['nama_obat']), $search);
+    //     });
 
-        $result = $filtered->map(function ($obat) {
-            return [
-                'id' => $obat['id_obat'],
-                'text' => $obat['nama_obat']
-            ];
-        })->values();
+    //     $result = $filtered->map(function ($obat) {
+    //         return [
+    //             'id' => $obat['id_obat'],
+    //             'text' => $obat['nama_obat']
+    //         ];
+    //     })->values();
 
-        return response()->json($result);
-    }
+    //     return response()->json($result);
+    // }
 
-    public function cari_instruksi(Request $request)
-    {
-        $token = session('api_token');
-        $search = strtolower($request->input('term'));
+    // public function cari_instruksi(Request $request)
+    // {
+    //     $token = session('api_token');
+    //     $search = strtolower($request->input('term'));
 
-        $response = Http::withToken($token)->get(config('services.api.base_url') . '/instruksi-all');
+    //     $response = Http::withToken($token)->get(config('services.api.base_url') . '/instruksi-all');
 
-        if (!$response->successful()) {
-            return response()->json([]);
-        }
+    //     if (!$response->successful()) {
+    //         return response()->json([]);
+    //     }
 
-        $allInstruksi = $response->json('data');
+    //     $allInstruksi = $response->json('data');
 
-        // Filter manual berdasarkan nama_lengkap
-        $filtered = collect($allInstruksi)->filter(function ($instruksi) use ($search) {
-            return str_contains(strtolower($instruksi['nama_instruksi']), $search);
-        });
+    //     // Filter manual berdasarkan nama_lengkap
+    //     $filtered = collect($allInstruksi)->filter(function ($instruksi) use ($search) {
+    //         return str_contains(strtolower($instruksi['nama_instruksi']), $search);
+    //     });
 
-        $result = $filtered->map(function ($instruksi) {
-            return [
-                'id' => $instruksi['id_instruksi'],
-                'text' => $instruksi['nama_instruksi']
-            ];
-        })->values();
+    //     $result = $filtered->map(function ($instruksi) {
+    //         return [
+    //             'id' => $instruksi['id_instruksi'],
+    //             'text' => $instruksi['nama_instruksi']
+    //         ];
+    //     })->values();
 
-        return response()->json($result);
-    }
+    //     return response()->json($result);
+    // }
 }

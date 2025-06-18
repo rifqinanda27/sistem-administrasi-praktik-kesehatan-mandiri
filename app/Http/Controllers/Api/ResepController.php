@@ -64,11 +64,7 @@ class ResepController extends Controller
     {
         $data = $request->validate([
             'id_kunjungan' => 'required|exists:visits,id_kunjungan',
-            // 'id_detail_resep' => 'required',
-            // 'dosis' => 'required|string',
-            // 'frekuensi' => 'required|string',
-            // 'petunjuk' => 'nullable|string',
-            // 'diresepkan_oleh' => 'required',
+            'catatan' => 'required',
             'status' => 'required|in:aktif,diberikan',
         ]);
 

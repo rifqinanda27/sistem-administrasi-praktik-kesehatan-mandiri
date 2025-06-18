@@ -108,7 +108,7 @@
                 </div>
                 <div class="col-md-6 d-flex justify-content-end">
                     <a href="" target="_blank" class="btn btn-success">
-                        <i class="fas fa-print me-1"></i> Cetak Struk
+                        Verifikasi Pembayaran
                     </a>
                 </div>
             </div>

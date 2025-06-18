@@ -84,23 +84,29 @@
                                         <!-- Diagnosa -->
                                         <div class="mt-4">
                                             <h5 class="font-weight-bold">II. Diagnosa</h5>
-                                            <div class="ml-3 mt-2">
-                                                <div class="d-flex mt-2">
-                                                    <div style="width: 250px;" class="my-auto">Diagnosa Sementara</div>
+                                            <div class="row mt-2">
+                                                <div class="col-3">
+                                                    <div class="my-auto">Diagnosa Sementara</div>
+                                                </div>
+                                                <div class="col-9">
                                                     <div class="d-flex align-items-center">
                                                         <span class="mr-2">=</span>
-                                                        <input type="text" class="form-control" name="diagnosa_sementara">
+                                                        <input type="text" class="form-control" name="diagnosa_sementara" placeholder="isi diagnosa sementara . . .">
                                                         @error('diagnosa_sementara')
                                                             <small class="text-danger">{{ $message }}</small>
                                                         @enderror
                                                     </div>
                                                 </div>
-                                                
-                                                <div class="d-flex mt-2">
-                                                    <div style="width: 250px;" class="my-auto">Diagnosa Tambahan</div>
+                                            </div>
+                                            
+                                            <div class="row mt-2">
+                                                <div class="col-3">
+                                                    <div class="my-auto">Diagnosa Tambahan</div>
+                                                </div>
+                                                <div class="col-9">
                                                     <div class="d-flex align-items-center">
                                                         <span class="mr-2">=</span>
-                                                        <input type="text" class="form-control" name="diagnosa_tambahan">
+                                                        <input type="text" class="form-control" name="diagnosa_tambahan" placeholder="isi diagnosa tambahan . . .">
                                                         @error('diagnosa_tambahan')
                                                             <small class="text-danger">{{ $message }}</small>
                                                         @enderror
@@ -115,7 +121,14 @@
                                         <input type="hidden" value="{{ $tindakan['kunjungan']['dokter']['dokter_detail']['id_dokter'] }}" name="id_dokter">
                                         
                                         <!-- Tempat baris-baris dinamis akan ditambahkan -->
-                                        <div id="obat-instruksi-wrapper">
+                                        <div>
+                                            <p for="">Tulis resep untuk apoteker</p>
+                                            <textarea class="form-control" name="catatan" id="" rows="5" placeholder="Tulis disini . . ."></textarea>
+                                            @error('catatan')
+                                                <small class="text-danger">{{ $message }}</small>
+                                            @enderror
+                                        </div>
+                                        <!-- <div id="obat-instruksi-wrapper">
                                             <div class="row obat-instruksi-group">
                                                 <div class="col-md-3">
                                                     <label for="">Pilih Obat</label>
@@ -164,7 +177,7 @@
                                             </div>
                                         </div>
                                         
-                                        <!-- Template disembunyikan -->
+                                        Template disembunyikan
                                         <div id="template-obat-instruksi" style="display: none;">
                                             <div class="row obat-instruksi-group mt-3">
                                                 <div class="col-md-3">
@@ -199,9 +212,7 @@
                                                     <button type="button" class="btn btn-danger remove-row">-</button>
                                                 </div>
                                             </div>
-                                        </div>
-
-
+                                        </div> -->
 
                                         <div class="row">
                                             <div class="d-flex col-6 justify-content-start mt-4">
@@ -225,7 +236,7 @@
 @endsection
 
 @push('js')
-<script src="{{ asset('') }}plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+<!-- <script src="{{ asset('') }}plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
@@ -297,7 +308,7 @@
             $(this).closest('.obat-instruksi-group').remove();
         });
     });
-</script>
+</script> -->
 
 @endpush
 

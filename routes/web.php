@@ -45,8 +45,8 @@ Route::middleware('check.api.token')->group(function () {
     Route::post('perlu-tindakan/{id}', [TindakanController::class, 'update_catatan_medis'])->name('perlu-tindakan-update');
     Route::post('perlu-rujukan-store/{id}', [TindakanController::class, 'perlu_rujukan_store'])->name('perlu-rujukan-store');
     Route::post('perlu-tindakan/resep-obat-dokter', [TindakanController::class, 'resep_obat_dokter'])->name('resep-obat-dokter');
-    Route::get('/cari-obat', [TindakanController::class, 'cari_obat']);
-    Route::get('/cari-instruksi', [TindakanController::class, 'cari_instruksi']);
+    // Route::get('/cari-obat', [TindakanController::class, 'cari_obat']);
+    // Route::get('/cari-instruksi', [TindakanController::class, 'cari_instruksi']);
     
     // Resepsionis
     Route::resource('pasien-resepsionis', ResepsionisController::class);
@@ -74,6 +74,8 @@ Route::middleware('check.api.token')->group(function () {
     Route::get('resep', [ApotekerController::class, 'resep_index'])->name('resep.index');
     Route::get('resep/{id}/create', [ApotekerController::class, 'resep_create'])->name('resep.create');
     Route::post('resep/{id}', [ApotekerController::class, 'resep_store'])->name('resep.store');
+    Route::get('/cari-obat', [ApotekerController::class, 'cari_obat']);
+    Route::get('/cari-instruksi', [ApotekerController::class, 'cari_instruksi']);
 
 
     // Kasir

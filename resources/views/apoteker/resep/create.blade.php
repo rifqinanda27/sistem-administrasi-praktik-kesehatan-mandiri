@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Racik Obat')
 @push('css')
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 @endpush
 @section('content')
     <div class="content-header">
@@ -47,7 +48,96 @@
                                     <label for="">Nama Dokter :</label>
                                     <p>{{ $resep['kunjungan']['dokter']['name'] }}</p>
                                 </div>
-                                <div class="table-responsive">
+                                <div class="form-group">
+                                    <label for="">Catatan Dokter :</label>
+                                    <p>{{ $resep['catatan'] }}</p>
+                                </div>
+                                <div id="obat-instruksi-wrapper">
+                                    <div class="row obat-instruksi-group">
+                                        <div class="col-md-3">
+                                            <label for="">Pilih Obat</label>
+                                            <select class="form-control select-obat" name="id_obat[]" style="width: 100%"></select>
+                                            @error('id_obat')
+                                                <small class="text-danger">{{ $message }}</small>
+                                            @enderror
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="">Pilih Instruksi</label>
+                                            <select class="form-control select-instruksi" name="id_instruksi[]" style="width: 100%"></select>
+                                            @error('id_instruksi')
+                                                <small class="text-danger">{{ $message }}</small>
+                                            @enderror
+                                        </div>
+
+                                        <div class="col-md-2">
+                                            <label for="">Dosis</label>
+                                            <select class="form-control" name="dosis[]" style="width: 100%">
+                                                <option value="1">Satu kali</option>
+                                                <option value="2">Dua kali</option>
+                                                <option value="3">Tiga kali</option>
+                                                <option value="4">Empat kali</option>
+                                            </select>
+                                            @error('dosis')
+                                                <small class="text-danger">{{ $message }}</small>
+                                            @enderror
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label for="">Berapa Hari</label>
+                                            <select class="form-control" name="frekuensi[]" style="width: 100%">
+                                                <option value="1">Sehari</option>
+                                                <option value="2">Dua Hari</option>
+                                                <option value="3">Tiga Hari</option>
+                                                <option value="4">Empat Hari</option>
+                                            </select>
+                                            @error('frekuensi')
+                                                <small class="text-danger">{{ $message }}</small>
+                                            @enderror
+                                        </div>
+                                        
+                                        <div class="col-md-2">
+                                            <label>&nbsp;</label><br>
+                                            <button type="button" class="btn btn-success add-row">+</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Template disembunyikan -->
+                                <div id="template-obat-instruksi" style="display: none;">
+                                    <div class="row obat-instruksi-group mt-3">
+                                        <div class="col-md-3">
+                                            <label for="">Pilih Obat</label>
+                                            <select class="form-control plain-obat" name="id_obat[]" style="width: 100%"></select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="">Pilih Instruksi</label>
+                                            <select class="form-control plain-instruksi" name="id_instruksi[]" style="width: 100%"></select>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label for="">Dosis</label>
+                                            <select class="form-control" name="dosis[]" style="width: 100%">
+                                                <option value="1">Satu kali</option>
+                                                <option value="2">Dua kali</option>
+                                                <option value="3">Tiga kali</option>
+                                                <option value="4">Empat kali</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label for="">Berapa Hari</label>
+                                            <select class="form-control" name="frekuensi[]" style="width: 100%">
+                                                <option value="1">Sehari</option>
+                                                <option value="2">Dua Hari</option>
+                                                <option value="3">Tiga Hari</option>
+                                                <option value="4">Empat Hari</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-2">
+                                            <label>&nbsp;</label><br>
+                                            <button type="button" class="btn btn-danger remove-row">-</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div class="table-responsive">
                                     <table id="datatable-main-pasien" class="table table-bordered table-hover">
                                         <thead class="thead-light">
                                             <th style="width: 10px">#</th>
@@ -72,7 +162,7 @@
                                             @endforeach
                                         </tbody>
                                     </table>
-                                </div>
+                                </div> -->
                             </div>
                             <div class="card-footer">
                                 <button type="submit" class="btn btn-info btn-block btn-primary">
@@ -86,12 +176,84 @@
     </div>
 @endsection
 @push('js')
-    <script src="{{ asset('') }}plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
-    <script>
-        $(function() {
-            $("input[data-bootstrap-switch]").each(function() {
-                $(this).bootstrapSwitch('state', $(this).prop('checked'));
-            })
+<script src="{{ asset('') }}plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+<script>
+    $(function() {
+        $("input[data-bootstrap-switch]").each(function() {
+            $(this).bootstrapSwitch('state', $(this).prop('checked'));
         })
-    </script>
+    })
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    function initializeSelect2(context) {
+        $(context).find('.select-obat').select2({
+            placeholder: 'Cari Nama Obat',
+            width: '100%',
+            ajax: {
+                url: '/cari-obat',
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        term: params.term
+                    };
+                },
+                processResults: function (data) {
+                    return {
+                        results: data
+                    };
+                },
+                cache: true
+            }
+        });
+
+        $(context).find('.select-instruksi').select2({
+            placeholder: 'Cari Instruksi',
+            width: '100%',
+            ajax: {
+                url: '/cari-instruksi',
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        term: params.term
+                    };
+                },
+                processResults: function (data) {
+                    return {
+                        results: data
+                    };
+                },
+                cache: true
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        // Inisialisasi awal untuk elemen yang sudah ada
+        initializeSelect2(document);
+
+        // Event tambah baris
+        $('#obat-instruksi-wrapper').on('click', '.add-row', function () {
+            let $newRow = $($('#template-obat-instruksi').html());
+
+            // Ganti class sementara dengan class yang akan di-initialize
+            $newRow.find('.plain-obat').removeClass('plain-obat').addClass('select-obat');
+            $newRow.find('.plain-instruksi').removeClass('plain-instruksi').addClass('select-instruksi');
+
+            $('#obat-instruksi-wrapper').append($newRow);
+
+            // Inisialisasi hanya pada elemen baru
+            initializeSelect2($newRow);
+        });
+
+
+        // Event hapus baris
+        $('#obat-instruksi-wrapper').on('click', '.remove-row', function () {
+            $(this).closest('.obat-instruksi-group').remove();
+        });
+    });
+</script>
 @endpush

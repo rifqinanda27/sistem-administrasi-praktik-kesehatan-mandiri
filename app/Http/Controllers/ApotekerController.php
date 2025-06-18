@@ -452,93 +452,296 @@ class ApotekerController extends Controller
         return view('apoteker.resep.create', compact('resep'));
     }
 
+    // public function resep_store(Request $request, $id)
+    // {
+    //     $token = session('api_token');
+    //     // Simpan detail resep
+        // $detailResep = Http::withToken($token)
+        //     ->asForm()
+        //     ->post("$this->apiBaseUrl/detail-resep", [
+        //         'id_instruksi' => $request->id_instruksi,
+        //         'id_obat' => $request->id_obat,
+        //         'dosis' => $request->dosis,
+        //         'frekuensi' => $request->frekuensi,
+        //         'id_resep' => $id,
+        //     ]);
+
+        // if ($detailResep->failed()) {
+        //     return back()->withErrors([
+        //         'message' => $detailResep->json('message') ?? 'Gagal menyimpan detail resep.'
+        //     ])->withInput();
+        // }
+
+    //     $response = Http::withToken($token)->get("$this->apiBaseUrl/resep/$id");
+
+    //     if ($response->failed()) {
+    //         return back()->withErrors(['message' => 'Gagal mengambil data resep']);
+    //     }
+
+    //     $resep = $response->json('data');
+    //     $detailResepList = $resep['detail_resep'] ?? [];
+    //     dd($detailResepList);
+
+    //     foreach ($request->detail as $item) {
+    //         $obatId = $item['obat_id'];
+    //         $dosis = $item['dosis'];
+    //         $frekuensi = $item['frekuensi'];
+
+    //         $jumlahDikonsumsi = $dosis * $frekuensi;
+
+    //         // Ambil data obat via API
+    //         $response = Http::withToken($token)->get("$this->apiBaseUrl/obat/{$obatId}");
+    //         $data = $response->json();
+    //         $obat = $data['data'] ?? null;
+
+    //         if (!$obat || !isset($obat['jumlah_stok'])) {
+    //             throw new \Exception("Obat ID $obatId tidak ditemukan.");
+    //         }
+
+    //         if ($obat['jumlah_stok'] < $jumlahDikonsumsi) {
+    //             return back()->withErrors([
+    //                 'message' => "Stok obat {$obat['nama_obat']} tidak mencukupi.",
+    //             ])->withInput();
+    //         }
+
+    //         $stokBaru = $obat['jumlah_stok'] - $jumlahDikonsumsi;
+
+    //         // Update stok via API
+    //         $updateResponse = Http::withToken($token)->put("$this->apiBaseUrl/obat/{$obatId}", [
+    //             'jumlah_stok' => $stokBaru,
+    //         ]);
+
+    //         if (!$updateResponse->successful()) {
+    //             throw new \Exception("Gagal mengupdate stok obat ID $obatId");
+    //         }
+    //     }
+        
+    //     // Resep Store
+    //     $resep = Http::withToken($token)->put("$this->apiBaseUrl/resep/{$id}", [
+    //         'status' => "diberikan",
+    //     ]);
+
+    //     // Tambahkan pengecekan statusnya
+    //     if ($resep->failed()) {
+    //         // toastr()->error('Gagal membuat user: ' . $resep->json('message'));
+    //         return back()->withErrors(['message' => $resep->json('message') ?? 'Gagal membuat Obat']);
+    //     }
+
+    //     $response = Http::withToken($token)->get("$this->apiBaseUrl/resep/$id");
+
+    //     if ($response->failed()) {
+    //         return back()->withErrors(['message' => $response->json('message') ?? 'Gagal mengambil Detail Resep']);
+    //     }
+
+        
+    //     $resep = $response->json('data');
+    //     if($resep['kunjungan']['pembayaran'] != null)
+    //     {
+    //         $totals = $request->input('total', []); // total[] dalam bentuk array
+    //         $grandTotal = array_sum($totals);
+    
+    //         $id_pembayaran = $resep['kunjungan']['pembayaran']['id_pembayaran'];
+    //         $total_biaya = $resep['kunjungan']['pembayaran'];
+    
+    //         $pembayaran = Http::withToken($token)->put("$this->apiBaseUrl/pembayaran/$id_pembayaran", [
+    //             'total_biaya' => $total_biaya['total_biaya'] + $grandTotal,
+    //         ]);
+    
+    //         // dd($pembayaran);
+    //         if ($pembayaran->failed()) {
+    //             return back()->withErrors(['message' => $pembayaran->json('message') ?? 'Gagal update detail pembayaran']);
+    //         }
+    
+    //         $detailPembayaran = Http::withToken($token)->post("$this->apiBaseUrl/detail-pembayaran", [
+    //             'id_pembayaran' => $id_pembayaran,
+    //             'jenis_biaya' => 'obat',
+    //             'jumlah' => $grandTotal,
+    //             'keterangan' => 'Biaya Obat',
+    //         ]);
+    
+    //         // dd($detailPembayaran);
+    //         if ($detailPembayaran->failed()) {
+    //             return back()->withErrors(['message' => $pembayaran->json('message') ?? 'Gagal tambah detail pembayaran']);
+    //         }
+    //     }   
+
+    //     return redirect()->route('resep.index');
+    // }
+
     public function resep_store(Request $request, $id)
     {
         $token = session('api_token');
 
-        foreach ($request->detail as $item) {
-            $obatId = $item['obat_id'];
-            $dosis = $item['dosis'];
-            $frekuensi = $item['frekuensi'];
-
-            $jumlahDikonsumsi = $dosis * $frekuensi;
-
-            // Ambil data obat via API
-            $response = Http::withToken($token)->get("$this->apiBaseUrl/obat/{$obatId}");
-            $data = $response->json();
-            $obat = $data['data'] ?? null;
-
-            if (!$obat || !isset($obat['jumlah_stok'])) {
-                throw new \Exception("Obat ID $obatId tidak ditemukan.");
-            }
-
-            if ($obat['jumlah_stok'] < $jumlahDikonsumsi) {
-                return back()->withErrors([
-                    'message' => "Stok obat {$obat['nama_obat']} tidak mencukupi.",
-                ])->withInput();
-            }
-
-            $stokBaru = $obat['jumlah_stok'] - $jumlahDikonsumsi;
-
-            // Update stok via API
-            $updateResponse = Http::withToken($token)->put("$this->apiBaseUrl/obat/{$obatId}", [
-                'jumlah_stok' => $stokBaru,
+        // 1. Simpan satu detail resep dari form
+        $detailResep = Http::withToken($token)
+            ->asForm()
+            ->post("$this->apiBaseUrl/detail-resep", [
+                'id_instruksi' => $request->id_instruksi,
+                'id_obat' => $request->id_obat,
+                'dosis' => $request->dosis,
+                'frekuensi' => $request->frekuensi,
+                'id_resep' => $id,
             ]);
 
-            if (!$updateResponse->successful()) {
-                throw new \Exception("Gagal mengupdate stok obat ID $obatId");
-            }
-        }
-        
-        // Resep Store
-        $resep = Http::withToken($token)->put("$this->apiBaseUrl/resep/{$id}", [
-            'status' => "diberikan",
-        ]);
-
-        // Tambahkan pengecekan statusnya
-        if ($resep->failed()) {
-            // toastr()->error('Gagal membuat user: ' . $resep->json('message'));
-            return back()->withErrors(['message' => $resep->json('message') ?? 'Gagal membuat Obat']);
+        if ($detailResep->failed()) {
+            return back()->withErrors([
+                'message' => $detailResep->json('message') ?? 'Gagal menyimpan detail resep.'
+            ])->withInput();
         }
 
+        // 2. Ambil ulang data resep beserta detail_resapnya
         $response = Http::withToken($token)->get("$this->apiBaseUrl/resep/$id");
 
         if ($response->failed()) {
-            return back()->withErrors(['message' => $response->json('message') ?? 'Gagal mengambil Detail Resep']);
+            return back()->withErrors(['message' => 'Gagal mengambil data resep']);
         }
 
-        
         $resep = $response->json('data');
-        if($resep['kunjungan']['pembayaran'] != null)
-        {
-            $totals = $request->input('total', []); // total[] dalam bentuk array
-            $grandTotal = array_sum($totals);
-    
-            $id_pembayaran = $resep['kunjungan']['pembayaran']['id_pembayaran'];
-            $total_biaya = $resep['kunjungan']['pembayaran'];
-    
-            $pembayaran = Http::withToken($token)->put("$this->apiBaseUrl/pembayaran/$id_pembayaran", [
-                'total_biaya' => $total_biaya['total_biaya'] + $grandTotal,
-            ]);
-    
-            // dd($pembayaran);
-            if ($pembayaran->failed()) {
-                return back()->withErrors(['message' => $pembayaran->json('message') ?? 'Gagal update detail pembayaran']);
+        $detailResepList = $resep['detail_resep'] ?? [];
+
+        $grandTotal = 0;
+
+        // 3. Proses setiap detail resep
+        foreach ($detailResepList as $detail) {
+            $obatId = $detail['obat']['id_obat'];
+            $dosis = $detail['dosis'];
+            $frekuensi = $detail['frekuensi'];
+            $hargaSatuan = $detail['obat']['harga_satuan'];
+
+            $jumlahDikonsumsi = $dosis * $frekuensi;
+
+            // Ambil data stok obat
+            $obatResponse = Http::withToken($token)->get("$this->apiBaseUrl/obat/$obatId");
+            $obatData = $obatResponse->json();
+            $obat = $obatData['data'] ?? null;
+
+            if (!$obat || !isset($obat['jumlah_stok'])) {
+                return back()->withErrors(['message' => "Obat ID $obatId tidak ditemukan."]);
             }
-    
+
+            if ($obat['jumlah_stok'] < $jumlahDikonsumsi) {
+                return back()->withErrors(['message' => "Stok obat {$obat['nama_obat']} tidak mencukupi."]);
+            }
+
+            // Kurangi stok
+            $stokBaru = $obat['jumlah_stok'] - $jumlahDikonsumsi;
+
+            $updateStok = Http::withToken($token)->put("$this->apiBaseUrl/obat/$obatId", [
+                'jumlah_stok' => $stokBaru,
+            ]);
+
+            if ($updateStok->failed()) {
+                return back()->withErrors(['message' => "Gagal update stok obat ID $obatId"]);
+            }
+
+            // Hitung total harga
+            $totalObat = $dosis * $frekuensi * $hargaSatuan;
+            $grandTotal += $totalObat;
+        }
+
+        // 4. Ubah status resep jadi "diberikan"
+        $updateResep = Http::withToken($token)->put("$this->apiBaseUrl/resep/$id", [
+            'status' => 'diberikan',
+        ]);
+
+        if ($updateResep->failed()) {
+            return back()->withErrors(['message' => $updateResep->json('message') ?? 'Gagal mengubah status resep']);
+        }
+
+        // 5. Ambil ulang data resep untuk akses pembayaran
+        $resepFinal = Http::withToken($token)->get("$this->apiBaseUrl/resep/$id");
+
+        if ($resepFinal->failed()) {
+            return back()->withErrors(['message' => 'Gagal mengambil data resep untuk update pembayaran']);
+        }
+
+        $resep = $resepFinal->json('data');
+
+        if (!empty($resep['kunjungan']['pembayaran'])) {
+            $pembayaran = $resep['kunjungan']['pembayaran'];
+            $id_pembayaran = $pembayaran['id_pembayaran'];
+            $total_biaya = $pembayaran['total_biaya'];
+
+            // Update total biaya pembayaran
+            $updatePembayaran = Http::withToken($token)->put("$this->apiBaseUrl/pembayaran/$id_pembayaran", [
+                'total_biaya' => $total_biaya + $grandTotal,
+            ]);
+
+            if ($updatePembayaran->failed()) {
+                return back()->withErrors(['message' => $updatePembayaran->json('message') ?? 'Gagal update pembayaran']);
+            }
+
+            // Tambahkan ke detail pembayaran
             $detailPembayaran = Http::withToken($token)->post("$this->apiBaseUrl/detail-pembayaran", [
                 'id_pembayaran' => $id_pembayaran,
                 'jenis_biaya' => 'obat',
                 'jumlah' => $grandTotal,
                 'keterangan' => 'Biaya Obat',
             ]);
-    
-            // dd($detailPembayaran);
+
             if ($detailPembayaran->failed()) {
-                return back()->withErrors(['message' => $pembayaran->json('message') ?? 'Gagal tambah detail pembayaran']);
+                return back()->withErrors(['message' => $detailPembayaran->json('message') ?? 'Gagal tambah detail pembayaran']);
             }
-        }   
+        }
 
         return redirect()->route('resep.index');
+    }
+
+
+
+    public function cari_obat(Request $request)
+    {
+        $token = session('api_token');
+        $search = strtolower($request->input('term'));
+
+        $response = Http::withToken($token)->get(config('services.api.base_url') . '/obat-all');
+
+        if (!$response->successful()) {
+            return response()->json([]);
+        }
+
+        $allObat = $response->json('data');
+
+        // Filter manual berdasarkan nama_lengkap
+        $filtered = collect($allObat)->filter(function ($obat) use ($search) {
+            return str_contains(strtolower($obat['nama_obat']), $search);
+        });
+
+        $result = $filtered->map(function ($obat) {
+            return [
+                'id' => $obat['id_obat'],
+                'text' => $obat['nama_obat']
+            ];
+        })->values();
+
+        return response()->json($result);
+    }
+
+    public function cari_instruksi(Request $request)
+    {
+        $token = session('api_token');
+        $search = strtolower($request->input('term'));
+
+        $response = Http::withToken($token)->get(config('services.api.base_url') . '/instruksi-all');
+
+        if (!$response->successful()) {
+            return response()->json([]);
+        }
+
+        $allInstruksi = $response->json('data');
+
+        // Filter manual berdasarkan nama_lengkap
+        $filtered = collect($allInstruksi)->filter(function ($instruksi) use ($search) {
+            return str_contains(strtolower($instruksi['nama_instruksi']), $search);
+        });
+
+        $result = $filtered->map(function ($instruksi) {
+            return [
+                'id' => $instruksi['id_instruksi'],
+                'text' => $instruksi['nama_instruksi']
+            ];
+        })->values();
+
+        return response()->json($result);
     }
 }

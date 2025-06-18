@@ -50,7 +50,8 @@
                                 <th>Nama Pasien</th>
                                 <th>Total Biaya</th>
                                 <th>Metode Pembayaran</th>
-                                <th>Status</th>
+                                <th>Status Pembayaran</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -60,6 +61,11 @@
                                 <td>{{ $ins['kunjungan']['pasien']['nama_lengkap'] }}</td>
                                 <td>{{ 'Rp. ' . number_format($ins['total_biaya'], 2, ',', '.') ?? '-'}}</td>
                                 <td>{{ $ins['metode_pembayaran'] }}</td>
+                                <td>
+                                    <span class="badge bg-{{ $ins['status'] == 'belum_dibayar' ? 'warning' : 'success' }}">
+                                        {{ ucwords(str_replace('_', ' ', $ins['status'])) }}
+                                    </span>
+                                </td>
                                 <td>
                                     <a href="{{ route('pembayaran.show' , ['pembayaran' => $ins['id_pembayaran']]) }}" class="btn btn-primary">Detail</a>
                                 </td>
