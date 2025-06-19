@@ -52,4 +52,9 @@ class Visit extends Model
     {
         return $this->hasOne(Pembayaran::class, 'id_kunjungan');
     }
+
+    public function permintaan_lab()
+    {
+        return $this->hasMany(PermintaanLab::class, 'id_kunjungan');
+    }
 }

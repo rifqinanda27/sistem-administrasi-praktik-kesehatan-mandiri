@@ -84,7 +84,7 @@ class PatientController extends Controller
     public function show($id)
     {
         $pasien = Patients::with([
-            'kunjungan', 'kunjungan.dokter', 'kunjungan.penjamin', 'kunjungan.resep', 'kunjungan.resep.detail_resep', 'kunjungan.resep.detail_resep.obat', 'kunjungan.catatan_medis'
+            'kunjungan', 'kunjungan.dokter', 'kunjungan.penjamin', 'kunjungan.resep', 'kunjungan.resep.detail_resep', 'kunjungan.resep.detail_resep.obat', 'kunjungan.catatan_medis', 'kunjungan.permintaan_lab', 'kunjungan.permintaan_lab.laboratorium', 'kunjungan.permintaan_lab.jenis_pemeriksaan_lab'
             // 'resep.obat' // Obat terkait dengan resep
         ])->findOrFail($id);
 

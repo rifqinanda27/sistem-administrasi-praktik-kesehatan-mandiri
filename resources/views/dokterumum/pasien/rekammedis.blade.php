@@ -174,25 +174,33 @@
                                         <thead class="bg-tabel-medis">
 
                                             <tr>
-                                                <th class="py-3">Tanggal Pemeriksaan</th>
+                                                <th class="py-3">Tanggal Permintaan</th>
                                                 <th class="py-3">Jenis Pemeriksaan</th>
                                                 <th class="py-3">Tempat Pemeriksaan</th>
-                                                <th class="py-3">Hasil Ringkasan</th>
-                                                <th class="py-3">Catatan Dokter</th>
+                                                <!-- <th class="py-3">Hasil Ringkasan</th>
+                                                <th class="py-3">Catatan Dokter</th> -->
                                                 <th class="py-3">File Hasil</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td class="py-3">24 Oktober 2024</td>
-                                                <td class="py-3">Urinalisa</td>
-                                                <td class="py-3">RS Bhayangkara</td>
-                                                <td class="py-3">Normal</td>
-                                                <td class="py-3">Tidak Perlu Tindakan Lanjut</td>
-                                                <td class="py-3 text-center">
-                                                    <button class="btn btn-sm custom-outline-btn px-4"><span class="fas fa-eye" style="font-size: 20px;"></span></button>
-                                                </td>
-                                            </tr>
+                                            @foreach($pasien['kunjungan'] as $kunjungan)
+                                                @if(!empty($kunjungan['permintaan_lab']))
+                                                    @foreach($kunjungan['permintaan_lab'] as $permintaan)
+                                                        <tr>
+                                                            <td class="py-3">{{ \Carbon\Carbon::parse($permintaan['tanggal_permintaan'])->format('Y-m-d') }}</td>
+                                                            <td class="py-3">{{ $permintaan['jenis_pemeriksaan_lab']['kategori'] ?? '-' }}</td>
+                                                            <td class="py-3">{{ $permintaan['laboratorium']['nama_laboratorium'] ?? '-' }}</td>
+                                                            <!-- <td class="py-3">Normal</td>
+                                                            <td class="py-3">Tidak Perlu Tindakan Lanjut</td> -->
+                                                            <td class="py-3 text-center">
+                                                                <button class="btn btn-sm custom-outline-btn px-4">
+                                                                    <span class="fas fa-eye" style="font-size: 20px;"></span>
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                @endif
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>
