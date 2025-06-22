@@ -47,6 +47,7 @@ class TarifController extends Controller
             'data' => $tarif
         ]);
     }
+    
     public function destroy()
     {
         $tarif = Tarif::first(); // karena hanya ada 1 data

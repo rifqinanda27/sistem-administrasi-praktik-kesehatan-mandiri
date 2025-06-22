@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\PermintaanLab;
 use App\Models\CatatanMedis;
+use App\Models\Pengaturan;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Mpdf\Mpdf;
@@ -111,6 +112,8 @@ class PermintaanLabController extends Controller
         // Ambil data pasien dari database
         $pasien = CatatanMedis::with('kunjungan', 'kunjungan.pasien', 'kunjungan.dokter', 'kunjungan.dokter.dokter_detail', 'kunjungan.catatan_medis:id_catatan,id_kunjungan,no_rekam_medis')->findOrFail($id);
 
+        $pengaturan = Pengaturan::first();
+
         $idKunjungan = $pasien->kunjungan->id_kunjungan;
         
         // dd($idKunjungan);
@@ -118,7 +121,7 @@ class PermintaanLabController extends Controller
         // dd($permintaan_lab);
 
         // Kirim ke view
-        $html = view('resepsionis.lab.cetak_rujukan_lab', compact('pasien', 'permintaan_lab'))->render();
+        $html = view('resepsionis.lab.cetak_rujukan_lab', compact('pasien', 'permintaan_lab', 'pengaturan'))->render();
         // dd($html);
 
         // Buat PDF pakai mPDF

@@ -27,4 +27,13 @@ class HomeController extends Controller
     {
         return view('home');
     }
+
+    public function navbar()
+    {
+        $token = session('apiToken');
+
+        $pengaturan = Http::withToken($token)->get("$this->apiBaseUrl/pengaturan")->json('data');
+
+        return view('layouts.app', compact('pengaturan'));
+    }
 }

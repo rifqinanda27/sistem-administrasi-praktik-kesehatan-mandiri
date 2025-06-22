@@ -114,7 +114,7 @@
         <div class="login-box">
             <div class="login-left">
                 <div class="login-logo text-center">
-                    <img src="{{ asset('dist/img/logo-polines.png') }}" alt="Logo RS Kariadi">
+                    <img src="{{ asset('storage/logo/' . $pengaturan['logo']) }}" alt="Logo RS Kariadi">
                 </div>
             </div>
             <div class="login-right">

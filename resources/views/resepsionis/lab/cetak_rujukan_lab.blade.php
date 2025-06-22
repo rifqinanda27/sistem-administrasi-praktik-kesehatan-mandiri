@@ -57,17 +57,21 @@
         <table>
             <tr>
                 <td width="15%">
-                    <img src="http://pbl-healthcare.test/dist/img/logo-polines.png" alt="Polines Logo">
+                    <!-- <img src="{{ asset('storage/logo/' . $pengaturan->logo) }}" alt="Logo"> -->
+                    @php
+                        $logoPath = public_path('storage/logo/' . $pengaturan->logo);
+                    @endphp
+                    <img src="file://{{ $logoPath }}" alt="Logo" width="100">
+
                 </td>
                 <td style="text-align:center;">
                     <strong>
-                        PEMERINTAH KOTA SEMARANG<br>
-                        DINAS KESEHATAN<br>
-                        PBL HEALTHCARE<br>
-                        KECAMATAN TEMBALANG
-                    </strong><br>
-                    Jl. Prof. Soedarto, Tembalang, Kec. Tembalang<br>
-                    E-Mail: <span style="color:blue">pusk.healtcare@gmail.com</span> &nbsp; Kode Pos: 50275
+                        {!! nl2br(e($pengaturan->kop_surat)) !!}
+                    </strong>
+                    <br>
+                    <!-- Jl. Prof. Soedarto, Tembalang, Kec. Tembalang<br> -->
+                     {{ $pengaturan->alamat }}<br>
+                    E-Mail: <span style="color:blue">{{ $pengaturan->email }}</span> &nbsp; Kode Pos: {{ $pengaturan->kode_pos }}
                 </td>
             </tr>
         </table>
@@ -93,7 +97,7 @@
     <p>{{ $permintaan_lab->jenis_pemeriksaan_lab->nama_pemeriksaan }}</p>
 
     <div class="signature">
-        KOTA SEMARANG, {{ now()->format('d-m-Y') }}<br>
+        KOTA {{ $pengaturan->kota }}, {{ now()->format('d-m-Y') }}<br>
         Rujukan Dokter<br><br><br>
         <strong>{{ $pasien->kunjungan->dokter->name }}</strong><br>
         NIP. 19910624 201903 1 001

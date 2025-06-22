@@ -10,6 +10,7 @@ use App\Http\Controllers\DokterUmum\TindakanController;
 use App\Http\Controllers\ResepsionisController;
 use App\Http\Controllers\ApotekerController;
 use App\Http\Controllers\KasirController;
+use App\Http\Controllers\PengaturanController;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -32,6 +33,8 @@ Route::middleware('check.api.token')->group(function () {
     Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('dokter', DokterController::class);
+    Route::get('pengaturan', [PengaturanController::class, 'index'])->name('pengaturan.index');
+    Route::post('pengaturan', [PengaturanController::class, 'upsert'])->name('pengaturan.upsert');
     
     // Dokterumum
     Route::resource('pasien', PasienController::class);
@@ -60,6 +63,7 @@ Route::middleware('check.api.token')->group(function () {
     Route::post('anamnesa-pasien', [ResepsionisController::class, 'anamnesa_store'])->name('anamnesa.store');
     Route::get('lab-pasien', [ResepsionisController::class, 'lab_resepsionis'])->name('lab-pasien.index');
     Route::get('cetak-permintaan/{id}', [ResepsionisController::class, 'getPermintaanLab'])->name('cetak-permintaan');
+    Route::get('/export/kunjungan', [ResepsionisController::class, 'exportKunjungan'])->name('export.kunjungan');
 
     // Apoteker
     Route::resource('obat', ApotekerController::class);
@@ -81,6 +85,4 @@ Route::middleware('check.api.token')->group(function () {
 
     // Kasir
     Route::resource('pembayaran', KasirController::class);
-    Route::get('tarif', [KasirController::class, 'tarif_index'])->name('tarif.index');
-    Route::post('tarif', [KasirController::class, 'tarif_upsert'])->name('tarif.upsert');
 });

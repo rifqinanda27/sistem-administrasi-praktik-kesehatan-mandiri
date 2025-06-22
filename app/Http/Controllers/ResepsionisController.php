@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\KunjunganExport;
 
 class ResepsionisController extends Controller
 {
@@ -545,11 +547,36 @@ class ResepsionisController extends Controller
         // Ambil data PDF dari API
         $response = Http::withToken($token)->get(config('services.api.base_url') . '/cetak-permintaan/' . $id);
 
+        $pengaturan = Http::withToken($token)->get("$this->apiBaseUrl/pengaturan");
+
         if ($response->successful()) {
             return response($response->body(), 200)
                 ->header('Content-Type', 'application/pdf');
         }
 
         return response()->json(['error' => 'Gagal mengambil data'], 500);
+    }
+
+    public function exportKunjungan(Request $request)
+    {
+        $bulan = $request->input('bulan'); // misalnya: 6
+        $tahun = $request->input('tahun'); // misalnya: 2025
+        $token = session('api_token');
+
+        $response = Http::withToken($token)->get("$this->apiBaseUrl/kunjungan");
+
+        if (!$response->successful()) {
+            return back()->with('error', 'Gagal mengambil data kunjungan');
+        }
+
+        $data = collect($response->json()['data']);
+
+        // Filter berdasarkan bulan dan tahun
+        $filtered = $data->filter(function ($item) use ($bulan, $tahun) {
+            $tanggal = \Carbon\Carbon::parse($item['tanggal_kunjungan']);
+            return $tanggal->month == $bulan && $tanggal->year == $tahun;
+        });
+
+        return Excel::download(new KunjunganExport($filtered), "laporan_kunjungan_{$bulan}_{$tahun}.xlsx");
     }
 }

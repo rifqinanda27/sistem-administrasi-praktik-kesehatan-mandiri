@@ -41,9 +41,9 @@
         </ul>
     </li>
     <li class="nav-item">
-        <a href="{{ url('tarif') }}" class="nav-link {{ Request::segment(1) == 'tarif' ? 'active' : '' }}">
-            <i class="nav-icon fas fa-money-bill"></i>
-            <p>Pengaturan Tarif</p>
+        <a href="{{ url('pengaturan') }}" class="nav-link {{ Request::segment(1) == 'pengaturan' ? 'active' : '' }}">
+            <i class="nav-icon fas fa-cog"></i>
+            <p>Pengaturan</p>
         </a>
     </li>
     @elseif(isset($user['role']['name']) && $user['role']['name'] === 'dokterumum')
@@ -105,12 +105,6 @@
         <a href="{{ url('pembayaran') }}" class="nav-link {{ Request::segment(1) == 'pembayaran' ? 'active' : '' }}">
             <i class="nav-icon fas fa-receipt"></i>
             <p>Pembayaran</p>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a href="{{ url('tarif') }}" class="nav-link {{ Request::segment(1) == 'tarif' ? 'active' : '' }}">
-            <i class="nav-icon fas fa-money-bill"></i>
-            <p>Pengaturan Tarif</p>
         </a>
     </li>
     @endif

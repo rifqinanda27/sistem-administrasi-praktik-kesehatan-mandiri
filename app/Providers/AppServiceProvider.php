@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Pagination\Paginator;
+use App\Models\Pengaturan;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -37,7 +38,18 @@ class AppServiceProvider extends ServiceProvider
                 } else {
                     session()->forget('api_token'); // token invalid, logout paksa
                 }
+
+                $pengaturan = Http::withToken($token)
+                    ->get($apiBaseUrl . '/pengaturan')
+                    ->json('data');
+
+                $view->with('pengaturan', $pengaturan);
             }
+        });
+
+        View::composer('auth.login', function ($view) {
+            $pengaturan = Pengaturan::select('logo')->first(); // hanya ambil kolom logo
+            $view->with('pengaturan', $pengaturan);
         });
     }
 }

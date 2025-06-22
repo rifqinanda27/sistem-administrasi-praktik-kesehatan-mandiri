@@ -36,7 +36,7 @@
                     <div class="card card-primary card-outline">
                         <div class="card-header">
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-5">
                                     <form id="search-form" method="GET" action="{{ route('kunjungan.index') }}">
                                         <div class="input-group mb-3">
                                             <input type="text" name="search" id="search-input" value="{{ $search }}" class="form-control" placeholder="Cari kunjungan...">
@@ -49,7 +49,32 @@
                                         </div>
                                     </form>
                                 </div>
-                                <div class="col-6 d-flex justify-content-end">
+                                <div class="col-5">
+                                    <form action="{{ route('export.kunjungan') }}" method="GET" class="form-inline" target="_blank">
+                                        <div class="form-group mr-2">
+                                            <select name="bulan" id="bulan" class="form-control" required>
+                                                <option value="">-- Pilih Bulan --</option>
+                                                @for ($i = 1; $i <= 12; $i++)
+                                                    <option value="{{ $i }}">{{ \Carbon\Carbon::create()->month($i)->translatedFormat('F') }}</option>
+                                                @endfor
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group mr-2">
+                                            <select name="tahun" id="tahun" class="form-control" required>
+                                                <option value="">-- Pilih Tahun --</option>
+                                                @for ($year = now()->year; $year >= 2020; $year--)
+                                                    <option value="{{ $year }}">{{ $year }}</option>
+                                                @endfor
+                                            </select>
+                                        </div>
+
+                                        <button type="submit" class="btn btn-warning">
+                                            Export Kunjungan
+                                        </button>
+                                    </form>
+                                </div>
+                                <div class="col-2 d-flex justify-content-end">
                                     <div class="card-tools">
                                         <a href="{{ route('kunjungan.create') }}" class="btn btn-primary"><span class="fas fa-user-plus"></span> Tambah Kunjungan</a>
                                     </div>

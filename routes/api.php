@@ -21,6 +21,7 @@ use App\Http\Controllers\Api\DokterController;
 use App\Http\Controllers\Api\PenjaminController;
 use App\Http\Controllers\Api\PembayaranController;
 use App\Http\Controllers\Api\DetailPembayaranController;
+use App\Http\Controllers\Api\PengaturanController;
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
@@ -31,6 +32,8 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', [AuthController::class, 'user']);
+    Route::get('/pengaturan', [PengaturanController::class, 'index']);
+    Route::post('/pengaturan', [PengaturanController::class, 'upsert']);
 
     Route::get('/tarif', [TarifController::class, 'index']);
     Route::post('/tarif', [TarifController::class, 'upsert']);
