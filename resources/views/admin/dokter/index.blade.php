@@ -43,38 +43,40 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <table class="table table-bordered table-hover">
-                                <thead class="thead-light">
-                                    <th>No</th>
-                                    <th>Nama Dokter</th>
-                                    <th>Nomor SIP</th>
-                                    <th>Spesialisasi</th>
-                                    <th>Pengalaman Tahun</th>
-                                    <th>Tarif Konsultasi</th>
-                                    <th>Status Praktik</th>
-                                    <th>Aksi</th>
-                                </thead>
-                                <tbody>
-                                @foreach ($dokter as $item)
-                                    <tr>
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $item['user']['name'] }}</td>
-                                        <td>{{ $item['nomor_sip'] }}</td>
-                                        <td>{{ $item['spesialisasi'] }}</td>
-                                        <td>{{ $item['pengalaman_tahun'] }}</td>
-                                        <td>{{ 'Rp. ' . number_format($item['tarif_konsultasi'], 2, ',', '.') ?? '-'}}</td>
-                                        <td>{{ $item['status_praktik'] === 'aktif' ? 'Aktif' : 'Tidak Aktif' }}</td>
-                                        <td>
-                                            <button type="button" class="btn btn-block btn-sm btn-outline-info" data-toggle="dropdown"><i class="fas fa-cog"></i>
-                                            </button>
-                                            <div class="dropdown-menu" role="menu">
-                                                <a class="dropdown-item" href="{{ route('dokter.edit', $item['id_dokter']) }}">Edit</a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover">
+                                    <thead class="thead-light">
+                                        <th>No</th>
+                                        <th>Nama Dokter</th>
+                                        <th>Nomor SIP</th>
+                                        <th>Spesialisasi</th>
+                                        <th>Pengalaman Tahun</th>
+                                        <th>Tarif Konsultasi</th>
+                                        <th>Status Praktik</th>
+                                        <th>Aksi</th>
+                                    </thead>
+                                    <tbody>
+                                    @foreach ($dokter as $item)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $item['user']['name'] }}</td>
+                                            <td>{{ $item['nomor_sip'] }}</td>
+                                            <td>{{ $item['spesialisasi'] }}</td>
+                                            <td>{{ $item['pengalaman_tahun'] }}</td>
+                                            <td>{{ 'Rp. ' . number_format($item['tarif_konsultasi'], 2, ',', '.') ?? '-'}}</td>
+                                            <td>{{ $item['status_praktik'] === 'aktif' ? 'Aktif' : 'Tidak Aktif' }}</td>
+                                            <td>
+                                                <button type="button" class="btn btn-block btn-sm btn-outline-info" data-toggle="dropdown"><i class="fas fa-cog"></i>
+                                                </button>
+                                                <div class="dropdown-menu" role="menu">
+                                                    <a class="dropdown-item" href="{{ route('dokter.edit', $item['id_dokter']) }}">Edit</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                             {{ $dokter->appends(['search' => $search])->links() }}
                         </div>
                     </div>

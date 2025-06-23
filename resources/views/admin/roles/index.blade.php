@@ -48,34 +48,36 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <table class="table table-bordered table-hover">
-                                <thead class="thead-light">
-                                    <th style="width:10px;">No</th>
-                                    <th>Nama Role</th>
-                                    <th style="width:80px;">Aksi</th>
-                                </thead>
-                                <tbody>
-                                @foreach ($roles as $item)
-                                <tr>
-                                    <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $item['name'] }}</td>
-                                    <td>
-                                        <button type="button" class="btn btn-block btn-sm btn-outline-info" data-toggle="dropdown"><i class="fas fa-cog"></i>
-                                        </button>
-                                        <div class="dropdown-menu" role="menu">
-                                            <a class="dropdown-item" href="{{ route('roles.edit', $item['id']) }}">Edit</a>
-                                            <!-- <a class="dropdown-item" href="#">Hapus</a> -->
-                                            <form action="{{ route('roles.destroy', $item['id']) }}" method="POST" onsubmit="return confirm('Yakin mau hapus data ini?')" style="display:inline;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button class="dropdown-item text-danger" type="submit">Hapus</button>
-                                            </form>
-                                        </div>
-                                    </td>
-                                </tr>
-                                @endforeach
-                                </tbody>
-                            </table>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover">
+                                    <thead class="thead-light">
+                                        <th style="width:10px;">No</th>
+                                        <th>Nama Role</th>
+                                        <th style="width:80px;">Aksi</th>
+                                    </thead>
+                                    <tbody>
+                                    @foreach ($roles as $item)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $item['name'] }}</td>
+                                        <td>
+                                            <button type="button" class="btn btn-block btn-sm btn-outline-info" data-toggle="dropdown"><i class="fas fa-cog"></i>
+                                            </button>
+                                            <div class="dropdown-menu" role="menu">
+                                                <a class="dropdown-item" href="{{ route('roles.edit', $item['id']) }}">Edit</a>
+                                                <!-- <a class="dropdown-item" href="#">Hapus</a> -->
+                                                <form action="{{ route('roles.destroy', $item['id']) }}" method="POST" onsubmit="return confirm('Yakin mau hapus data ini?')" style="display:inline;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button class="dropdown-item text-danger" type="submit">Hapus</button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                             {{ $roles->appends(['search' => $search])->links() }}
                         </div>
                     </div>

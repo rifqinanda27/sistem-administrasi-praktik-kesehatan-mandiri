@@ -270,10 +270,19 @@
     }
 
 
+    @media (max-width: 991.98px) {
+        .main-header {
+            z-index: 1020 !important;
+        }
 
+        .main-sidebar {
+            z-index: 1040 !important;
+        }
 
-
-
+        .content-wrapper {
+            z-index: 1 !important;
+        }
+    }
     </style>
 
 </head>
@@ -281,20 +290,20 @@
 <body class="hold-transition sidebar-mini layout-fixed">
     <!-- Preloader -->
     {{-- <div class="preloader flex-column justify-content-center align-items-center">
-        <img class="animation__shake" src="{{ asset('storage/logo/' . $pengaturan['logo']) }}" alt="Polines Logo"
+        <img class="animation__shake" src="{{ asset('storage/logo/' . $pengaturan['logo']) }}" alt="Logo"
             height="80" width="80">
     </div> --}}
     <div class="wrapper">
         <nav class="main-header navbar navbar-expand navbar-dark" style="background-color: #164B60">
             <ul class="navbar-nav d-flex align-items-center">
-                <!-- <li class="nav-item">
+                <li class="nav-item d-lg-none">
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button">
                         <i class="fas fa-bars"></i>
                     </a>
-                </li> -->
-                <li class="nav-item d-flex align-items-center ml-2">
+                </li>
+                <li class="nav-item d-none d-lg-flex align-items-center ml-2">
                     <a href="{{ url('') }}" class="nav-link d-flex align-items-center">
-                        <img src="{{ asset('storage/logo/' . $pengaturan['logo']) }}" alt="Logo Polines"
+                        <img src="{{ asset('storage/logo/' . $pengaturan['logo']) }}" alt="Logo"
                             style="height:30px; margin-right:10px;" class="elevation-0">
                         <span class="text-white font-weight-bold">{{ $pengaturan['nama_aplikasi'] }}</span>
                     </a>
@@ -313,7 +322,7 @@
                             <img src="{{ asset('dist/img/user2-160x160.jpg') }}" class="img-circle elevation-3" alt="User Image">
                             <p>
                                 {{ ucwords($user['name']) }}
-                                <small>Politeknik Negeri Semarang</small>
+                                <small>{{ $user['role']['name'] }}</small>
                             </p>
                         </li>
                         <li class="user-footer">
@@ -358,10 +367,10 @@
 
         <aside class="main-sidebar main-sidebar-custom sidebar-dark-info elevation-4">
             <a href="{{ url('') }}" class="brand-link">
-                <img src="{{ asset('') }}dist/img/logo-polines.png" alt="Logo Polines"
-                    class="brand-image elevation-3" style="opacity: .8">
+                <img src="{{ asset('storage/logo/' . $pengaturan['logo']) }}" alt="Logo Polines"
+                    class="brand-image" style="opacity: .8">
                 <span
-                    class="brand-text font-weight-light "><strong>{{ env('APP_NAME', 'Healthcare') }}</strong></span>
+                    class="brand-text font-weight-light d-flex text-truncate" style="max-width:150px;"><strong>{{ $pengaturan['nama_aplikasi'] }}</strong></span>
             </a>
             <div class="sidebar">
                 <nav class="mt-2">

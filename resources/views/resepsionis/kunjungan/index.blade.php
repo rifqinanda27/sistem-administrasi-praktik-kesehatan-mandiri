@@ -82,40 +82,42 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <table class="table table-bordered table-hover">
-                                <thead class="thead-light">
-                                    <th style="width: 10px">#</th>
-                                    <th>Nama</th>
-                                    <th>Tanggal Kunjungan</th>
-                                    <th>Tipe Kunjungan</th>
-                                    <th>Tipe Penjamin</th>
-                                    <th>Status</th> <!-- Tambahkan kolom Status -->
-                                    <th>Aksi</th> <!-- Kolom Aksi dengan tombol -->
-                                </thead>
-                                <tbody>
-                                    @foreach ($kunjungan as $index => $item)
-                                        <tr>
-                                            <td>{{ $index + 1 }}</td>
-                                            <td>{{ $item['pasien']['nama_lengkap'] }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($item['tanggal_kunjungan'])->format('d-m-Y') }}</td>
-                                            <td>{{ $item['tipe_kunjungan'] }}</td>
-                                            <td>{{ $item['penjamin']['nama'] }}</td>
-                                            <td>{{ $item['status_kunjungan'] }}</td>
-                                            <td>
-                                                @if($item['status_kunjungan'] != 'selesai')
-                                                    <form action="{{ route('kunjungan.destroy', $item['id_kunjungan']) }}" method="POST">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger">Batal</button>
-                                                    </form>
-                                                @else
-                                                    <p class="btn btn-success">Selesai</p>
-                                                @endif
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover">
+                                    <thead class="thead-light">
+                                        <th style="width: 10px">#</th>
+                                        <th>Nama</th>
+                                        <th>Tanggal Kunjungan</th>
+                                        <th>Tipe Kunjungan</th>
+                                        <th>Tipe Penjamin</th>
+                                        <th>Status</th> <!-- Tambahkan kolom Status -->
+                                        <th>Aksi</th> <!-- Kolom Aksi dengan tombol -->
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($kunjungan as $index => $item)
+                                            <tr>
+                                                <td>{{ $index + 1 }}</td>
+                                                <td>{{ $item['pasien']['nama_lengkap'] }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($item['tanggal_kunjungan'])->format('d-m-Y') }}</td>
+                                                <td>{{ $item['tipe_kunjungan'] }}</td>
+                                                <td>{{ $item['penjamin']['nama'] }}</td>
+                                                <td>{{ $item['status_kunjungan'] }}</td>
+                                                <td>
+                                                    @if($item['status_kunjungan'] != 'selesai')
+                                                        <form action="{{ route('kunjungan.destroy', $item['id_kunjungan']) }}" method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-danger">Batal</button>
+                                                        </form>
+                                                    @else
+                                                        <p class="btn btn-success">Selesai</p>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
                             {{ $kunjungan->appends(['search' => $search])->links() }}
                         </div>
                     </div>
