@@ -27,7 +27,7 @@
                     <div class="card card-primary card-outline">
                         <div class="card-header">
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-md-6">
                                     <form id="search-form" method="GET" action="{{ route('users.index') }}">
                                         <div class="input-group mb-3">
                                             <input type="text" name="search" id="search-input" value="{{ $search }}" class="form-control" placeholder="Cari pengguna ...">
@@ -40,7 +40,7 @@
                                         </div>
                                     </form>
                                 </div>
-                                <div class="col-6 d-flex justify-content-end">
+                                <div class="col-md-6 d-flex justify-content-end">
                                     <div class="card-tools">
                                         <a href="{{ route('users.create') }}" class="btn btn-primary"><span class="fas fa-user-plus"></span> Tambah Users</a>
                                     </div>

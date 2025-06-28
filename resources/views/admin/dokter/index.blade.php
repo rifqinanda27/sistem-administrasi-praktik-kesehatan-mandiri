@@ -48,6 +48,7 @@
                                     <thead class="thead-light">
                                         <th>No</th>
                                         <th>Nama Dokter</th>
+                                        <th>NIP dokter</th>
                                         <th>Nomor SIP</th>
                                         <th>Spesialisasi</th>
                                         <th>Pengalaman Tahun</th>
@@ -60,6 +61,7 @@
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $item['user']['name'] }}</td>
+                                            <td>{{ $item['dokter_nip'] }}</td>
                                             <td>{{ $item['nomor_sip'] }}</td>
                                             <td>{{ $item['spesialisasi'] }}</td>
                                             <td>{{ $item['pengalaman_tahun'] }}</td>

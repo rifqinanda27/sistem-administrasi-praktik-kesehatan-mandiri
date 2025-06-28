@@ -35,6 +35,7 @@ class DokterController extends Controller
                 ->where('pengalaman_tahun', 'like', "%{$search}%")
                 ->where('nomor_sip', 'like', "%{$search}%")
                 ->where('tarif_konsultasi', 'like', "%{$search}%")
+                ->where('dokter_nip', 'like', "%{$search}%")
                 ->orWhereHas('user', function ($q) use ($search) {
                     $q->where('name', 'like', "%{$search}%");
                     });
@@ -128,6 +129,7 @@ class DokterController extends Controller
             'spesialisasi' => 'nullable|string',
             'pengalaman_tahun' => 'sometimes|required|integer|min:0',
             'status_praktik' => 'sometimes|required|in:aktif,tidak_aktif',
+            'dokter_nip' => 'sometimes'
         ]);
 
         if ($validator->fails()) {

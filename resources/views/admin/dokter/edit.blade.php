@@ -40,7 +40,19 @@
                                     <input type="text" name="nomor_sip"
                                         class="form-control @error('nomor_sip') is-invalid @enderror" placeholder="Nomor SIP"
                                         value="{{ $dokter_edit['nomor_sip'] }}">
-                                    @error('name')
+                                    @error('nomor_sip')
+                                        <div class="invalid-feedback" role="alert">
+                                            <span>{{ $message }}</span>
+                                        </div>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group">
+                                    <label>NIP</label>
+                                    <input type="text" name="dokter_nip"
+                                        class="form-control @error('dokter_nip') is-invalid @enderror" placeholder="NIP dokter"
+                                        value="{{ $dokter_edit['dokter_nip'] }}">
+                                    @error('dokter_nip')
                                         <div class="invalid-feedback" role="alert">
                                             <span>{{ $message }}</span>
                                         </div>
@@ -52,7 +64,7 @@
                                     <input type="text" name="spesialisasi"
                                         class="form-control @error('spesialisasi') is-invalid @enderror" placeholder="Spesialisasi"
                                         value="{{ $dokter_edit['spesialisasi'] }}">
-                                    @error('name')
+                                    @error('spesialisasi')
                                         <div class="invalid-feedback" role="alert">
                                             <span>{{ $message }}</span>
                                         </div>
@@ -64,7 +76,7 @@
                                     <input type="text" name="pengalaman_tahun"
                                         class="form-control @error('pengalaman_tahun') is-invalid @enderror" placeholder="Pengalaman tahun . . ."
                                         value="{{ $dokter_edit['pengalaman_tahun'] }}">
-                                    @error('name')
+                                    @error('pengalaman_tahun')
                                         <div class="invalid-feedback" role="alert">
                                             <span>{{ $message }}</span>
                                         </div>
@@ -82,7 +94,7 @@
 
                                     <input type="hidden" name="tarif_konsultasi" id="tarif_konsultasi" value="{{ (int) $dokter_edit['tarif_konsultasi'] }}">
 
-                                    @error('name')
+                                    @error('tarif_konsultasi')
                                         <div class="invalid-feedback" role="alert">
                                             <span>{{ $message }}</span>
                                         </div>

@@ -131,13 +131,23 @@ class DokterController extends Controller
     {
         $token = session('api_token');
 
+        $request->validate([
+            'nomor_sip' => 'required',
+            'pengalaman_tahun' => 'required|integer',
+            'tarif_konsultasi' => 'required|integer',
+            'dokter_nip' => 'required',
+        ]);
+
         $response = Http::withToken($token)->put("$this->apiBaseUrl/dokter/{$id}", [
             'nomor_sip' => $request->nomor_sip,
             'spesialisasi' => $request->spesialisasi,
             'pengalaman_tahun' => $request->pengalaman_tahun,
             'status_praktik' => $request->status_praktik,
             'tarif_konsultasi' => $request->tarif_konsultasi,
+            'dokter_nip' => $request->dokter_nip,
         ]);
+
+        // dd($response);
 
         if (!$response->successful()) {
             return back()->withErrors(['message' => 'Gagal memperbarui user']);

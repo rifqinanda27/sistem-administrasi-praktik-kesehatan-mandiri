@@ -36,7 +36,7 @@
                     <div class="card card-primary card-outline">
                         <div class="card-header">
                             <div class="row">
-                                <div class="col-5">
+                                <div class="col-lg-5">
                                     <form id="search-form" method="GET" action="{{ route('kunjungan.index') }}">
                                         <div class="input-group mb-3">
                                             <input type="text" name="search" id="search-input" value="{{ $search }}" class="form-control" placeholder="Cari kunjungan...">
@@ -49,7 +49,7 @@
                                         </div>
                                     </form>
                                 </div>
-                                <div class="col-5">
+                                <div class="col-lg-5">
                                     <form action="{{ route('export.kunjungan') }}" method="GET" class="form-inline" target="_blank">
                                         <div class="form-group mr-2">
                                             <select name="bulan" id="bulan" class="form-control" required>
@@ -74,7 +74,7 @@
                                         </button>
                                     </form>
                                 </div>
-                                <div class="col-2 d-flex justify-content-end">
+                                <div class="col-lg-2 d-flex justify-content-lg-end justify-content-center mt-2 mt-lg-0">
                                     <div class="card-tools">
                                         <a href="{{ route('kunjungan.create') }}" class="btn btn-primary"><span class="fas fa-user-plus"></span> Tambah Kunjungan</a>
                                     </div>

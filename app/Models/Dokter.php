@@ -15,6 +15,7 @@ class Dokter extends Model
         'pengalaman_tahun',
         'status_praktik',
         'tarif_konsultasi',
+        'dokter_nip',
     ];
 
     public function user()

@@ -100,7 +100,7 @@
         KOTA {{ $pengaturan->kota }}, {{ now()->format('d-m-Y') }}<br>
         Rujukan Dokter<br><br><br>
         <strong>{{ $pasien->kunjungan->dokter->name }}</strong><br>
-        NIP. 19910624 201903 1 001
+        NIP. {{ $pasien->kunjungan->dokter->dokter_detail->dokter_nip }}
     </div>
 
 </body>
