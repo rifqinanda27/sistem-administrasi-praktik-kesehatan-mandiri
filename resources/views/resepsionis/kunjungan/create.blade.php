@@ -50,7 +50,7 @@
                                     @enderror
                                 </div>
 
-                                <div class="form-group">
+                                <!-- <div class="form-group">
                                     <label>Pilih Penjamin</label>
                                     <select name="id_penjamin" class="form-control">
                                         @foreach($penjamin as $pj)
@@ -60,7 +60,9 @@
                                     @error('id_penjamin')
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
-                                </div>
+                                </div> -->
+
+                                <input type="hidden" name="id_penjamin" value="1">
 
                                 <div class="form-group">
                                     <label for="tanggal_kunjungan">Tanggal Kunjungan</label>
