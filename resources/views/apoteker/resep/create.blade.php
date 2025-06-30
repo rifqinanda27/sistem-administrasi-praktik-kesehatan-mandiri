@@ -70,7 +70,7 @@
                                         </div>
 
                                         <div class="col-md-2">
-                                            <label for="">Dosis</label>
+                                            <label for="">Dosis/Hari</label>
                                             <select class="form-control" name="dosis[]" style="width: 100%">
                                                 <option value="1">Satu kali</option>
                                                 <option value="2">Dua kali</option>
@@ -84,11 +84,11 @@
                                         <div class="col-md-2">
                                             <label for="">Berapa Hari</label>
                                             <select class="form-control" name="frekuensi[]" style="width: 100%">
-                                                <option value="1">Sehari</option>
-                                                <option value="2">Dua Hari</option>
-                                                <option value="3">Tiga Hari</option>
-                                                <option value="4">Empat Hari</option>
+                                                @for ($i = 1; $i <= 15; $i++)
+                                                    <option value="{{ $i }}">{{ $i }}</option>
+                                                @endfor
                                             </select>
+
                                             @error('frekuensi')
                                                 <small class="text-danger">{{ $message }}</small>
                                             @enderror
@@ -113,7 +113,7 @@
                                             <select class="form-control plain-instruksi" name="id_instruksi[]" style="width: 100%"></select>
                                         </div>
                                         <div class="col-md-2">
-                                            <label for="">Dosis</label>
+                                            <label for="">Dosis/Hari</label>
                                             <select class="form-control" name="dosis[]" style="width: 100%">
                                                 <option value="1">Satu kali</option>
                                                 <option value="2">Dua kali</option>
@@ -124,11 +124,11 @@
                                         <div class="col-md-2">
                                             <label for="">Berapa Hari</label>
                                             <select class="form-control" name="frekuensi[]" style="width: 100%">
-                                                <option value="1">Sehari</option>
-                                                <option value="2">Dua Hari</option>
-                                                <option value="3">Tiga Hari</option>
-                                                <option value="4">Empat Hari</option>
+                                                @for ($i = 1; $i <= 15; $i++)
+                                                    <option value="{{ $i }}">{{ $i }}</option>
+                                                @endfor
                                             </select>
+
                                         </div>
 
                                         <div class="col-md-2">

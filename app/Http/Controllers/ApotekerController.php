@@ -660,16 +660,18 @@ class ApotekerController extends Controller
         if (!empty($resep['kunjungan']['pembayaran'])) {
             $pembayaran = $resep['kunjungan']['pembayaran'];
             $id_pembayaran = $pembayaran['id_pembayaran'];
-            $total_biaya = $pembayaran['total_biaya'];
 
-            // Update total biaya pembayaran
-            $updatePembayaran = Http::withToken($token)->put("$this->apiBaseUrl/pembayaran/$id_pembayaran", [
-                'total_biaya' => $total_biaya + $grandTotal,
-            ]);
 
-            if ($updatePembayaran->failed()) {
-                return back()->withErrors(['message' => $updatePembayaran->json('message') ?? 'Gagal update pembayaran']);
-            }
+            // $total_biaya = $pembayaran['total_biaya'];
+
+            // // Update total biaya pembayaran
+            // $updatePembayaran = Http::withToken($token)->put("$this->apiBaseUrl/pembayaran/$id_pembayaran", [
+            //     'total_biaya' => $total_biaya + $grandTotal,
+            // ]);
+
+            // if ($updatePembayaran->failed()) {
+            //     return back()->withErrors(['message' => $updatePembayaran->json('message') ?? 'Gagal update pembayaran']);
+            // }
 
             // Tambahkan ke detail pembayaran
             $detailPembayaran = Http::withToken($token)->post("$this->apiBaseUrl/detail-pembayaran", [

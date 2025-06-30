@@ -17,7 +17,9 @@ class PembayaranController extends Controller
     {
         $perPage = $request->input('per_page', 10);
 
-        $query = Pembayaran::with(['detailPembayaran', 'kunjungan', 'kunjungan.pasien']);
+        $query = Pembayaran::with(['detailPembayaran', 'kunjungan', 'kunjungan.pasien'])
+        ->orderBy('status', 'asc')
+        ->orderBy('created_at', 'desc');
 
         // Optional: cari berdasarkan nama
         if ($request->has('search')) {
@@ -61,7 +63,7 @@ class PembayaranController extends Controller
     {
         $validated = $request->validate([
             'id_kunjungan' => 'required|exists:visits,id_kunjungan',
-            'total_biaya' => 'required|numeric',
+            // 'total_biaya' => 'required|numeric',
             'metode_pembayaran' => 'required|in:tunai,kartu,transfer,bpjs',
             'status' => 'required|in:belum_dibayar,lunas,dibatalkan',
         ]);
@@ -89,7 +91,7 @@ class PembayaranController extends Controller
         $pembayaran = Pembayaran::findOrFail($id);
 
         $validated = $request->validate([
-            'total_biaya' => 'nullable|numeric',
+            // 'total_biaya' => 'nullable|numeric',
             'metode_pembayaran' => 'nullable|in:tunai,kartu,transfer,bpjs',
             'status' => 'nullable|in:belum_dibayar,lunas,dibatalkan',
         ]);

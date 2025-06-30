@@ -120,7 +120,7 @@
             <div class="login-right">
                 <form method="POST" action="{{ route('login') }}">
                     @csrf
-                    <h4 class="mb-4">Login</h4>
+                    <h4 class="mb-4">{{ ucwords($pengaturan['nama_aplikasi']) }}</h4>
                     <div class="mb-3">
                         <label class="form-label">Email</label>
                         <input type="text" name="email" class="form-control" placeholder="Masukkan email" required>

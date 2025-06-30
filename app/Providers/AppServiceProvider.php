@@ -48,7 +48,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         View::composer('auth.login', function ($view) {
-            $pengaturan = Pengaturan::select('logo')->first(); // hanya ambil kolom logo
+            $pengaturan = Pengaturan::select('logo', 'nama_aplikasi')->first(); // hanya ambil kolom logo
             $view->with('pengaturan', $pengaturan);
         });
     }

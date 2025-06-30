@@ -33,7 +33,11 @@ class TindakanController extends Controller
         $idDokterLogin = $user['id'];
 
         // Ambil semua data kunjungan
-        $response = Http::withToken($token)->get("$this->apiBaseUrl/kunjungan");
+        $response = Http::withToken($token)->get("$this->apiBaseUrl/kunjungan", [
+            'dokter_id' => $idDokterLogin,
+            'per_page' => $perPage,
+        ]);
+
         if (!$response->successful()) {
             return back()->withErrors(['message' => 'Gagal mengambil data kunjungan']);
         }
@@ -211,12 +215,12 @@ class TindakanController extends Controller
 
             $biayaAdmin  = $biaya_admin['biaya_admin'];
             $biayaDokter = $penjamin['kunjungan']['dokter']['dokter_detail']['tarif_konsultasi'] ?? 0;
-            $totalBiaya  = $biayaAdmin + $biayaDokter;
+            // $totalBiaya  = $biayaAdmin + $biayaDokter;
 
             // Buat pembayaran
             $resPembayaran = Http::withToken($token)->post("$this->apiBaseUrl/pembayaran", [
                 'id_kunjungan' => $penjamin['id_kunjungan'],
-                'total_biaya' => $totalBiaya,
+                // 'total_biaya' => $totalBiaya,
                 'metode_pembayaran' => 'tunai',
                 'status' => 'belum_dibayar',
             ]);
@@ -347,12 +351,12 @@ class TindakanController extends Controller
             $biayaAdmin  = $biaya_admin['biaya_admin'];
             $biayaLab = $biaya_admin['biaya_rujukan_lab'];
             $biayaDokter = $penjamin['kunjungan']['dokter']['dokter_detail']['tarif_konsultasi'] ?? 0;
-            $totalBiaya  = $biayaAdmin + $biayaDokter;
+            // $totalBiaya  = $biayaAdmin + $biayaDokter;
             // dd($penjamin['id_kunjungan']);
 
             $resPembayaran = Http::withToken($token)->post("$this->apiBaseUrl/pembayaran", [
                 'id_kunjungan' => $penjamin['id_kunjungan'],
-                'total_biaya' => $totalBiaya,
+                // 'total_biaya' => $totalBiaya,
                 'metode_pembayaran' => 'tunai',
                 'status' => 'belum_dibayar',
             ]);

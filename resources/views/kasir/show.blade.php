@@ -53,24 +53,10 @@
                 </table>
 
                 <hr>
-                
-                <div class="row mb-3">
-                    <!-- <div class="col-md-6">
-                        <form action="" method="POST" class="d-flex align-items-center gap-2">
-                            @csrf
-                            @method('PUT')
-                            <label for="metode_pembayaran" class="me-2 fw-bold">Metode Pembayaran:</label>
-                            <select name="metode_pembayaran" id="metode_pembayaran" class="form-control mx-2" style="width: auto;">
-                                <option value="tunai" {{ $pembayaran['metode_pembayaran'] == 'tunai' ? 'selected' : '' }}>Tunai</option>
-                                <option value="qris" {{ $pembayaran['metode_pembayaran'] == 'qris' ? 'selected' : '' }}>QRIS</option>
-                            </select>
-                            <button type="submit" class="btn btn-sm btn-primary">
-                                <i class="fas fa-save me-1"></i> Simpan
-                            </button>
-                        </form>
-                    </div> -->
-                </div>
 
+                <div class="row mb-3">
+                    <!-- form untuk ubah metode pembayaran bisa ditambahkan di sini jika dibutuhkan -->
+                </div>
 
                 <h6 class="mt-4">Detail Biaya</h6>
                 <table class="table table-striped table-bordered mt-2">
@@ -90,11 +76,14 @@
                             </tr>
                         @endforeach
                     </tbody>
+                    @php
+                        $total = collect($pembayaran['detail_pembayaran'])->sum('jumlah');
+                    @endphp
                     <tfoot>
                         <tr>
                             <th colspan="2" class="text-end">Total</th>
                             <th class="text-end text-success">
-                                Rp {{ number_format($pembayaran['total_biaya'], 0, ',', '.') }}
+                                Rp {{ number_format($total, 0, ',', '.') }}
                             </th>
                         </tr>
                     </tfoot>
@@ -107,9 +96,9 @@
                     </a>
                 </div>
                 <div class="col-md-6 d-flex justify-content-end">
-                <form action="{{ route('pembayaran.update', $pembayaran['id_pembayaran']) }}" method="POST">
-                    @csrf
-                    @method('PUT')
+                    <form action="{{ route('pembayaran.update', $pembayaran['id_pembayaran']) }}" method="POST">
+                        @csrf
+                        @method('PUT')
                         <button type="submit" class="btn btn-success">
                             Verifikasi Pembayaran
                         </button>

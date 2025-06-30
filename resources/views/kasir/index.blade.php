@@ -48,7 +48,7 @@
                             <tr>
                                 <th width="20px">#</th>
                                 <th>Nama Pasien</th>
-                                <th>Total Biaya</th>
+                                
                                 <th>Metode Pembayaran</th>
                                 <th>Status Pembayaran</th>
                                 <th>Aksi</th>
@@ -59,7 +59,7 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $ins['kunjungan']['pasien']['nama_lengkap'] }}</td>
-                                <td>{{ 'Rp. ' . number_format($ins['total_biaya'], 2, ',', '.') ?? '-'}}</td>
+                                
                                 <td>{{ $ins['metode_pembayaran'] }}</td>
                                 <td>
                                     <span class="badge bg-{{ $ins['status'] == 'belum_dibayar' ? 'warning' : 'success' }}">

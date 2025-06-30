@@ -18,22 +18,35 @@ class VisitController extends Controller
     {
         $perPage = $request->input('per_page', 10);
 
-        $query = Visit::with(['penjamin', 'pasien', 'dokter', 'dokter.dokter_detail', 'catatan_medis:id_catatan,id_kunjungan,no_rekam_medis']);
+        $query = Visit::with([
+            'penjamin',
+            'pasien',
+            'dokter',
+            'dokter.dokter_detail',
+            'catatan_medis:id_catatan,id_kunjungan,no_rekam_medis'
+        ]);
 
-        // Optional: cari berdasarkan nama
+        // ✅ Filter berdasarkan ID dari relasi dokter (users.id)
+        if ($request->has('dokter_id')) {
+            $query->whereHas('dokter', function ($q) use ($request) {
+                $q->where('id', $request->input('dokter_id'));
+            });
+        }
+
+        // 🔍 Optional: pencarian
         if ($request->has('search')) {
             $search = $request->input('search');
 
             $query->where(function ($q) use ($search) {
                 $q->where('tanggal_kunjungan', 'like', "%{$search}%")
-                ->orWhere('status_kunjungan', 'like', "%{$search}%")
-                ->orWhereHas('pasien', function ($q) use ($search) {
-                    $q->where('nama_lengkap', 'like', "%{$search}%");
+                    ->orWhere('status_kunjungan', 'like', "%{$search}%")
+                    ->orWhereHas('pasien', function ($q) use ($search) {
+                        $q->where('nama_lengkap', 'like', "%{$search}%");
                     })
-                ->orWhereHas('penjamin', function ($q) use ($search) {
-                    $q->where('nama', 'like', "%{$search}%");
+                    ->orWhereHas('penjamin', function ($q) use ($search) {
+                        $q->where('nama', 'like', "%{$search}%");
                     });
-                });
+            });
         }
 
         $kunjungan = $query->paginate($perPage);
@@ -49,6 +62,8 @@ class VisitController extends Controller
             ],
         ]);
     }
+
+
 
     // public function index()
     // {

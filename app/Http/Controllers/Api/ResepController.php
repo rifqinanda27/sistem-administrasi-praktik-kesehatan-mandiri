@@ -26,7 +26,9 @@ class ResepController extends Controller
     {
         $perPage = $request->input('per_page', 10);
 
-        $query = Resep::with(['obat', 'kunjungan', 'kunjungan.dokter', 'kunjungan.pasien']);
+        $query = Resep::with(['obat', 'kunjungan', 'kunjungan.dokter', 'kunjungan.pasien'])
+              ->orderBy('created_at', 'desc');
+
 
         if ($request->has('search')) {
             $search = $request->input('search');
